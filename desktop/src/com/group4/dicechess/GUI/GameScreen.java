@@ -8,13 +8,13 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class GameScreen implements Screen {
 
     DiceChessGame game;
-    TextureUtils dice;
+    TextureUtils textureUtils;
     public boolean rolled = false;
     public boolean rolledBefore = false;
 
     public GameScreen(DiceChessGame currentGame){
         this.game = currentGame;
-        this.dice = new TextureUtils();
+        this.textureUtils = new TextureUtils();
     }
 
     @Override
@@ -36,26 +36,26 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(1, 1, 1, 1);
         game.batch.begin();
         if (rolled) {
-            dice.Roll();
+            textureUtils.Roll();
             rolledBefore = true;
         } else if (!rolledBefore) {
-            game.batch.draw(dice.spriteDice1, dice.spriteDice1.getX(), dice.spriteDice1.getY(), dice.spriteDice1.getWidth(), dice.spriteDice1.getHeight());
+            game.batch.draw(textureUtils.spriteDice1, textureUtils.spriteDice1.getX(), textureUtils.spriteDice1.getY(), textureUtils.spriteDice1.getWidth(), textureUtils.spriteDice1.getHeight());
         }
         rolled = false;
-        if (dice.currentSide == 1) {
-            game.batch.draw(dice.spriteDice1, dice.spriteDice1.getX(), dice.spriteDice1.getY(), dice.spriteDice1.getWidth(), dice.spriteDice1.getHeight());
-        } else if (dice.currentSide == 2) {
-            game.batch.draw(dice.spriteDice2, dice.spriteDice2.getX(), dice.spriteDice2.getY(), dice.spriteDice2.getWidth(), dice.spriteDice2.getHeight());
-        } else if (dice.currentSide == 3) {
-            game.batch.draw(dice.spriteDice3, dice.spriteDice3.getX(), dice.spriteDice3.getY(), dice.spriteDice3.getWidth(), dice.spriteDice3.getHeight());
-        } else if (dice.currentSide == 4) {
-            game.batch.draw(dice.spriteDice4, dice.spriteDice4.getX(), dice.spriteDice4.getY(), dice.spriteDice4.getWidth(), dice.spriteDice4.getHeight());
-        } else if (dice.currentSide == 5) {
-            game.batch.draw(dice.spriteDice5, dice.spriteDice5.getX(), dice.spriteDice5.getY(), dice.spriteDice5.getWidth(), dice.spriteDice5.getHeight());
-        } else if (dice.currentSide == 6) {
-            game.batch.draw(dice.spriteDice6, dice.spriteDice6.getX(), dice.spriteDice6.getY(), dice.spriteDice6.getWidth(), dice.spriteDice6.getHeight());
+        if (textureUtils.currentSide == 1) {
+            game.batch.draw(textureUtils.spriteDice1, textureUtils.spriteDice1.getX(), textureUtils.spriteDice1.getY(), textureUtils.spriteDice1.getWidth(), textureUtils.spriteDice1.getHeight());
+        } else if (textureUtils.currentSide == 2) {
+            game.batch.draw(textureUtils.spriteDice2, textureUtils.spriteDice2.getX(), textureUtils.spriteDice2.getY(), textureUtils.spriteDice2.getWidth(), textureUtils.spriteDice2.getHeight());
+        } else if (textureUtils.currentSide == 3) {
+            game.batch.draw(textureUtils.spriteDice3, textureUtils.spriteDice3.getX(), textureUtils.spriteDice3.getY(), textureUtils.spriteDice3.getWidth(), textureUtils.spriteDice3.getHeight());
+        } else if (textureUtils.currentSide == 4) {
+            game.batch.draw(textureUtils.spriteDice4, textureUtils.spriteDice4.getX(), textureUtils.spriteDice4.getY(), textureUtils.spriteDice4.getWidth(), textureUtils.spriteDice4.getHeight());
+        } else if (textureUtils.currentSide == 5) {
+            game.batch.draw(textureUtils.spriteDice5, textureUtils.spriteDice5.getX(), textureUtils.spriteDice5.getY(), textureUtils.spriteDice5.getWidth(), textureUtils.spriteDice5.getHeight());
+        } else if (textureUtils.currentSide == 6) {
+            game.batch.draw(textureUtils.spriteDice6, textureUtils.spriteDice6.getX(), textureUtils.spriteDice6.getY(), textureUtils.spriteDice6.getWidth(), textureUtils.spriteDice6.getHeight());
         }
-        game.batch.draw(dice.spriteArrow, dice.spriteArrow.getX(), dice.spriteArrow.getY(), dice.spriteArrow.getWidth(), dice.spriteArrow.getHeight());
+        game.batch.draw(textureUtils.spriteArrow, textureUtils.spriteArrow.getX(), textureUtils.spriteArrow.getY(), textureUtils.spriteArrow.getWidth(), textureUtils.spriteArrow.getHeight());
         game.batch.end();
     }
 
@@ -71,7 +71,7 @@ public class GameScreen implements Screen {
     public void hide() {}
     @Override
     public void dispose() {
-        dice.backArrow.dispose();
-        dice.dice1.dispose();
+        textureUtils.backArrow.dispose();
+        textureUtils.dice1.dispose();
     }
 }
