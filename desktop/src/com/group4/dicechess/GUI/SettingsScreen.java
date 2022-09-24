@@ -12,15 +12,18 @@ public class SettingsScreen implements Screen {
 
     Texture backArrow;
     Sprite spriteArrow;
+    TextureUtils textureUtils;
     DiceChessGame game;
 
     public SettingsScreen(DiceChessGame currentGame){
         this.game = currentGame;
+        this.textureUtils = new TextureUtils();
+
     }
 
     @Override
     public void show() {
-        backArrow = new Texture("backArrow.png");
+        backArrow = new Texture("FinalAssets/backArrow.png");
         spriteArrow = new Sprite(backArrow);
         spriteArrow.setPosition(10, 550);
         spriteArrow.setSize(50, 50);
@@ -40,6 +43,12 @@ public class SettingsScreen implements Screen {
         });
         ScreenUtils.clear(1, 1, 1, 1);
         game.batch.begin();
+        game.batch.draw(textureUtils.PVPInActive, 140,510, textureUtils.PVP_WIDTH,textureUtils.PVP_HEIGHT);
+        game.batch.draw(textureUtils.PVAInActive, 140, 420, textureUtils.PVA_WIDTH, textureUtils.PVA_HEIGHT);
+        game.batch.draw(textureUtils.AVAInActive, 140, 330, textureUtils.AVA_WIDTH, textureUtils.AVA_HEIGHT);
+        game.batch.draw(textureUtils.HELPInActive, 140, 240, textureUtils.HELP_WIDTH, textureUtils.HELP_HEIGHT);
+        game.batch.draw(textureUtils.SoundInActive, 140, 150, textureUtils.SOUND_WIDTH, textureUtils.SOUND_HEIGHT);
+        game.batch.draw(textureUtils.noSoundInActive, 140, 60, textureUtils.NOSOUND_WIDTH, textureUtils.NOSOUND_HEIGHT);
         game.batch.draw(spriteArrow, spriteArrow.getX(), spriteArrow.getY(), spriteArrow.getWidth(), spriteArrow.getHeight());
         game.batch.end();
     }

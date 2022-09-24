@@ -22,6 +22,30 @@ public class TextureUtils {
     Sprite spriteDice6;
     Texture backArrow;
     Sprite spriteArrow;
+    int PVA_WIDTH= 200;
+    int PVA_HEIGHT=80;
+    int PVP_WIDTH= 200;
+    int PVP_HEIGHT = 80;
+    int AVA_WIDTH= 200;
+    int AVA_HEIGHT = 80;
+    int HELP_WIDTH = 200;
+    int HELP_HEIGHT = 80;
+    int SOUND_WIDTH = 200;
+    int SOUND_HEIGHT = 80;
+    int NOSOUND_WIDTH = 200;
+    int NOSOUND_HEIGHT = 80;
+    Texture PVAActive;
+    Texture PVPActive;
+    Texture AVAActive;
+    Texture HELPActive;
+    Texture SoundActive;
+    Texture PVAInActive;
+    Texture PVPInActive;
+    Texture AVAInActive;
+    Texture HELPInActive;
+    Texture SoundInActive;
+    Texture noSoundInActive;
+    Texture NOSoundActive;
 
     public TextureUtils(){
         this.currentSide = 1;
@@ -53,6 +77,20 @@ public class TextureUtils {
         spriteDice5.setSize(80, 80);
         spriteDice6.setPosition(710, 450);
         spriteDice6.setSize(80, 80);
+        PVPActive = new Texture("TestAssets/PVP.jpg");
+        PVPInActive = new Texture("TestAssets/PVP.jpg");
+        PVAActive=new Texture("TestAssets/PVA.jpg");
+        PVAInActive=new Texture("TestAssets/PVA.jpg");
+        HELPActive = new Texture("TestAssets/HELP.jpg");
+        HELPInActive = new Texture("TestAssets/HELP.jpg");
+        SoundActive= new Texture("TestAssets/SOUND.jpg");
+        SoundInActive= new Texture("TestAssets/SOUND.jpg");
+        AVAActive= new Texture("TestAssets/AVA.jpg");
+        AVAInActive= new Texture("TestAssets/AVA.jpg");
+        HELPActive=new Texture("TestAssets/HELP.jpg");
+        HELPInActive=new Texture("TestAssets/HELP.jpg");
+        noSoundInActive=new Texture("TestAssets/NOSOUND.jpg");
+        NOSoundActive=new Texture("TestAssets/NOSOUND.jpg");
     }
 
     public void Roll() {

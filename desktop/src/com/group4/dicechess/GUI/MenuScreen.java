@@ -72,7 +72,7 @@ public class MenuScreen implements Screen, InputProcessor {
             Gdx.input.setInputProcessor(null);
         }
         if(screenX >= 350 && screenX <= 550 && screenY >= 345 && screenY <= 400){
-            game.setScreen(new SettingScreen(game));
+            game.setScreen(new SettingsScreen(game));
             Gdx.input.setInputProcessor(null);
         }
         if(screenX >= 350 && screenX <= 550 && screenY >= 427 && screenY <= 480){
