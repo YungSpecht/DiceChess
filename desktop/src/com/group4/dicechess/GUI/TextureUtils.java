@@ -7,7 +7,6 @@ import java.util.Random;
 
 public class TextureUtils {
 
-    int currentSide;
     Texture board;
     Texture dice1;
     Texture dice2;
@@ -24,6 +23,7 @@ public class TextureUtils {
     Sprite spriteDice6;
     Texture backArrow;
     Sprite spriteArrow;
+    int currentSide;
     int PVA_WIDTH= 200;
     int PVA_HEIGHT=50;
     int PVP_WIDTH= 200;
