@@ -14,6 +14,8 @@ public class TextureUtils {
     Texture dice4;
     Texture dice5;
     Texture dice6;
+    Texture notation;
+    Sprite spriteNotation;
     Sprite spriteDice1;
     Sprite spriteDice2;
     Sprite spriteBoard;
@@ -51,6 +53,7 @@ public class TextureUtils {
 
     public TextureUtils(){
         this.currentSide = 1;
+        notation = new Texture("TestAssets/nt.png");
         board = new Texture("TestAssets/board.jpg");
         dice1 = new Texture("FinalAssets/1.jpg");
         dice2 = new Texture("FinalAssets/2.jpg");
@@ -59,6 +62,7 @@ public class TextureUtils {
         dice5 = new Texture("FinalAssets/5.jpg");
         dice6 = new Texture("FinalAssets/6.jpg");
         backArrow = new Texture("FinalAssets/backArrow.png");
+        spriteNotation = new Sprite(notation);
         spriteDice1 = new Sprite(dice1);
         spriteDice2 = new Sprite(dice2);
         spriteDice3 = new Sprite(dice3);
@@ -67,6 +71,8 @@ public class TextureUtils {
         spriteDice6 = new Sprite(dice6);
         spriteArrow = new Sprite(backArrow);
         spriteBoard = new Sprite(board);
+        spriteNotation.setPosition(625, 50);
+        spriteNotation.setSize(250, 350);
         spriteArrow.setPosition(10, 550);
         spriteArrow.setSize(50, 50);
         spriteBoard.setPosition(55, 30);
@@ -89,14 +95,14 @@ public class TextureUtils {
         PVAInActive=new Texture("TestAssets/PVA.jpg");
         HELPActive = new Texture("TestAssets/HELP.jpg");
         HELPInActive = new Texture("TestAssets/HELP.jpg");
-        SoundActive= new Texture("TestAssets/SOUND.jpg");
-        SoundInActive= new Texture("TestAssets/SOUND.jpg");
-        AVAActive= new Texture("TestAssets/AVA.jpg");
-        AVAInActive= new Texture("TestAssets/AVA.jpg");
-        HELPActive=new Texture("TestAssets/HELP.jpg");
-        HELPInActive=new Texture("TestAssets/HELP.jpg");
-        noSoundInActive=new Texture("TestAssets/NOSOUND.jpg");
-        NOSoundActive=new Texture("TestAssets/NOSOUND.jpg");
+        SoundActive= new Texture("TestAssets/soundON.png");
+        SoundInActive= new Texture("TestAssets/soundON.png");
+        AVAActive= new Texture("TestAssets/bots.png");
+        AVAInActive= new Texture("TestAssets/bots.png");
+        HELPActive=new Texture("TestAssets/helpm.png");
+        HELPInActive=new Texture("TestAssets/helpm.png");
+        noSoundInActive=new Texture("TestAssets/soundOFF.png");
+        NOSoundActive=new Texture("TestAssets/soundOFF.png");
     }
 
     public void Roll() {
