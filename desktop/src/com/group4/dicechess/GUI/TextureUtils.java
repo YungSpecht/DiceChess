@@ -25,13 +25,13 @@ public class TextureUtils {
 
     public TextureUtils(){
         this.currentSide = 1;
-        dice1 = new Texture("1.jpg");
-        dice2 = new Texture("2.jpg");
-        dice3 = new Texture("3.jpg");
-        dice4 = new Texture("4.jpg");
-        dice5 = new Texture("5.jpg");
-        dice6 = new Texture("6.jpg");
-        backArrow = new Texture("backArrow.png");
+        dice1 = new Texture("FinalAssets/1.jpg");
+        dice2 = new Texture("FinalAssets/2.jpg");
+        dice3 = new Texture("FinalAssets/3.jpg");
+        dice4 = new Texture("FinalAssets/4.jpg");
+        dice5 = new Texture("FinalAssets/5.jpg");
+        dice6 = new Texture("FinalAssets/6.jpg");
+        backArrow = new Texture("FinalAssets/backArrow.png");
         spriteDice1 = new Sprite(dice1);
         spriteDice2 = new Sprite(dice2);
         spriteDice3 = new Sprite(dice3);

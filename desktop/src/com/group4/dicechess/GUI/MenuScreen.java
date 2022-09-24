@@ -24,10 +24,10 @@ public class MenuScreen implements Screen, InputProcessor {
 
     @Override
     public void show() {
-        startButton = new Texture("startF.png");
-        exitButton = new Texture("exitF.png");
-        settingsButton = new Texture("settingsF.png");
-        diceM = new Texture("menuP.jpg");
+        startButton = new Texture("FinalAssets/startF.png");
+        exitButton = new Texture("FinalAssets/exitF.png");
+        settingsButton = new Texture("FinalAssets/settingsF.png");
+        diceM = new Texture("FinalAssets/menuP.jpg");
 
         spriteExit = new Sprite(exitButton);
         spriteExit.setPosition(350, 120);
@@ -72,7 +72,7 @@ public class MenuScreen implements Screen, InputProcessor {
             Gdx.input.setInputProcessor(null);
         }
         if(screenX >= 350 && screenX <= 550 && screenY >= 345 && screenY <= 400){
-            game.setScreen(new SettingsScreen(game));
+            game.setScreen(new SettingScreen(game));
             Gdx.input.setInputProcessor(null);
         }
         if(screenX >= 350 && screenX <= 550 && screenY >= 427 && screenY <= 480){
