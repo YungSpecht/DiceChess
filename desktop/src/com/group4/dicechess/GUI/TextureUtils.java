@@ -2,7 +2,6 @@ package com.group4.dicechess.GUI;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-
 import java.util.Random;
 
 public class TextureUtils {
@@ -15,6 +14,10 @@ public class TextureUtils {
     Texture dice5;
     Texture dice6;
     Texture notation;
+    Texture backArrow;
+    Texture sound;
+    Texture help;
+    Texture bots;
     Sprite spriteNotation;
     Sprite spriteDice1;
     Sprite spriteDice2;
@@ -23,33 +26,11 @@ public class TextureUtils {
     Sprite spriteDice4;
     Sprite spriteDice5;
     Sprite spriteDice6;
-    Texture backArrow;
     Sprite spriteArrow;
+    Sprite spriteHelp;
+    Sprite spriteSound;
+    Sprite spriteBots;
     int currentSide;
-    int PVA_WIDTH= 200;
-    int PVA_HEIGHT=50;
-    int PVP_WIDTH= 200;
-    int PVP_HEIGHT = 50;
-    int AVA_WIDTH= 200;
-    int AVA_HEIGHT = 50;
-    int HELP_WIDTH = 200;
-    int HELP_HEIGHT = 50;
-    int SOUND_WIDTH = 200;
-    int SOUND_HEIGHT = 50;
-    int NOSOUND_WIDTH = 200;
-    int NOSOUND_HEIGHT = 50;
-    Texture PVAActive;
-    Texture PVPActive;
-    Texture AVAActive;
-    Texture HELPActive;
-    Texture SoundActive;
-    Texture PVAInActive;
-    Texture PVPInActive;
-    Texture AVAInActive;
-    Texture HELPInActive;
-    Texture SoundInActive;
-    Texture noSoundInActive;
-    Texture NOSoundActive;
 
     public TextureUtils(){
         this.currentSide = 1;
@@ -62,6 +43,12 @@ public class TextureUtils {
         dice5 = new Texture("FinalAssets/5.jpg");
         dice6 = new Texture("FinalAssets/6.jpg");
         backArrow = new Texture("FinalAssets/backArrow.png");
+        help = new Texture("TestAssets/help.png");
+        sound = new Texture("TestAssets/soundON.png");
+        bots = new Texture("TestAssets/bots.png");
+        spriteHelp = new Sprite(help);
+        spriteSound = new Sprite(sound);
+        spriteBots = new Sprite(bots);
         spriteNotation = new Sprite(notation);
         spriteDice1 = new Sprite(dice1);
         spriteDice2 = new Sprite(dice2);
@@ -89,25 +76,17 @@ public class TextureUtils {
         spriteDice5.setSize(80, 80);
         spriteDice6.setPosition(710, 450);
         spriteDice6.setSize(80, 80);
-        PVPActive = new Texture("TestAssets/PVP.jpg");
-        PVPInActive = new Texture("TestAssets/PVP.jpg");
-        PVAActive=new Texture("TestAssets/PVA.jpg");
-        PVAInActive=new Texture("TestAssets/PVA.jpg");
-        HELPActive = new Texture("TestAssets/HELP.jpg");
-        HELPInActive = new Texture("TestAssets/HELP.jpg");
-        SoundActive= new Texture("TestAssets/soundON.png");
-        SoundInActive= new Texture("TestAssets/soundON.png");
-        AVAActive= new Texture("TestAssets/bots.png");
-        AVAInActive= new Texture("TestAssets/bots.png");
-        HELPActive=new Texture("TestAssets/helpm.png");
-        HELPInActive=new Texture("TestAssets/helpm.png");
-        noSoundInActive=new Texture("TestAssets/soundOFF.png");
-        NOSoundActive=new Texture("TestAssets/soundOFF.png");
+        spriteHelp.setPosition(350, 240);
+        spriteHelp.setSize(200, 50);
+        spriteSound.setPosition(350, 150);
+        spriteSound.setSize(200, 50);
+        spriteBots.setPosition(350, 330);
+        spriteBots.setSize(200, 50);
     }
 
     public void Roll() {
         int max = 6;
         Random random = new Random();
-        currentSide = (int) random.nextInt(max) + 1;
+        currentSide = random.nextInt(max) + 1;
     }
 }
