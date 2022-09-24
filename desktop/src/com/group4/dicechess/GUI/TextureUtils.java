@@ -8,6 +8,7 @@ import java.util.Random;
 public class TextureUtils {
 
     int currentSide;
+    Texture board;
     Texture dice1;
     Texture dice2;
     Texture dice3;
@@ -16,6 +17,7 @@ public class TextureUtils {
     Texture dice6;
     Sprite spriteDice1;
     Sprite spriteDice2;
+    Sprite spriteBoard;
     Sprite spriteDice3;
     Sprite spriteDice4;
     Sprite spriteDice5;
@@ -49,6 +51,7 @@ public class TextureUtils {
 
     public TextureUtils(){
         this.currentSide = 1;
+        board = new Texture("TestAssets/board.jpg");
         dice1 = new Texture("FinalAssets/1.jpg");
         dice2 = new Texture("FinalAssets/2.jpg");
         dice3 = new Texture("FinalAssets/3.jpg");
@@ -63,8 +66,11 @@ public class TextureUtils {
         spriteDice5 = new Sprite(dice5);
         spriteDice6 = new Sprite(dice6);
         spriteArrow = new Sprite(backArrow);
+        spriteBoard = new Sprite(board);
         spriteArrow.setPosition(10, 550);
         spriteArrow.setSize(50, 50);
+        spriteBoard.setPosition(55, 30);
+        spriteBoard.setSize(530, 520);
         spriteDice1.setPosition(710, 450);
         spriteDice1.setSize(80, 80);
         spriteDice2.setPosition(710, 450);

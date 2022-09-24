@@ -35,6 +35,7 @@ public class GameScreen implements Screen {
         });
         ScreenUtils.clear(1, 1, 1, 1);
         game.batch.begin();
+        game.batch.draw(textureUtils.board, textureUtils.spriteBoard.getX(), textureUtils.spriteBoard.getY(), textureUtils.spriteBoard.getWidth(), textureUtils.spriteBoard.getHeight());
         if (rolled) {
             textureUtils.Roll();
             rolledBefore = true;
