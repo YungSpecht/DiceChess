@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public abstract class Piece {
     private boolean whiteStatus;
-    private int value;
+    private String value;
 
     public void setWhiteStatus(boolean whiteStatus){
         this.whiteStatus = whiteStatus;
     }
 
-    public void setValue(int value){
+    public void setValue(String value){
         this.value = value;
     }
 
@@ -18,7 +18,7 @@ public abstract class Piece {
         return whiteStatus;
     }
 
-    public int getValue(){
+    public String getValue(){
         return value;
     }
 

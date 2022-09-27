@@ -19,20 +19,32 @@ public class Board {
         return board[row][column];
     }
 
+    public void setSquare(int row, int column, Piece piece) {
+        board[row][column] =  new Square(row, column, piece);
+    }
+
+    public void zeroSquare(int row, int column) {
+        board[row][column] = null;
+    }
+
 
     public void printBoard(){
         for(int i = 0; i < board.length; i++){
             for(int j = 0; j < board[i].length; j++){
                 if(board[i][j] != null){
-                    System.out.print(board[i][j].getPiece().getValue() + " ");
+                    if(board[i][j].getPiece().getWhiteStatus()) {
+                        System.out.print("w"+board[i][j].getPiece().getValue() + " ");
+                    } else {
+                        System.out.print("b"+board[i][j].getPiece().getValue() + " ");
+                    }
                 }
                 else{
-                    System.out.print("0 ");
+                    System.out.print("0  ");
                 }
             }
             System.out.println();
         }
-        System.out.println();
+        System.out.println("------------------------");
     }
 
     private void setUpBoard(){

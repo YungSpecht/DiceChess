@@ -10,7 +10,7 @@ public class Rook extends Piece{
 
     public Rook(boolean whiteStatus){
         this.setWhiteStatus(whiteStatus);
-        this.setValue(5);
+        this.setValue("R");
     }
 
 

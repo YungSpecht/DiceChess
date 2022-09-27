@@ -10,7 +10,7 @@ public class Bishop extends Piece{
 
     public Bishop(boolean whiteStatus){
         this.setWhiteStatus(whiteStatus);
-        this.setValue(3);
+        this.setValue("B");
     }
 
     @Override

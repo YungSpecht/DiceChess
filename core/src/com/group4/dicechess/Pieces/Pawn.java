@@ -11,7 +11,7 @@ public class Pawn extends Piece{
 
     public Pawn(boolean whiteStatus){
         this.setWhiteStatus(whiteStatus);
-        this.setValue(1);
+        this.setValue("P");
         firstMove = true;
     }
 

@@ -1,7 +1,5 @@
 package com.group4.dicechess;
 
-import com.group4.dicechess.Pieces.NullPiece;
-
 public class Square {
     private int row;
     private int colulmn;
@@ -27,10 +25,6 @@ public class Square {
 
     public Piece getPiece(){
         return piece;
-    }
-
-    public void wipeSquare(){
-        this.piece = new NullPiece();
     }
 
     public void setNewPosition(int newRow, int newColumn){

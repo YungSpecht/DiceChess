@@ -12,7 +12,7 @@ public class King extends Piece{
 
     public King(boolean whiteStatus){
         this.setWhiteStatus(whiteStatus);
-        this.setValue(6);
+        this.setValue("K");
         hasCastled = false;
     }
 

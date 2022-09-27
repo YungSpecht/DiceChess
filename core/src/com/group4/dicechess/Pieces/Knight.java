@@ -10,7 +10,7 @@ public class Knight extends Piece{
 
     public Knight(boolean whiteStatus){
         this.setWhiteStatus(whiteStatus);
-        this.setValue(3);
+        this.setValue("N");
     }
 
 

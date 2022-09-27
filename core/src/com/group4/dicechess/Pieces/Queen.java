@@ -10,7 +10,7 @@ public class Queen extends Piece{
 
     public Queen(boolean whiteStatus){
         this.setWhiteStatus(whiteStatus);
-        this.setValue(9);
+        this.setValue("Q");
     }
 
 
