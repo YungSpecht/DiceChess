@@ -18,6 +18,8 @@ public class TextureUtils {
     Texture sound;
     Texture help;
     Texture bots;
+    Texture highlight;
+    Sprite spriteHighlight;
     Sprite spriteNotation;
     Sprite spriteDice1;
     Sprite spriteDice2;
@@ -40,12 +42,14 @@ public class TextureUtils {
         dice2 = new Texture("FinalAssets/2.jpg");
         dice3 = new Texture("FinalAssets/3.jpg");
         dice4 = new Texture("FinalAssets/4.jpg");
+        highlight = new Texture("TestAssets/highlight.png");
         dice5 = new Texture("FinalAssets/5.jpg");
         dice6 = new Texture("FinalAssets/6.jpg");
         backArrow = new Texture("FinalAssets/backArrow.png");
         help = new Texture("TestAssets/help.png");
         sound = new Texture("TestAssets/soundON.png");
         bots = new Texture("TestAssets/bots.png");
+        spriteHighlight = new Sprite(highlight);
         spriteHelp = new Sprite(help);
         spriteSound = new Sprite(sound);
         spriteBots = new Sprite(bots);
@@ -60,6 +64,7 @@ public class TextureUtils {
         spriteBoard = new Sprite(board);
         spriteNotation.setPosition(625, 50);
         spriteNotation.setSize(250, 350);
+        spriteHighlight.setSize(140, 90);
         spriteArrow.setPosition(10, 550);
         spriteArrow.setSize(50, 50);
         spriteBoard.setPosition(55, 30);

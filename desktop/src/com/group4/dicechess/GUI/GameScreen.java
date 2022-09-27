@@ -17,6 +17,32 @@ public class GameScreen implements Screen {
         this.textureUtils = new TextureUtils();
     }
 
+    public int[] translateToArrayPos(int x, int y){
+        int [] tempPos  = new int[2];
+        int [] xPos = {105, 158, 211, 264, 317, 370, 423, 476, 529};
+        int [] yPos = {523, 470, 417, 364, 311, 258, 205, 152, 99};
+
+        for(int i = 0; i < xPos.length - 1; i++){
+            if(x > xPos[i] && x < xPos[i+1]){
+                tempPos[0] = i;
+                x1 = xPos[i] -40;
+
+            }
+        }
+        for(int i = 0; i < yPos.length - 1; i++){
+            if(y < yPos[i] && y > yPos[i+1]){
+                tempPos[1] = i;
+                y1 = yPos[i+1] + 10;
+                //System.out.println(y1);
+            }
+        }
+        //System.out.println(tempPos[0]);
+        //System.out.println(tempPos[1]);
+        return tempPos;
+    }
+
+    public int x1 = 0;
+    public  int y1 = 0;
     @Override
     public void render(float delta) {
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -30,6 +56,11 @@ public class GameScreen implements Screen {
                     System.out.println("Rolling dice..");
                     rolled = true;
                 }
+                //System.out.println("X: " + screenX);
+                //System.out.println("Y: " + screenY);
+                if(screenX >= 105 && screenX <= 529 && screenY <= 523 && screenY >= 99){
+                    translateToArrayPos(screenX, screenY);
+                }
                 return true;
             }
         });
@@ -37,6 +68,9 @@ public class GameScreen implements Screen {
         game.batch.begin();
         game.batch.draw(textureUtils.notation, textureUtils.spriteNotation.getX(), textureUtils.spriteNotation.getY(), textureUtils.spriteNotation.getWidth(), textureUtils.spriteNotation.getHeight());
         game.batch.draw(textureUtils.board, textureUtils.spriteBoard.getX(), textureUtils.spriteBoard.getY(), textureUtils.spriteBoard.getWidth(), textureUtils.spriteBoard.getHeight());
+        if(x1 != 0){
+            //game.batch.draw(textureUtils.highlight, x1, y1, textureUtils.spriteHighlight.getWidth(), textureUtils.spriteHighlight.getHeight());
+        }
         if (rolled) {
             textureUtils.Roll();
             rolledBefore = true;
