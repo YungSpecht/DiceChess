@@ -35,5 +35,4 @@ public class Pawn extends Piece{
         return result;
     }
 
-    
 }

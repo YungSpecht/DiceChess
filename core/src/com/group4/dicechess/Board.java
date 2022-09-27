@@ -8,12 +8,6 @@ import com.group4.dicechess.Pieces.Queen;
 import com.group4.dicechess.Pieces.Rook;
 
 public class Board {
-
-    public static void main(String[] args) {
-        Board board = new Board();
-        board.printBoard();
-    }
-
     private Square[][] board;
 
     public Board(){
@@ -24,6 +18,7 @@ public class Board {
     public Square getSquare(int row, int column){
         return board[row][column];
     }
+
 
     public void printBoard(){
         for(int i = 0; i < board.length; i++){
@@ -37,6 +32,7 @@ public class Board {
             }
             System.out.println();
         }
+        System.out.println();
     }
 
     private void setUpBoard(){
