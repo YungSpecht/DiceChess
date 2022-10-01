@@ -27,6 +27,10 @@ public class Board {
         board[row][column] = null;
     }
 
+    public Piece getPieceOfSquare(int row, int column) {
+        return board[row][column].getPiece();
+    }
+
 
     public void printBoard(){
         for(int i = 0; i < board.length; i++){
@@ -76,7 +80,7 @@ public class Board {
         board[0][3] = new Square(0, 3, new Queen(false));
         board[7][3] = new Square(7, 3, new Queen(true));
 
-        // Set up the Queens
+        // Set up the Kings
         board[0][4] = new Square(0, 3, new King(false));
         board[7][4] = new Square(7, 3, new King(true));
     }
