@@ -8,6 +8,7 @@ import com.group4.dicechess.Square;
 
 public class King extends Piece{
 
+    private boolean nullStatus = false;
     private boolean hasCastled;
 
     public King(boolean whiteStatus){
@@ -16,11 +17,13 @@ public class King extends Piece{
         hasCastled = false;
     }
 
-
     @Override
-    public ArrayList<Square> getPossibleMoves(Board board, Square currentSquare) {
-        // TODO Auto-generated method stub
-        return null;
+    public boolean isMoveLegal(Board board, int currentRow, int currentColumn, int newRow, int newColumn) {
+        System.out.println("illegal king");
+        return true;
     }
+
+
+    
     
 }

@@ -7,6 +7,7 @@ import com.group4.dicechess.Piece;
 import com.group4.dicechess.Square;
 
 public class Bishop extends Piece{
+    private boolean nullStatus = false;
 
     public Bishop(boolean whiteStatus){
         this.setWhiteStatus(whiteStatus);
@@ -14,9 +15,10 @@ public class Bishop extends Piece{
     }
 
     @Override
-    public ArrayList<Square> getPossibleMoves(Board board, Square currentSquare) {
-        // TODO Auto-generated method stub
-        return null;
+    public boolean isMoveLegal(Board board, int currentRow, int currentColumn, int newRow, int newColumn) {
+        System.out.println("illegal bishop");
+        return false;
     }
+
     
 }

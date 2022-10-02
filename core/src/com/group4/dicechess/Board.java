@@ -3,6 +3,7 @@ package com.group4.dicechess;
 import com.group4.dicechess.Pieces.Bishop;
 import com.group4.dicechess.Pieces.King;
 import com.group4.dicechess.Pieces.Knight;
+import com.group4.dicechess.Pieces.NullPiece;
 import com.group4.dicechess.Pieces.Pawn;
 import com.group4.dicechess.Pieces.Queen;
 import com.group4.dicechess.Pieces.Rook;
@@ -23,28 +24,39 @@ public class Board {
         board[row][column] =  new Square(row, column, piece);
     }
 
-    public void zeroSquare(int row, int column) {
-        board[row][column] = null;
+    public void setNullPiece(int row, int column) {
+        board[row][column] = new Square(row, column, new NullPiece(true));
     }
 
     public Piece getPieceOfSquare(int row, int column) {
         return board[row][column].getPiece();
     }
 
+    public boolean isWhite(int currentRow, int currentColumn) {
+        if(board[currentRow][currentRow].getPiece().getWhiteStatus()) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isNull(int currentRow, int currentColumn) {
+        if(board[currentRow][currentRow].getPiece().getValue().equals("O")) {
+            return true;
+        }
+        return false;
+    }
+
 
     public void printBoard(){
         for(int i = 0; i < board.length; i++){
             for(int j = 0; j < board[i].length; j++){
-                if(board[i][j] != null){
-                    if(board[i][j].getPiece().getWhiteStatus()) {
+                    if(board[i][j].getPiece().getWhiteStatus() && !board[i][j].getPiece().getNullStatus()) {
                         System.out.print("w"+board[i][j].getPiece().getValue() + " ");
-                    } else {
+                    } else if(!board[i][j].getPiece().getWhiteStatus() && !board[i][j].getPiece().getNullStatus()) {
                         System.out.print("b"+board[i][j].getPiece().getValue() + " ");
+                    } else {
+                        System.out.print(board[i][j].getPiece().getValue() + "  ");
                     }
-                }
-                else{
-                    System.out.print("0  ");
-                }
             }
             System.out.println();
         }
@@ -56,6 +68,14 @@ public class Board {
         for(int i = 0; i < board.length; i++){
             board[1][i] = new Square(i, 1, new Pawn(false));
             board[6][i] = new Square(i, 1, new Pawn(true));
+        }
+
+        // Set up empty squares
+        for(int i = 2; i < 6; i++) {
+            for(int j = 0; j < board[i].length; j++) {
+                board[i][j] = new Square(i, j, new NullPiece(true));
+            }
+
         }
 
         // Set up the Rooks

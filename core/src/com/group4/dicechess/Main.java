@@ -10,6 +10,10 @@ public class Main {
         GameState gs1 = new GameState(board);
         boolean play = true;
 
+        
+
+        System.out.println(board.getPieceOfSquare(2, 0));
+
         while(play) {
             int[] moves = new int[4];
         

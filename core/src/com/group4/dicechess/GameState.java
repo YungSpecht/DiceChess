@@ -20,10 +20,12 @@ public class GameState {
     }
 
     public void makeMove(int currentRow, int currentColumn, int newRow, int newColumn){
-        board.setSquare(newRow, newColumn, board.getPieceOfSquare(currentRow, currentColumn));
-        board.zeroSquare(currentRow, currentColumn);
-         
-        if(count%2 != 0) {
+
+        if(board.getPieceOfSquare(currentRow, currentColumn).isMoveLegal(board, currentRow, currentColumn, newRow, newColumn)) {
+            board.setSquare(newRow, newColumn, board.getPieceOfSquare(currentRow, currentColumn));
+            board.setNullPiece(currentRow, currentColumn);
+
+            if(count%2 != 0) {
             isPlayerWhite = true;
             System.out.println("White Turn");
         } else {
@@ -31,9 +33,14 @@ public class GameState {
             System.out.println("Black Turn");
         }
 
-        board.printBoard();
+            board.printBoard();
         
-        count++;
+            count++;
+        } else {
+            System.out.println("Illegal Move");
+        }
+         
+        
     }   
 
 }
