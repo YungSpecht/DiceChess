@@ -6,7 +6,7 @@ import com.badlogic.gdx.Game;
 public class GameState {
     private Board board;
     private boolean isPlayerWhite;
-    private Square currentSquare;
+    private Square newSquare;
     private static int count = 1;
 
     public GameState(Board board){
@@ -15,13 +15,14 @@ public class GameState {
         board.printBoard();
     }
 
-    public void setSquare(Square currentSquare){
-        this.currentSquare = currentSquare;
+    public void setNewSquare(Square currentSquare){
+        this.newSquare = currentSquare;
     }
 
-    public void makeMove(int currentRow, int currentColumn, int newRow, int newColumn){
+    public void makeMove(int currentRow, int currentColumn, int newRow, int newColumn, Piece newPiece){
 
-        if(board.getPieceOfSquare(currentRow, currentColumn).isMoveLegal(board, currentRow, currentColumn, newRow, newColumn)) {
+        if(board.getPieceOfSquare(currentRow, currentColumn).isMoveLegal(board, currentRow, currentColumn, newRow, newColumn, newPiece)) {
+
             board.setSquare(newRow, newColumn, board.getPieceOfSquare(currentRow, currentColumn));
             board.setNullPiece(currentRow, currentColumn);
 

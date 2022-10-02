@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public abstract class Piece {
     private boolean whiteStatus;
     private boolean nullStatus;
+    private boolean isFirstMove;
+    private int numberOfMoves;
     private String value;
 
     public void setWhiteStatus(boolean whiteStatus){
@@ -31,6 +33,18 @@ public abstract class Piece {
         this.nullStatus = nullStatus;
     }
 
+    public void setIsFirstMove(boolean isFirstMove) {
+        this.isFirstMove = isFirstMove;
+    }
+
+    public boolean getIsFirstMove() {
+        return isFirstMove;
+    }
+
+    public int getNumberOfMoves() {
+        return numberOfMoves;
+    }
+
     public static boolean SquareFree(Board board, int row, int column){
         if((row < 0 || row > 7) || (column < 0 || row > 7)) return false;
         if(board.getSquare(row, column).getPiece() == null){
@@ -54,5 +68,5 @@ public abstract class Piece {
      * @param currentSquare represents the Square the piece is currently positioned on
      * @return ArrayList containing all the Squares the piece can legally move to
      */
-    public abstract boolean isMoveLegal(Board board, int currentRow, int currentColumn, int newRow, int newColumn);
+    public abstract boolean isMoveLegal(Board board, int currentRow, int currentColumn, int newRow, int newColumn, Piece newPiece);
 }

@@ -15,9 +15,9 @@ public class Queen extends Piece{
     }
 
     @Override
-    public boolean isMoveLegal(Board board, int currentRow, int currentColumn, int newRow, int newColumn) {
+    public boolean isMoveLegal(Board board, int currentRow, int currentColumn, int newRow, int newColumn, Piece newPiece) {
         System.out.println("illegal queen");
-        return false;
+        return true;
     }
 
     

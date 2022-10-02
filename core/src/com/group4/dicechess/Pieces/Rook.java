@@ -13,44 +13,10 @@ public class Rook extends Piece{
         this.setValue("R");
     }
 
-
     @Override
-    public ArrayList<Square> getPossibleMoves(Board board, Square currentSquare) {
-        ArrayList<Square> result = new ArrayList<Square>();
-        int row = currentSquare.getRow();
-        int col = currentSquare.getColumn();
-        int i = 1;
-        boolean left = true, right = true, up = true, down = true;
-        while(left || right || up || down){
-            if(left){
-                if(canCapture(board, row, col - i, this.getWhiteStatus()) || SquareFree(board, row, col - i)){
-                    result.add(board.getSquare(row, col - i));
-                    if(canCapture(board, row, col - i, this.getWhiteStatus())) left = false;
-                }
-            }
-            if(right){
-                if(canCapture(board, row, col + i, this.getWhiteStatus()) || SquareFree(board, row, col + i)){
-                    result.add(board.getSquare(row, col + i));
-                    if(canCapture(board, row, col + i, this.getWhiteStatus())) right = false;
-                }
-            }
-            if(up){
-                if(canCapture(board, row - i, col, this.getWhiteStatus()) || SquareFree(board, row - i, col)){
-                    result.add(board.getSquare(row - i, col));
-                    if(canCapture(board, row - i, col, this.getWhiteStatus())) up = false;
-                }
-            }
-            if(down){
-                if(canCapture(board, row + i, col, this.getWhiteStatus()) || SquareFree(board, row + i, col)){
-                    result.add(board.getSquare(row + i, col));
-                    if(canCapture(board, row + i, col, this.getWhiteStatus())) down = false;
-                }
-            }
-            i++;
-        }
-        return result;
+    public boolean isMoveLegal(Board board, int currentRow, int currentColumn, int newRow, int newColumn, Piece newPiece) {
+        // TODO Auto-generated method stub
+        return false;
     }
-    
-
     
 }

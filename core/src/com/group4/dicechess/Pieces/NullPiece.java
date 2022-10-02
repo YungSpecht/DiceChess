@@ -4,7 +4,7 @@ import com.group4.dicechess.Board;
 import com.group4.dicechess.Piece;
 
 public class NullPiece extends Piece {
-    private boolean nullStatus;
+    private boolean nullStatus = true;
 
     public NullPiece(boolean nullStatus){
         this.setNullStatus(true);
@@ -12,9 +12,9 @@ public class NullPiece extends Piece {
     }
 
     @Override
-    public boolean isMoveLegal(Board board, int currentRow, int currentColumn, int newRow, int newColumn) {
+    public boolean isMoveLegal(Board board, int currentRow, int currentColumn, int newRow, int newColumn, Piece newPiece) {
         System.out.println("illegal nullpiece");
-        return false;
+        return true;
     }
     
 }

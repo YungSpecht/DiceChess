@@ -15,9 +15,9 @@ public class Knight extends Piece{
     }
 
     @Override
-    public boolean isMoveLegal(Board board, int currentRow, int currentColumn, int newRow, int newColumn) {
+    public boolean isMoveLegal(Board board, int currentRow, int currentColumn, int newRow, int newColumn, Piece newPiece) {
         System.out.println("illegal knight");
-        return false;
+        return true;
     }
 
 

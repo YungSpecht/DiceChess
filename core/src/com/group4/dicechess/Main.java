@@ -8,9 +8,8 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Board board = new Board();
         GameState gs1 = new GameState(board);
+        Piece movedPiece;
         boolean play = true;
-
-        
 
         System.out.println(board.getPieceOfSquare(2, 0));
 
@@ -25,7 +24,8 @@ public class Main {
             moves[2] = scanner.nextInt();
             moves[3] = scanner.nextInt();
 
-            gs1.makeMove(moves[0], moves[1], moves[2], moves[3]);
+            movedPiece = board.getPieceOfSquare(moves[0], moves[1]);
+            gs1.makeMove(moves[0], moves[1], moves[2], moves[3], movedPiece);
         }
         scanner.close();
     }
