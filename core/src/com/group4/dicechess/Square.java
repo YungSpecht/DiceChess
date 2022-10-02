@@ -26,4 +26,9 @@ public class Square {
     public Piece getPiece(){
         return piece;
     }
+
+    public void setNewPosition(int newRow, int newColumn){
+        this.row = newRow;
+        this.colulmn = newColumn;
+    }
 }
