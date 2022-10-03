@@ -115,7 +115,12 @@ public class Board {
         Piece piece = start.getPiece();
         if(legalMoves.contains(destination)){
             start.setPiece(null);
-            captureValue = destination.getPiece().getValue();
+            if(destination.getPiece() == null){
+                captureValue = 0;
+            }
+            else{
+                captureValue = destination.getPiece().getValue();
+            }
             destination.setPiece(piece);
         }
         return captureValue;

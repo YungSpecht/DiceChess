@@ -6,7 +6,6 @@ import com.group4.dicechess.Square;
 
 public class Pawn extends Piece{
     private boolean isFirstMove;
-    private boolean nullStatus = false;
     private int numberOfMoves;
 
     public Pawn(boolean whiteStatus){
@@ -98,15 +97,17 @@ public class Pawn extends Piece{
         int leftBound = col - 1 < 0 ? col : col - 1;
         int rightBound = col + 1 > 7 ? col : col + 1;
         for(int i = leftBound; i <= rightBound; i++){
-            if(i != col && board.getSquare(row + 1 + (white * (-2)), i).getPiece().getWhiteStatus() != this.getWhiteStatus()){
-                result.add(board.getSquare(row + 1 + (white * (-2)), i));
+            Square square = board.getSquare(row + 1 + (white * (-2)), i);
+            if(i != col && square.getPiece() != null && square.getPiece().getWhiteStatus() != this.getWhiteStatus()){
+                result.add(square);
             }
-            else if(i == col && board.getSquare(row + 1 + (white * (-2)), i).getPiece().getNullStatus()){
-                result.add(board.getSquare(row + 1 + (white * (-2)), i));
+            else if(i == col && square.getPiece() == null){
+                result.add(square);
             }
         }
-        if(isFirstMove && board.getSquare(row + 2 + (white * (-4)), col).getPiece().getNullStatus()){
-            result.add(board.getSquare(row + 2 + (white * (-4)), col));
+        Square square = board.getSquare(row + 2 + (white * (-4)), col);
+        if(isFirstMove && square.getPiece() == null){
+            result.add(square);
         }
         return result;
     }

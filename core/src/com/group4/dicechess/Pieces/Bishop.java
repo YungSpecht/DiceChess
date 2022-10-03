@@ -7,7 +7,6 @@ import com.group4.dicechess.Piece;
 import com.group4.dicechess.Square;
 
 public class Bishop extends Piece{
-    private boolean nullStatus = false;
 
     public Bishop(boolean whiteStatus){
         this.setWhiteStatus(whiteStatus);
@@ -57,7 +56,7 @@ public class Bishop extends Piece{
             }
             if(upLeft){
                 if(canCapture(board, row - i, col-i, this.getWhiteStatus()) || SquareFree(board, row - i, col-i)){
-                    result.add(board.getSquare(row + i, col-i));
+                    result.add(board.getSquare(row - i, col-i));
                     if(canCapture(board, row - i, col-i, this.getWhiteStatus())) upLeft = false;
                 }
                 else{

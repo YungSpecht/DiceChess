@@ -52,7 +52,7 @@ public abstract class Piece {
 
     public static boolean SquareFree(Board board, int row, int column){
         if(row < 0 || row > 7 || column < 0 || column > 7) return false;
-        if(board.getSquare(row, column).getPiece().getNullStatus()){
+        if(board.getSquare(row, column).getPiece() == null){
             return true;
         }
         return false;
@@ -60,7 +60,9 @@ public abstract class Piece {
 
     public static boolean canCapture(Board board, int row, int column, boolean white){
         if(row < 0 || row > 7 || column < 0 || column > 7) return false;
-        if(board.getSquare(row, column).getPiece().getWhiteStatus() != white){
+        Piece piece = board.getSquare(row, column).getPiece();
+        
+        if(piece != null && piece.getWhiteStatus() != white){
             return true;
         }
         return false;

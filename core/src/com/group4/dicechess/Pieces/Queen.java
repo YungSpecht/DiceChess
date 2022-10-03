@@ -7,7 +7,6 @@ import com.group4.dicechess.Piece;
 import com.group4.dicechess.Square;
 
 public class Queen extends Piece{
-    private boolean nullStatus = false;
 
     public Queen(boolean whiteStatus){
         this.setWhiteStatus(whiteStatus);

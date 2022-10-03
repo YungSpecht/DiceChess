@@ -7,7 +7,6 @@ import com.group4.dicechess.Piece;
 import com.group4.dicechess.Square;
 
 public class NullPiece extends Piece {
-    private boolean nullStatus = true;
 
     public NullPiece(boolean nullStatus){
         this.setNullStatus(true);
