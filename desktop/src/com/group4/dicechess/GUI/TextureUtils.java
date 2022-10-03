@@ -6,6 +6,18 @@ import java.util.Random;
 
 public class TextureUtils {
 
+    Texture bishop;
+    Texture bishopBlack;
+    Texture king;
+    Texture kingBlack;
+    Texture knight;
+    Texture knightBlack;
+    Texture pawn;
+    Texture pawnBlack;
+    Texture queen;
+    Texture queenBlack;
+    Texture rook;
+    Texture rookBlack;
     Texture board;
     Texture dice1;
     Texture dice2;
@@ -19,6 +31,18 @@ public class TextureUtils {
     Texture help;
     Texture bots;
     Texture highlight;
+    Sprite sbishop;
+    Sprite sbishopBlack;
+    Sprite sking;
+    Sprite skingBlack;
+    Sprite sknight;
+    Sprite sknightBlack;
+    Sprite spawn;
+    Sprite spawnBlack;
+    Sprite squeen;
+    Sprite squeenBlack;
+    Sprite srook;
+    Sprite srookBlack;
     Sprite spriteHighlight;
     Sprite spriteNotation;
     Sprite spriteDice1;
@@ -36,6 +60,18 @@ public class TextureUtils {
 
     public TextureUtils(){
         this.currentSide = 1;
+        bishop = new Texture("TestAssets/Bishop.png");
+        bishopBlack= new Texture("TestAssets/Bishop_Black.png");
+        king= new Texture("TestAssets/King.png");
+        kingBlack= new Texture("TestAssets/King_Black.png");
+        knight= new Texture("TestAssets/Knight.png");
+        knightBlack= new Texture("TestAssets/Knight_Black.png");
+        pawn= new Texture("TestAssets/Pawn.png");
+        pawnBlack= new Texture("TestAssets/Pawn_Black.png");
+        queen= new Texture("TestAssets/Queen.png");
+        queenBlack= new Texture("TestAssets/Queen_Black.png");
+        rook= new Texture("TestAssets/Rook.png");
+        rookBlack= new Texture("TestAssets/Rook_Black.png");
         notation = new Texture("TestAssets/nt.png");
         board = new Texture("TestAssets/board.jpg");
         dice1 = new Texture("FinalAssets/1.jpg");
@@ -50,6 +86,18 @@ public class TextureUtils {
         sound = new Texture("TestAssets/soundON.png");
         bots = new Texture("TestAssets/bots.png");
         spriteHighlight = new Sprite(highlight);
+        sbishop = new Sprite(bishop);
+        sbishopBlack = new Sprite(bishopBlack);
+        sking= new Sprite(king);
+        skingBlack= new Sprite(kingBlack);
+        sknight = new Sprite(knight);
+        sknightBlack = new Sprite(knightBlack);
+        Sprite spawn;
+        Sprite spawnBlack;
+        Sprite squeen;
+        Sprite squeenBlack;
+        Sprite srook;
+        Sprite srookBlack;
         spriteHelp = new Sprite(help);
         spriteSound = new Sprite(sound);
         spriteBots = new Sprite(bots);
