@@ -11,7 +11,7 @@ public class Knight extends Piece{
 
     public Knight(boolean whiteStatus){
         this.setWhiteStatus(whiteStatus);
-        this.setValue("N");
+        this.setId("N");
     }
 
     @Override
@@ -22,8 +22,34 @@ public class Knight extends Piece{
 
     @Override
     public ArrayList<Square> getPossibleMoves(Board board, Square currentSquare) {
-        // TODO Auto-generated method stub
-        return null;
+        ArrayList<Square> result = new ArrayList<Square>();
+        int row = currentSquare.getRow();
+        int col = currentSquare.getColumn();
+        if(canCapture(board, row-1, col-2, this.getWhiteStatus()) || SquareFree(board, row-1, col-2)){
+            result.add(board.getSquare(row-1, col-2));
+        }
+        if(canCapture(board, row+1, col-2, this.getWhiteStatus()) || SquareFree(board, row+1, col-2)){
+            result.add(board.getSquare(row+1, col-2));
+        }
+        if(canCapture(board, row-1, col+2, this.getWhiteStatus()) || SquareFree(board, row, col-2)){
+            result.add(board.getSquare(row-1, col+2));
+        }
+        if(canCapture(board, row+1, col+2, this.getWhiteStatus()) || SquareFree(board, row, col-2)){
+            result.add(board.getSquare(row+1, col+2));
+        }
+        if(canCapture(board, row+2, col+1, this.getWhiteStatus()) || SquareFree(board, row, col-2)){
+            result.add(board.getSquare(row+2, col+1));
+        }
+        if(canCapture(board, row+2, col-1, this.getWhiteStatus()) || SquareFree(board, row, col-2)){
+            result.add(board.getSquare(row+2, col-1));
+        }
+        if(canCapture(board, row-2, col+1, this.getWhiteStatus()) || SquareFree(board, row, col-2)){
+            result.add(board.getSquare(row-2, col+1));
+        }
+        if(canCapture(board, row-2, col-1, this.getWhiteStatus()) || SquareFree(board, row, col-2)){
+            result.add(board.getSquare(row-2, col-1));
+        }
+        return result;
     }
 
 

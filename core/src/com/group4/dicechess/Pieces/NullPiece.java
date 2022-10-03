@@ -11,7 +11,7 @@ public class NullPiece extends Piece {
 
     public NullPiece(boolean nullStatus){
         this.setNullStatus(true);
-        this.setValue("O");
+        this.setId("O");
     }
 
     @Override

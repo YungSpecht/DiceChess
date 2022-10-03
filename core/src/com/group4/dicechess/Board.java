@@ -1,5 +1,7 @@
 package com.group4.dicechess;
 
+import java.util.ArrayList;
+
 import com.group4.dicechess.Pieces.Bishop;
 import com.group4.dicechess.Pieces.King;
 import com.group4.dicechess.Pieces.Knight;
@@ -40,7 +42,7 @@ public class Board {
     }
 
     public boolean isNull(int currentRow, int currentColumn) {
-        if(board[currentRow][currentRow].getPiece().getValue().equals("O")) {
+        if(board[currentRow][currentRow].getPiece() == null) {
             return true;
         }
         return false;
@@ -50,12 +52,14 @@ public class Board {
     public void printBoard(){
         for(int i = 0; i < board.length; i++){
             for(int j = 0; j < board[i].length; j++){
-                    if(board[i][j].getPiece().getWhiteStatus() && !board[i][j].getPiece().getNullStatus()) {
-                        System.out.print("w"+board[i][j].getPiece().getValue() + " ");
-                    } else if(!board[i][j].getPiece().getWhiteStatus() && !board[i][j].getPiece().getNullStatus()) {
-                        System.out.print("b"+board[i][j].getPiece().getValue() + " ");
-                    } else {
-                        System.out.print(board[i][j].getPiece().getValue() + "  ");
+                    if(board[i][j].getPiece() == null){
+                        System.out.print(" O ");
+                    }
+                    else if(board[i][j].getPiece().getWhiteStatus()){
+                        System.out.print("w"+board[i][j].getPiece().getId() + " ");
+                    }
+                    else{
+                        System.out.print("b"+board[i][j].getPiece().getId() + " ");
                     }
             }
             System.out.println();
@@ -73,7 +77,7 @@ public class Board {
         // Set up empty squares
         for(int i = 2; i < 6; i++) {
             for(int j = 0; j < board[i].length; j++) {
-                board[i][j] = new Square(i, j, new NullPiece(true));
+                board[i][j] = new Square(i, j, null);
             }
 
         }
@@ -103,6 +107,18 @@ public class Board {
         // Set up the Kings
         board[0][4] = new Square(0, 3, new King(false));
         board[7][4] = new Square(7, 3, new King(true));
+
+    }
+
+    public int movePiece(Square start, Square destination, ArrayList<Square> legalMoves){
+        int captureValue = 0;
+        Piece piece = start.getPiece();
+        if(legalMoves.contains(destination)){
+            start.setPiece(null);
+            captureValue = destination.getPiece().getValue();
+            destination.setPiece(piece);
+        }
+        return captureValue;
     }
 
 }

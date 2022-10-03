@@ -7,21 +7,26 @@ public abstract class Piece {
     private boolean nullStatus;
     private boolean isFirstMove;
     private int numberOfMoves;
-    private String value;
+    private int value;
+    private String identifier;
 
     public void setWhiteStatus(boolean whiteStatus){
         this.whiteStatus = whiteStatus;
     }
 
-    public void setValue(String value){
-        this.value = value;
+    public void setId(String identifier){
+        this.identifier = identifier;
+    }
+
+    public String getId(){
+        return identifier;
     }
 
     public boolean getWhiteStatus(){
         return whiteStatus;
     }
 
-    public String getValue(){
+    public int getValue(){
         return value;
     }
 
@@ -46,15 +51,15 @@ public abstract class Piece {
     }
 
     public static boolean SquareFree(Board board, int row, int column){
-        if((row < 0 || row > 7) || (column < 0 || row > 7)) return false;
-        if(board.getSquare(row, column).getPiece() == null){
+        if(row < 0 || row > 7 || column < 0 || column > 7) return false;
+        if(board.getSquare(row, column).getPiece().getNullStatus()){
             return true;
         }
         return false;
     }
 
     public static boolean canCapture(Board board, int row, int column, boolean white){
-        if((row < 0 || row > 7) || (column < 0 || row > 7)) return false;
+        if(row < 0 || row > 7 || column < 0 || column > 7) return false;
         if(board.getSquare(row, column).getPiece().getWhiteStatus() != white){
             return true;
         }

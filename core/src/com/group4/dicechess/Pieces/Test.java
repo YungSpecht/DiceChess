@@ -11,7 +11,7 @@ public class Test {
         testBoard.printBoard();
 
 
-        ArrayList<Square> result = testBoard.getPieceOfSquare(1, 7).getPossibleMoves(testBoard, testBoard.getSquare(1, 7));
+        ArrayList<Square> result = testBoard.getPieceOfSquare(4, 4).getPossibleMoves(testBoard, testBoard.getSquare(4, 4));
         for(int i = 0; i < result.size(); i++){
             System.out.println("Row: " + result.get(i).getRow() + " || Col: " + result.get(i).getColumn());
             System.out.println("------------------------");
