@@ -69,4 +69,7 @@ public abstract class Piece {
      * @return ArrayList containing all the Squares the piece can legally move to
      */
     public abstract boolean isMoveLegal(Board board, int currentRow, int currentColumn, int newRow, int newColumn, Piece newPiece);
+
+    
+    public abstract ArrayList<Square> getPossibleMoves(Board board, Square currentSquare);
 }

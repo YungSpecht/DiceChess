@@ -18,5 +18,11 @@ public class Rook extends Piece{
         // TODO Auto-generated method stub
         return false;
     }
+
+    @Override
+    public ArrayList<Square> getPossibleMoves(Board board, Square currentSquare) {
+        // TODO Auto-generated method stub
+        return null;
+    }
     
 }

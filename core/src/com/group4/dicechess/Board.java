@@ -66,8 +66,8 @@ public class Board {
     private void setUpBoard(){
         // Set up the pawns
         for(int i = 0; i < board.length; i++){
-            board[1][i] = new Square(i, 1, new Pawn(false));
-            board[6][i] = new Square(i, 1, new Pawn(true));
+            board[1][i] = new Square(1, i, new Pawn(false));
+            board[6][i] = new Square(6, i, new Pawn(true));
         }
 
         // Set up empty squares

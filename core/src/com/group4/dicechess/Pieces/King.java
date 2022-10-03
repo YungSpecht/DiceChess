@@ -23,6 +23,12 @@ public class King extends Piece{
         return true;
     }
 
+    @Override
+    public ArrayList<Square> getPossibleMoves(Board board, Square currentSquare) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 
     
     

@@ -13,6 +13,7 @@ public class Pawn extends Piece{
         this.setWhiteStatus(whiteStatus);
         this.setValue("P");
         this.numberOfMoves = 0;
+        isFirstMove = true;
     }
 
     public void setFirstMove(boolean firstMove) {
@@ -86,5 +87,27 @@ public class Pawn extends Piece{
             }
         }
         return false;
+    }
+
+    @Override
+    public ArrayList<Square> getPossibleMoves(Board board, Square currentSquare) {
+        ArrayList<Square> result = new ArrayList<Square>();
+        int row = currentSquare.getRow();
+        int col = currentSquare.getColumn();
+        int white = this.getWhiteStatus() ? 1 : 0;
+        int leftBound = col - 1 < 0 ? col : col - 1;
+        int rightBound = col + 1 > 7 ? col : col + 1;
+        for(int i = leftBound; i <= rightBound; i++){
+            if(i != col && board.getSquare(row + 1 + (white * (-2)), i).getPiece().getWhiteStatus() != this.getWhiteStatus()){
+                result.add(board.getSquare(row + 1 + (white * (-2)), i));
+            }
+            else if(i == col && board.getSquare(row + 1 + (white * (-2)), i).getPiece().getNullStatus()){
+                result.add(board.getSquare(row + 1 + (white * (-2)), i));
+            }
+        }
+        if(isFirstMove && board.getSquare(row + 2 + (white * (-4)), col).getPiece().getNullStatus()){
+            result.add(board.getSquare(row + 2 + (white * (-4)), col));
+        }
+        return result;
     }
 }
