@@ -1,8 +1,9 @@
 package com.group4.dicechess.Pieces;
 import java.util.ArrayList;
-import com.group4.dicechess.Board;
-import com.group4.dicechess.Piece;
-import com.group4.dicechess.Square;
+
+import com.group4.dicechess.Representation.Board;
+import com.group4.dicechess.Representation.Piece;
+import com.group4.dicechess.Representation.Square;
 
 public class Pawn extends Piece{
     public Pawn(boolean whiteStatus, int currentSquareRow, int currentSquareCol){

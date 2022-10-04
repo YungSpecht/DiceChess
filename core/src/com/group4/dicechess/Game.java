@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+import com.group4.dicechess.Representation.Board;
+import com.group4.dicechess.Representation.Piece;
+import com.group4.dicechess.Representation.Square;
+
 
 public class Game {
     private Board board;

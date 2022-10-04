@@ -1,4 +1,4 @@
-package com.group4.dicechess;
+package com.group4.dicechess.Representation;
 
 import java.util.ArrayList;
 
