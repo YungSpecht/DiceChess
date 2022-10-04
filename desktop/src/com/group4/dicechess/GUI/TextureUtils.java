@@ -92,12 +92,12 @@ public class TextureUtils {
         skingBlack= new Sprite(kingBlack);
         sknight = new Sprite(knight);
         sknightBlack = new Sprite(knightBlack);
-        Sprite spawn;
-        Sprite spawnBlack;
-        Sprite squeen;
-        Sprite squeenBlack;
-        Sprite srook;
-        Sprite srookBlack;
+        spawn = new Sprite(pawn);
+        spawnBlack = new Sprite(pawnBlack);
+        squeen = new Sprite(queen);
+        squeenBlack = new Sprite(queenBlack);
+        srook = new Sprite(rook);
+        srookBlack = new Sprite(rookBlack);
         spriteHelp = new Sprite(help);
         spriteSound = new Sprite(sound);
         spriteBots = new Sprite(bots);
@@ -112,6 +112,42 @@ public class TextureUtils {
         spriteBoard = new Sprite(board);
         spriteNotation.setPosition(625, 50);
         spriteNotation.setSize(250, 350);
+
+        spawn.setSize(33, 47);
+        spawn.setPosition(112, 135);
+
+        srook.setSize( 33, 47);
+        srook.setPosition(493, 80);
+
+        srookBlack.setSize(32, 54);
+        srookBlack.setPosition(493, 450);
+
+        sknightBlack.setSize(36, 54);
+        sknightBlack.setPosition(436, 447);
+
+        sknight.setSize(32, 54);
+        sknight.setPosition(437, 82);
+
+        sbishop.setSize(32, 52);
+        sbishop.setPosition(383, 80);
+
+        sbishopBlack.setSize(32, 46);
+        sbishopBlack.setPosition(383, 451);
+
+        sking.setSize(33, 47);
+        sking.setPosition(331, 80);
+
+        skingBlack.setSize(25, 51);
+        skingBlack.setPosition(334, 447);
+
+        squeen.setSize(33, 47);
+        squeen.setPosition(276, 81);
+
+        squeenBlack.setSize(34, 53);
+        squeenBlack.setPosition(276, 447);
+
+        spawnBlack.setSize(33, 47);
+
         spriteHighlight.setSize(140, 90);
         spriteArrow.setPosition(10, 550);
         spriteArrow.setSize(50, 50);
