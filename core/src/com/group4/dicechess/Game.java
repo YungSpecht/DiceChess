@@ -29,7 +29,7 @@ public class Game {
     public Game(){
         board = new Board();
         turnCounter = 0;
-        whiteScore = 0;
+        whiteScore = 0; 
         blackScore = 0;
         gameOver = false;
         in = new Scanner(System.in);
@@ -160,10 +160,10 @@ public class Game {
             
         }while(invalidChoice);
         if(white){
-            whiteScore = board.movePiece(board.getSquare(startRow, startCol), board.getSquare(destinationRow, destinationCol), possibleMoves);
+            whiteScore = board.movePiece(board.getSquare(startRow, startCol), board.getSquare(destinationRow, destinationCol));
         }
         else{
-            blackScore = board.movePiece(board.getSquare(startRow, startCol), board.getSquare(destinationRow, destinationCol), possibleMoves);
+            blackScore = board.movePiece(board.getSquare(startRow, startCol), board.getSquare(destinationRow, destinationCol));
         }
     }
 
