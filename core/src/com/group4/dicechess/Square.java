@@ -2,12 +2,12 @@ package com.group4.dicechess;
 
 public class Square {
     private int row;
-    private int colulmn;
+    private int col;
     private Piece piece;
 
-    public Square(int row, int column, Piece piece){
+    public Square(int row, int col, Piece piece){
         this.row = row;
-        this.colulmn = column;
+        this.col = col;
         this.piece = piece;
     }
 
@@ -15,8 +15,8 @@ public class Square {
         return row;
     }
 
-    public int getColumn(){
-        return colulmn;
+    public int getCol(){
+        return col;
     }
 
     public void setPiece(Piece piece){
@@ -25,10 +25,5 @@ public class Square {
 
     public Piece getPiece(){
         return piece;
-    }
-
-    public void setNewPosition(int newRow, int newColumn){
-        this.row = newRow;
-        this.colulmn = newColumn;
     }
 }

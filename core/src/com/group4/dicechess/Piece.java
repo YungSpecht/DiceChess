@@ -4,19 +4,24 @@ import java.util.ArrayList;
 
 public abstract class Piece {
     private boolean whiteStatus;
-    private boolean nullStatus;
     private boolean isFirstMove;
-    private int numberOfMoves;
     private int value;
+    private int diceChessId;
     private String identifier;
+    private int currentSquareRow;
+    private int currentSquareCol;
 
-    public void setWhiteStatus(boolean whiteStatus){
+    public Piece(boolean whiteStatus, int value, int diceChessId, String identifier, int currentSquareRow, int currentSquareCol){
         this.whiteStatus = whiteStatus;
+        this.value = value;
+        this.diceChessId = diceChessId;
+        this.identifier = identifier;
+        this.currentSquareRow = currentSquareRow;
+        this.currentSquareCol = currentSquareCol;
+        isFirstMove = true;
     }
 
-    public void setId(String identifier){
-        this.identifier = identifier;
-    }
+
 
     public String getId(){
         return identifier;
@@ -26,41 +31,66 @@ public abstract class Piece {
         return whiteStatus;
     }
 
+
     public int getValue(){
         return value;
     }
 
-    public boolean getNullStatus() {
-        return nullStatus;
+    public int getRow(){
+        return currentSquareRow;
     }
 
-    public void setNullStatus(boolean nullStatus) {
-        this.nullStatus = nullStatus;
+    public int getCol(){
+        return currentSquareCol;
     }
 
-    public void setIsFirstMove(boolean isFirstMove) {
-        this.isFirstMove = isFirstMove;
+    public void setRow(int row){
+        currentSquareRow = row;
+    }
+
+    public void setCol(int col){
+        currentSquareCol = col;
+    }
+
+    public int getDiceChessId(){
+        return diceChessId;
+    }
+
+    public void hasMoved(){
+        isFirstMove = false;
     }
 
     public boolean getIsFirstMove() {
         return isFirstMove;
     }
 
-    public int getNumberOfMoves() {
-        return numberOfMoves;
-    }
+    /**
+     * Checks whether a square is empty and a piece can move to it
 
-    public static boolean SquareFree(Board board, int row, int column){
-        if(row < 0 || row > 7 || column < 0 || column > 7) return false;
-        if(board.getSquare(row, column).getPiece() == null){
+     * @param board represents the board in its current state
+     * @param row the row of the square to be checked
+     * @param col the column of the square to be checked
+     * @return true if the square is free, false if it is occupied or the coordinates are out of bounds
+     */
+    public static boolean SquareFree(Board board, int row, int col){
+        if(row < 0 || row > 7 || col < 0 || col > 7) return false;
+        if(board.getSquare(row, col).getPiece() == null){
             return true;
         }
         return false;
     }
 
-    public static boolean canCapture(Board board, int row, int column, boolean white){
-        if(row < 0 || row > 7 || column < 0 || column > 7) return false;
-        Piece piece = board.getSquare(row, column).getPiece();
+    /**
+     * Checks whether a piece can capture on anoher square of the board
+     * 
+     * @param board represents the board in its current state
+     * @param row the row of the square to be checked for capturable pieces
+     * @param col the column of the square to be checked for capturable pieces
+     * @return true if the square contains a piece that can be captured, false otherwise
+     */
+    public static boolean canCapture(Board board, int row, int col, boolean white){
+        if(row < 0 || row > 7 || col < 0 || col > 7) return false;
+        Piece piece = board.getSquare(row, col).getPiece();
         
         if(piece != null && piece.getWhiteStatus() != white){
             return true;
@@ -75,8 +105,6 @@ public abstract class Piece {
      * @param currentSquare represents the Square the piece is currently positioned on
      * @return ArrayList containing all the Squares the piece can legally move to
      */
-    public abstract boolean isMoveLegal(Board board, int currentRow, int currentColumn, int newRow, int newColumn, Piece newPiece);
-
-    
     public abstract ArrayList<Square> getPossibleMoves(Board board, Square currentSquare);
+
 }

@@ -8,22 +8,15 @@ import com.group4.dicechess.Square;
 
 public class Queen extends Piece{
 
-    public Queen(boolean whiteStatus){
-        this.setWhiteStatus(whiteStatus);
-        this.setId("Q");
-    }
-
-    @Override
-    public boolean isMoveLegal(Board board, int currentRow, int currentColumn, int newRow, int newColumn, Piece newPiece) {
-        System.out.println("illegal queen");
-        return true;
+    public Queen(boolean whiteStatus, int currentSquareRow, int currentSquareCol){
+        super(whiteStatus, 9, 5, "Q", currentSquareRow, currentSquareCol);
     }
 
     @Override
     public ArrayList<Square> getPossibleMoves(Board board, Square currentSquare) {
         ArrayList<Square> result = new ArrayList<Square>();
         int row = currentSquare.getRow();
-        int col = currentSquare.getColumn();
+        int col = currentSquare.getCol();
         int i = 1;
         boolean downLeft = true, downRight = true, upRight = true, upLeft = true, left = true, right = true, up = true, down = true;
         while(downLeft || downRight || upRight || upLeft){

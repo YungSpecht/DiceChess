@@ -7,26 +7,17 @@ import com.group4.dicechess.Piece;
 import com.group4.dicechess.Square;
 
 public class King extends Piece{
-    
-    private boolean hasCastled;
 
-    public King(boolean whiteStatus){
-        this.setWhiteStatus(whiteStatus);
-        this.setId("K");
-        hasCastled = false;
-    }
 
-    @Override
-    public boolean isMoveLegal(Board board, int currentRow, int currentColumn, int newRow, int newColumn, Piece newPiece) {
-        System.out.println("illegal king");
-        return true;
+    public King(boolean whiteStatus, int currentSquareRow, int currentSquareCol){
+        super(whiteStatus, 1000, 6, "K", currentSquareRow, currentSquareCol);
     }
 
     @Override
     public ArrayList<Square> getPossibleMoves(Board board, Square currentSquare) {
         ArrayList<Square> result = new ArrayList<Square>();
         int row = currentSquare.getRow();
-        int col = currentSquare.getColumn();
+        int col = currentSquare.getCol();
         boolean downLeft = true, downRight = true, upRight = true, upLeft = true, left = true, right = true, up = true, down = true;
         for(int i =1; i <= 1; i++){
             if(left){
