@@ -132,31 +132,29 @@ public class Board {
      * @param legalMoves ArrayList containing all the squares the piece can be moved to
      * @return integer that represents the value of the captured piece
      */
-    public int movePiece(Square start, Square destination, ArrayList<Square> legalMoves){
+    public int movePiece(Square start, Square destination){
         int captureValue = 0;
         Piece piece = start.getPiece();
-        if(legalMoves.contains(destination)){
-            start.setPiece(null);
-            if(destination.getPiece() == null){
-                captureValue = 0;
+        start.setPiece(null);
+        if(destination.getPiece() == null){
+            captureValue = 0;
+        }
+        else{
+            Piece capturedPiece = destination.getPiece();
+            captureValue = capturedPiece.getValue();
+            if(destination.getPiece().getWhiteStatus()){
+                whitePieces.remove(capturedPiece);
+                whiteCaptured.add(capturedPiece);
             }
             else{
-                Piece capturedPiece = destination.getPiece();
-                captureValue = capturedPiece.getValue();
-                if(destination.getPiece().getWhiteStatus()){
-                    whitePieces.remove(capturedPiece);
-                    whiteCaptured.add(capturedPiece);
-                }
-                else{
-                    blackPieces.remove(capturedPiece);
-                    blackCaptured.add(capturedPiece);
-                }
+                blackPieces.remove(capturedPiece);
+                blackCaptured.add(capturedPiece);
             }
-            destination.setPiece(piece);
-            piece.setRow(destination.getRow());
-            piece.setCol(destination.getCol());
-            piece.hasMoved();
         }
+        destination.setPiece(piece);
+        piece.setRow(destination.getRow());
+        piece.setCol(destination.getCol());
+        piece.hasMoved();
         return captureValue;
     }
 
