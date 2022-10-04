@@ -8,7 +8,7 @@ import com.group4.dicechess.Representation.Square;
 
 public class UIInterface {
     private Board board;
-    private int turnCounter;
+    public int turnCounter;
     private int whiteScore;
     private int blackScore;
     private int diceRoll;
@@ -26,7 +26,6 @@ public class UIInterface {
 
     public boolean legalMovesAreAvailable(int diceRoll){
         this.diceRoll = diceRoll;
-        turnCounter++;
         boolean white = turnCounter % 2 == 0 ? true : false;
         legalPieces.clear();
         ArrayList<Piece> allPieces = white ? board.getWhitePieces() : board.getBlackPieces();

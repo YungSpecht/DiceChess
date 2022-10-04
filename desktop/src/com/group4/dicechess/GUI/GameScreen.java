@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.group4.dicechess.UIInterface;
 
 public class GameScreen implements Screen {
 
@@ -14,38 +15,18 @@ public class GameScreen implements Screen {
     public boolean rolledBefore = false;
     int [] tempPoss = {-1,-1};
     int [] tempPoss2 = {-1,-1};
-
+    UIInterface gameLoop;
+    int diceN = 0;
+    int x1 = 0;
+    int y1 = 0;
+    int cnt = 0;
 
     public GameScreen(DiceChessGame currentGame){
         this.game = currentGame;
         this.textureUtils = new TextureUtils();
+        gameLoop = new UIInterface();
     }
-
-    public int[] translateToArrayPos(int x, int y){
-        int [] tempPos  = new int[2];
-        int [] xPos = {105, 158, 211, 264, 317, 370, 423, 476, 529};
-        int [] yPos = {99, 152, 205, 258, 311, 364, 417, 470, 523};
-
-
-        for(int i = 0; i < xPos.length - 1; i++){
-            if(x > xPos[i] && x < xPos[i+1]){
-                tempPos[0] = i;
-                x1 = xPos[i] -40;
-
-            }
-        }
-        for(int i = 0; i < yPos.length - 1; i++){
-            if(y > yPos[i] && y < yPos[i+1]){
-                tempPos[1] = i;
-                y1 = yPos[i+1] + 10;
-            }
-        }
-        System.out.println(tempPos[1] + ", " + tempPos[0]);
-        return tempPos;
-    }
-
-    public int x1 = 0;
-    public  int y1 = 0;
+    boolean isPlayable = false;
     @Override
     public void render(float delta) {
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -57,21 +38,45 @@ public class GameScreen implements Screen {
                 }
                 if (screenX >= 710 && screenX <= 785 && screenY >= 75 && screenY <= 147) {
                     System.out.println("Rolling dice..");
+                    gameLoop.turnCounter++;
+                    cnt++;
+                    if(cnt % 2 == 0){
+                        System.out.println("Black turn!");
+                    } else {
+                        System.out.println("White turn!");
+                    }
                     rolled = true;
                 }
-                //System.out.println("X: " + screenX);
-                //System.out.println("Y: " + screenY);
                 if(screenX >= 105 && screenX <= 529 && screenY <= 523 && screenY >= 99){
-                    if(tempPoss[0] == -1){
-                        tempPoss = translateToArrayPos(screenX, screenY);
+                    System.out.println(diceN);
+                    isPlayable = gameLoop.legalMovesAreAvailable(diceN);
+                    System.out.println(isPlayable);
+                    if(isPlayable){
+                        if(tempPoss[0] == -1){
+                            tempPoss = translateToArrayPos(screenX, screenY);
+                            System.out.println("Piece selected: "+tempPoss[1] + ", " +  tempPoss[0]);
+                            System.out.println(gameLoop.isLegalPiece(tempPoss[1], tempPoss[0]));
+                        } else if(gameLoop.isLegalPiece(tempPoss[1], tempPoss[0])){
+                            tempPoss2 = translateToArrayPos(screenX, screenY);
+                            System.out.println("Future position selected: "+tempPoss2[1] + ", " +  tempPoss2[0]);
+                            System.out.println(gameLoop.isLegalMove(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]));
+                            if(gameLoop.isLegalMove(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0])){
+                                gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]);
+                                textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]] = textureUtils.pieceStorage[tempPoss[1]][tempPoss[0]] ;
+                                textureUtils.pieceStorage[tempPoss[1]][tempPoss[0]] = null;
+                                textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].setPosition(textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].getX() + 54*(tempPoss2[0] - tempPoss[0]) , textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].getY() - 53*(tempPoss2[1] - tempPoss[1]));
+                                tempPoss[0] = -1;
+                                tempPoss[1] = -1;
+                            } else {
+                                System.out.println("Please try another cell!");
+                            }
+                        } else{
+                            System.out.println("Try a new initial piece!");
+                            tempPoss[0] = -1;
+                            tempPoss[1] = -1;
+                        }
                     } else{
-                        tempPoss2 = translateToArrayPos(screenX, screenY);
-                        textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]] = textureUtils.pieceStorage[tempPoss[1]][tempPoss[0]] ;
-                        textureUtils.pieceStorage[tempPoss[1]][tempPoss[0]] = null;
-                        // add the selection ring
-                        textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].setPosition(textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].getX() + 54*(tempPoss2[0] - tempPoss[0]) , textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].getY() - 53*(tempPoss2[1] - tempPoss[1]));
-                        tempPoss[0] = -1;
-                        tempPoss[1] = -1;
+                        System.out.println("Please roll the dice once again!");
                     }
                 }
                 return true;
@@ -101,20 +106,48 @@ public class GameScreen implements Screen {
         }
         rolled = false;
         if (textureUtils.currentSide == 1) {
+            diceN = 1;
             game.batch.draw(textureUtils.spriteDice1, textureUtils.spriteDice1.getX(), textureUtils.spriteDice1.getY(), textureUtils.spriteDice1.getWidth(), textureUtils.spriteDice1.getHeight());
         } else if (textureUtils.currentSide == 2) {
+            diceN = 2;
             game.batch.draw(textureUtils.spriteDice2, textureUtils.spriteDice2.getX(), textureUtils.spriteDice2.getY(), textureUtils.spriteDice2.getWidth(), textureUtils.spriteDice2.getHeight());
         } else if (textureUtils.currentSide == 3) {
+            diceN = 3;
             game.batch.draw(textureUtils.spriteDice3, textureUtils.spriteDice3.getX(), textureUtils.spriteDice3.getY(), textureUtils.spriteDice3.getWidth(), textureUtils.spriteDice3.getHeight());
         } else if (textureUtils.currentSide == 4) {
+            diceN = 4;
             game.batch.draw(textureUtils.spriteDice4, textureUtils.spriteDice4.getX(), textureUtils.spriteDice4.getY(), textureUtils.spriteDice4.getWidth(), textureUtils.spriteDice4.getHeight());
         } else if (textureUtils.currentSide == 5) {
+            diceN = 5;
             game.batch.draw(textureUtils.spriteDice5, textureUtils.spriteDice5.getX(), textureUtils.spriteDice5.getY(), textureUtils.spriteDice5.getWidth(), textureUtils.spriteDice5.getHeight());
         } else if (textureUtils.currentSide == 6) {
+            diceN = 6;
+            isPlayable = gameLoop.legalMovesAreAvailable(diceN);
             game.batch.draw(textureUtils.spriteDice6, textureUtils.spriteDice6.getX(), textureUtils.spriteDice6.getY(), textureUtils.spriteDice6.getWidth(), textureUtils.spriteDice6.getHeight());
         }
         game.batch.draw(textureUtils.spriteArrow, textureUtils.spriteArrow.getX(), textureUtils.spriteArrow.getY(), textureUtils.spriteArrow.getWidth(), textureUtils.spriteArrow.getHeight());
         game.batch.end();
+    }
+
+    public int[] translateToArrayPos(int x, int y){
+        int [] tempPos  = new int[2];
+        int [] xPos = {105, 158, 211, 264, 317, 370, 423, 476, 529};
+        int [] yPos = {99, 152, 205, 258, 311, 364, 417, 470, 523};
+
+        for(int i = 0; i < xPos.length - 1; i++){
+            if(x > xPos[i] && x < xPos[i+1]){
+                tempPos[0] = i;
+                x1 = xPos[i] -40;
+            }
+        }
+        for(int i = 0; i < yPos.length - 1; i++){
+            if(y > yPos[i] && y < yPos[i+1]){
+                tempPos[1] = i;
+                y1 = yPos[i+1] + 10;
+            }
+        }
+        System.out.println(tempPos[1] + ", " + tempPos[0]);
+        return tempPos;
     }
 
     @Override
