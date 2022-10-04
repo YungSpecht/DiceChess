@@ -3,6 +3,7 @@ package com.group4.dicechess.GUI;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class GameScreen implements Screen {
@@ -11,6 +12,9 @@ public class GameScreen implements Screen {
     TextureUtils textureUtils;
     public boolean rolled = false;
     public boolean rolledBefore = false;
+    int [] tempPoss = {-1,-1};
+    int [] tempPoss2 = {-1,-1};
+
 
     public GameScreen(DiceChessGame currentGame){
         this.game = currentGame;
@@ -20,7 +24,8 @@ public class GameScreen implements Screen {
     public int[] translateToArrayPos(int x, int y){
         int [] tempPos  = new int[2];
         int [] xPos = {105, 158, 211, 264, 317, 370, 423, 476, 529};
-        int [] yPos = {523, 470, 417, 364, 311, 258, 205, 152, 99};
+        int [] yPos = {99, 152, 205, 258, 311, 364, 417, 470, 523};
+
 
         for(int i = 0; i < xPos.length - 1; i++){
             if(x > xPos[i] && x < xPos[i+1]){
@@ -30,14 +35,32 @@ public class GameScreen implements Screen {
             }
         }
         for(int i = 0; i < yPos.length - 1; i++){
-            if(y < yPos[i] && y > yPos[i+1]){
+            if(y > yPos[i] && y < yPos[i+1]){
                 tempPos[1] = i;
                 y1 = yPos[i+1] + 10;
                 //System.out.println(y1);
             }
         }
-        System.out.println(tempPos[0]);
-        System.out.println(tempPos[1]);
+        System.out.println(tempPos[1] + ", " + tempPos[0]);
+        return tempPos;
+    }
+
+    public int[] calculatePos(int x, int y){
+        int [] tempPos  = new int[2];
+        int [] xPos = {105, 158, 211, 264, 317, 370, 423, 476, 529};
+        int [] yPos = {99, 152, 205, 258, 311, 364, 417, 470, 523};
+        for(int i = 0; i < xPos.length - 1; i++){
+            if(x > xPos[i] && x < xPos[i+1]){
+                x1 = xPos[i] ;
+                tempPos[0] = x1;
+            }
+        }
+        for(int i = 0; i < yPos.length - 1; i++){
+            if(y > yPos[i] && y < yPos[i+1]){
+                y1 = yPos[i];
+                tempPos[1] = y1;
+            }
+        }
         return tempPos;
     }
 
@@ -59,7 +82,18 @@ public class GameScreen implements Screen {
                 //System.out.println("X: " + screenX);
                 //System.out.println("Y: " + screenY);
                 if(screenX >= 105 && screenX <= 529 && screenY <= 523 && screenY >= 99){
-                    translateToArrayPos(screenX, screenY);
+                    if(tempPoss[0] == -1){
+                        tempPoss = translateToArrayPos(screenX, screenY);
+                    } else{
+                        tempPoss2 = translateToArrayPos(screenX, screenY);
+                        textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]] = textureUtils.pieceStorage[tempPoss[1]][tempPoss[0]] ;
+                        textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]] = textureUtils.pieceStorage[tempPoss[1]][tempPoss[0]] ;
+                        // add width and height reference
+                        // add the selection ring
+                        textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].setPosition(textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].getX() + 55*(tempPoss2[0] - tempPoss[0]) , textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].getY() - 55*(tempPoss2[1] - tempPoss[1]));
+                        tempPoss[0] = -1;
+                        tempPoss[1] = -1;
+                    }
                 }
                 return true;
             }
@@ -72,39 +106,13 @@ public class GameScreen implements Screen {
             //game.batch.draw(textureUtils.highlight, x1, y1, textureUtils.spriteHighlight.getWidth(), textureUtils.spriteHighlight.getHeight());
         }
 
-        game.batch.draw(textureUtils.pawn, textureUtils.spawn.getX(), textureUtils.spawn.getY(), textureUtils.spawn.getWidth(), textureUtils.spawn.getHeight());
-        game.batch.draw(textureUtils.pawn, textureUtils.spawn.getX()+55, textureUtils.spawn.getY(), textureUtils.spawn.getWidth(), textureUtils.spawn.getHeight());
-        game.batch.draw(textureUtils.pawn, textureUtils.spawn.getX()+110, textureUtils.spawn.getY(), textureUtils.spawn.getWidth(), textureUtils.spawn.getHeight());
-        game.batch.draw(textureUtils.pawn, textureUtils.spawn.getX()+163, textureUtils.spawn.getY(), textureUtils.spawn.getWidth(), textureUtils.spawn.getHeight());
-        game.batch.draw(textureUtils.pawn, textureUtils.spawn.getX()+218, textureUtils.spawn.getY(), textureUtils.spawn.getWidth(), textureUtils.spawn.getHeight());
-        game.batch.draw(textureUtils.pawn, textureUtils.spawn.getX()+271, textureUtils.spawn.getY(), textureUtils.spawn.getWidth(), textureUtils.spawn.getHeight());
-        game.batch.draw(textureUtils.pawn, textureUtils.spawn.getX()+325, textureUtils.spawn.getY(), textureUtils.spawn.getWidth(), textureUtils.spawn.getHeight());
-        game.batch.draw(textureUtils.pawn, textureUtils.spawn.getX()+379, textureUtils.spawn.getY(), textureUtils.spawn.getWidth(), textureUtils.spawn.getHeight());
-        game.batch.draw(textureUtils.pawnBlack, textureUtils.spawn.getX()+2, textureUtils.spawn.getY()+265, textureUtils.spawn.getWidth(), textureUtils.spawn.getHeight());
-        game.batch.draw(textureUtils.pawnBlack, textureUtils.spawn.getX()+58, textureUtils.spawn.getY() +265, textureUtils.spawn.getWidth(), textureUtils.spawn.getHeight());
-        game.batch.draw(textureUtils.pawnBlack, textureUtils.spawn.getX()+112, textureUtils.spawn.getY() +265, textureUtils.spawn.getWidth(), textureUtils.spawn.getHeight());
-        game.batch.draw(textureUtils.pawnBlack, textureUtils.spawn.getX()+165, textureUtils.spawn.getY() +265, textureUtils.spawn.getWidth(), textureUtils.spawn.getHeight());
-        game.batch.draw(textureUtils.pawnBlack, textureUtils.spawn.getX()+220, textureUtils.spawn.getY() +265, textureUtils.spawn.getWidth(), textureUtils.spawn.getHeight());
-        game.batch.draw(textureUtils.pawnBlack, textureUtils.spawn.getX()+273, textureUtils.spawn.getY() +265, textureUtils.spawn.getWidth(), textureUtils.spawn.getHeight());
-        game.batch.draw(textureUtils.pawnBlack, textureUtils.spawn.getX()+327, textureUtils.spawn.getY() +265, textureUtils.spawn.getWidth(), textureUtils.spawn.getHeight());
-        game.batch.draw(textureUtils.pawnBlack, textureUtils.spawn.getX()+381, textureUtils.spawn.getY() +265, textureUtils.spawn.getWidth(), textureUtils.spawn.getHeight());
-        game.batch.draw(textureUtils.rook, textureUtils.srook.getX(), textureUtils.srook.getY() , textureUtils.srook.getWidth(), textureUtils.srook.getHeight());
-        game.batch.draw(textureUtils.rook, textureUtils.srook.getX()-379, textureUtils.srook.getY() , textureUtils.srook.getWidth(), textureUtils.srook.getHeight());
-        game.batch.draw(textureUtils.rookBlack, textureUtils.srookBlack.getX(), textureUtils.srookBlack.getY(), textureUtils.srookBlack.getWidth(), textureUtils.srookBlack.getHeight());
-        game.batch.draw(textureUtils.rookBlack, textureUtils.srookBlack.getX()-379, textureUtils.srookBlack.getY(), textureUtils.srookBlack.getWidth(), textureUtils.srookBlack.getHeight());
-        game.batch.draw(textureUtils.knight, textureUtils.sknight.getX(), textureUtils.sknight.getY(), textureUtils.sknight.getWidth(), textureUtils.sknight.getHeight());
-        game.batch.draw(textureUtils.knightBlack, textureUtils.sknightBlack.getX(), textureUtils.sknightBlack.getY(), textureUtils.sknightBlack.getWidth(), textureUtils.sknightBlack.getHeight());
-        game.batch.draw(textureUtils.knight, textureUtils.sknight.getX()-269, textureUtils.sknight.getY(), textureUtils.sknight.getWidth(), textureUtils.sknight.getHeight());
-        game.batch.draw(textureUtils.knightBlack, textureUtils.sknightBlack.getX()-269, textureUtils.sknightBlack.getY(), textureUtils.sknightBlack.getWidth(), textureUtils.sknightBlack.getHeight());
-        game.batch.draw(textureUtils.bishop, textureUtils.sbishop.getX(), textureUtils.sbishop.getY(), textureUtils.sbishop.getWidth(), textureUtils.sbishop.getHeight());
-        game.batch.draw(textureUtils.bishop, textureUtils.sbishop.getX()-162, textureUtils.sbishop.getY(), textureUtils.sbishop.getWidth(), textureUtils.sbishop.getHeight());
-        game.batch.draw(textureUtils.bishopBlack, textureUtils.sbishopBlack.getX(), textureUtils.sbishopBlack.getY(), textureUtils.sbishopBlack.getWidth(), textureUtils.sbishopBlack.getHeight());
-        game.batch.draw(textureUtils.bishopBlack, textureUtils.sbishopBlack.getX()-162, textureUtils.sbishopBlack.getY(), textureUtils.sbishopBlack.getWidth(), textureUtils.sbishopBlack.getHeight());
-        game.batch.draw(textureUtils.king, textureUtils.sking.getX(), textureUtils.sking.getY(), textureUtils.sking.getWidth(), textureUtils.sking.getHeight());
-        game.batch.draw(textureUtils.kingBlack, textureUtils.skingBlack.getX(), textureUtils.skingBlack.getY(), textureUtils.skingBlack.getWidth(), textureUtils.skingBlack.getHeight());
-        game.batch.draw(textureUtils.queen, textureUtils.squeen.getX(), textureUtils.squeen.getY(), textureUtils.squeen.getWidth(), textureUtils.squeen.getHeight());
-        game.batch.draw(textureUtils.queenBlack, textureUtils.squeenBlack.getX(), textureUtils.squeenBlack.getY(), textureUtils.squeenBlack.getWidth(), textureUtils.squeenBlack.getHeight());
-
+        for (int i = 0; i < textureUtils.pieceStorage.length; i++) {
+            for (int j = 0; j < textureUtils.pieceStorage[0].length; j++) {
+                if(textureUtils.pieceStorage[i][j] != null){
+                    game.batch.draw(textureUtils.pieceStorage[i][j], textureUtils.pieceStorage[i][j].getX(), textureUtils.pieceStorage[i][j].getY(), textureUtils.pieceStorage[i][j].getWidth(), textureUtils.pieceStorage[i][j].getHeight());
+                }
+            }
+        }
 
         if (rolled) {
             textureUtils.Roll();

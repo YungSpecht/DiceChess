@@ -31,18 +31,38 @@ public class TextureUtils {
     Texture help;
     Texture bots;
     Texture highlight;
-    Sprite sbishop;
-    Sprite sbishopBlack;
+    Sprite sbishop1;
+    Sprite sbishopBlack1;
+    Sprite sbishopBlack2;
+    Sprite sbishop2;
     Sprite sking;
     Sprite skingBlack;
-    Sprite sknight;
-    Sprite sknightBlack;
-    Sprite spawn;
-    Sprite spawnBlack;
+    Sprite sknight1;
+    Sprite sknight2;
+    Sprite sknightBlack1;
+    Sprite sknightBlack2;
+    Sprite spawn1;
+    Sprite spawn2;
+    Sprite spawn3;
+    Sprite spawn4;
+    Sprite spawn5;
+    Sprite spawn6;
+    Sprite spawn7;
+    Sprite spawn8;
+    Sprite spawnBlack1;
+    Sprite spawnBlack2;
+    Sprite spawnBlack3;
+    Sprite spawnBlack4;
+    Sprite spawnBlack5;
+    Sprite spawnBlack6;
+    Sprite spawnBlack7;
+    Sprite spawnBlack8;
     Sprite squeen;
     Sprite squeenBlack;
-    Sprite srook;
-    Sprite srookBlack;
+    Sprite srook1;
+    Sprite srook2;
+    Sprite srookBlack1;
+    Sprite srookBlack2;
     Sprite spriteHighlight;
     Sprite spriteNotation;
     Sprite spriteDice1;
@@ -56,10 +76,13 @@ public class TextureUtils {
     Sprite spriteHelp;
     Sprite spriteSound;
     Sprite spriteBots;
+    Sprite [][] pieceStorage;
+
     int currentSide;
 
     public TextureUtils(){
         this.currentSide = 1;
+        pieceStorage = new Sprite[8][8];
         bishop = new Texture("TestAssets/Bishop.png");
         bishopBlack= new Texture("TestAssets/Bishop_Black.png");
         king= new Texture("TestAssets/King.png");
@@ -86,18 +109,38 @@ public class TextureUtils {
         sound = new Texture("TestAssets/soundON.png");
         bots = new Texture("TestAssets/bots.png");
         spriteHighlight = new Sprite(highlight);
-        sbishop = new Sprite(bishop);
-        sbishopBlack = new Sprite(bishopBlack);
+        sbishop1 = new Sprite(bishop);
+        sbishopBlack1 = new Sprite(bishopBlack);
+        sbishop2 = new Sprite(bishop);
+        sbishopBlack2 = new Sprite(bishopBlack);
         sking= new Sprite(king);
         skingBlack= new Sprite(kingBlack);
-        sknight = new Sprite(knight);
-        sknightBlack = new Sprite(knightBlack);
-        spawn = new Sprite(pawn);
-        spawnBlack = new Sprite(pawnBlack);
+        sknight1 = new Sprite(knight);
+        sknightBlack1 = new Sprite(knightBlack);
+        sknight2 = new Sprite(knight);
+        sknightBlack2 = new Sprite(knightBlack);
+        spawn1 = new Sprite(pawn);
+        spawn2 = new Sprite(pawn);
+        spawn3 = new Sprite(pawn);
+        spawn4 = new Sprite(pawn);
+        spawn5 = new Sprite(pawn);
+        spawn6 = new Sprite(pawn);
+        spawn7 = new Sprite(pawn);
+        spawn8 = new Sprite(pawn);
+        spawnBlack1 = new Sprite(pawnBlack);
+        spawnBlack2 = new Sprite(pawnBlack);
+        spawnBlack3 = new Sprite(pawnBlack);
+        spawnBlack4 = new Sprite(pawnBlack);
+        spawnBlack5 = new Sprite(pawnBlack);
+        spawnBlack6 = new Sprite(pawnBlack);
+        spawnBlack7 = new Sprite(pawnBlack);
+        spawnBlack8 = new Sprite(pawnBlack);
         squeen = new Sprite(queen);
         squeenBlack = new Sprite(queenBlack);
-        srook = new Sprite(rook);
-        srookBlack = new Sprite(rookBlack);
+        srook1 = new Sprite(rook);
+        srookBlack1 = new Sprite(rookBlack);
+        srook2 = new Sprite(rook);
+        srookBlack2 = new Sprite(rookBlack);
         spriteHelp = new Sprite(help);
         spriteSound = new Sprite(sound);
         spriteBots = new Sprite(bots);
@@ -112,42 +155,74 @@ public class TextureUtils {
         spriteBoard = new Sprite(board);
         spriteNotation.setPosition(625, 50);
         spriteNotation.setSize(250, 350);
+        spawn1.setSize(33, 47);
+        spawn1.setPosition(112, 135);
+        spawnBlack1.setSize(33, 47);
+        spawnBlack1.setPosition(114, 400);
+        spawn2.setSize(33, 47);
+        spawn2.setPosition(167, 135);
+        spawnBlack2.setSize(33, 47);
+        spawnBlack2.setPosition(169, 400);
+        spawn3.setSize(33, 47);
+        spawn3.setPosition(222, 135);
+        spawnBlack3.setSize(33, 47);
+        spawnBlack3.setPosition(224, 400);
+        spawn4.setSize(33, 47);
+        spawn4.setPosition(275, 135);
+        spawnBlack4.setSize(33, 47);
+        spawnBlack4.setPosition(277, 400);
+        spawn5.setSize(33, 47);
+        spawn5.setPosition(329, 135);
+        spawnBlack5.setSize(33, 47);
+        spawnBlack5.setPosition(331, 400);
+        spawn6.setSize(33, 47);
+        spawn6.setPosition(385, 135);
+        spawnBlack6.setSize(33, 47);
+        spawnBlack6.setPosition(387, 400);
+        spawn7.setSize(33, 47);
+        spawn7.setPosition(437, 135);
+        spawnBlack7.setSize(33, 47);
+        spawnBlack7.setPosition(439, 400);
+        spawn8.setSize(33, 47);
+        spawn8.setPosition(491, 135);
+        spawnBlack8.setSize(33, 47);
+        spawnBlack8.setPosition(493, 400);
+        srook1.setSize( 33, 47);
+        srook1.setPosition(493, 80);
+        srookBlack1.setSize(32, 54);
+        srookBlack1.setPosition(493, 450);
+        srook2.setSize( 33, 47);
+        srook2.setPosition(114, 80);
+        srookBlack2.setSize(32, 54);
+        srookBlack2.setPosition(114, 450);
+        sknightBlack1.setSize(36, 54);
+        sknightBlack1.setPosition(436, 447);
+        sknight1.setSize(32, 54);
+        sknight1.setPosition(437, 82);
+        sknightBlack2.setSize(36, 54);
+        sknightBlack2.setPosition(167, 447);
+        sknight2.setSize(32, 54);
+        sknight2.setPosition(168, 82);
 
-        spawn.setSize(33, 47);
-        spawn.setPosition(112, 135);
+        sbishop1.setSize(32, 52);
+        sbishop1.setPosition(383, 80);
+        sbishopBlack1.setSize(32, 46);
+        sbishopBlack1.setPosition(383, 451);
 
-        srook.setSize( 33, 47);
-        srook.setPosition(493, 80);
+        sbishop2.setSize(32, 52);
+        sbishop2.setPosition(221, 80);
+        sbishopBlack2.setSize(32, 46);
+        sbishopBlack2.setPosition(221, 451);
 
-        srookBlack.setSize(32, 54);
-        srookBlack.setPosition(493, 450);
-
-        sknightBlack.setSize(36, 54);
-        sknightBlack.setPosition(436, 447);
-
-        sknight.setSize(32, 54);
-        sknight.setPosition(437, 82);
-
-        sbishop.setSize(32, 52);
-        sbishop.setPosition(383, 80);
-
-        sbishopBlack.setSize(32, 46);
-        sbishopBlack.setPosition(383, 451);
 
         sking.setSize(33, 47);
         sking.setPosition(331, 80);
-
         skingBlack.setSize(25, 51);
         skingBlack.setPosition(334, 447);
-
         squeen.setSize(33, 47);
         squeen.setPosition(276, 81);
-
         squeenBlack.setSize(34, 53);
         squeenBlack.setPosition(276, 447);
-
-        spawnBlack.setSize(33, 47);
-
         spriteHighlight.setSize(140, 90);
         spriteArrow.setPosition(10, 550);
         spriteArrow.setSize(50, 50);
@@ -171,6 +246,39 @@ public class TextureUtils {
         spriteSound.setSize(200, 50);
         spriteBots.setPosition(350, 330);
         spriteBots.setSize(200, 50);
+
+        pieceStorage[0][0] = srookBlack2;
+        pieceStorage[0][1] = sknightBlack2;
+        pieceStorage[0][2] = sbishopBlack2;
+        pieceStorage[0][3] = squeenBlack;
+        pieceStorage[0][4] = skingBlack;
+        pieceStorage[0][5] = sbishopBlack1;
+        pieceStorage[0][6] = sknightBlack1;
+        pieceStorage[0][7] = srookBlack1;
+        pieceStorage[1][0] = spawnBlack1;
+        pieceStorage[1][1] = spawnBlack2;
+        pieceStorage[1][2] = spawnBlack3;
+        pieceStorage[1][3] = spawnBlack4;
+        pieceStorage[1][4] = spawnBlack5;
+        pieceStorage[1][5] = spawnBlack6;
+        pieceStorage[1][6] = spawnBlack7;
+        pieceStorage[1][7] = spawnBlack8;
+        pieceStorage[6][0] = spawn1;
+        pieceStorage[6][1] = spawn2;
+        pieceStorage[6][2] = spawn3;
+        pieceStorage[6][3] = spawn4;
+        pieceStorage[6][4] = spawn5;
+        pieceStorage[6][5] = spawn6;
+        pieceStorage[6][6] = spawn7;
+        pieceStorage[6][7] = spawn8;
+        pieceStorage[7][0] = srook2;
+        pieceStorage[7][1] = sknight2;
+        pieceStorage[7][2] = sbishop2;
+        pieceStorage[7][3] = squeen;
+        pieceStorage[7][4] = sking;
+        pieceStorage[7][5] = sbishop1;
+        pieceStorage[7][6] = sknight1;
+        pieceStorage[7][7] = srook1;
     }
 
     public void Roll() {
