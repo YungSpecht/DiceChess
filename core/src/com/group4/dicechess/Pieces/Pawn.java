@@ -1,38 +1,36 @@
 package com.group4.dicechess.Pieces;
-
 import java.util.ArrayList;
 
-import com.group4.dicechess.Board;
-import com.group4.dicechess.Piece;
-import com.group4.dicechess.Square;
+import com.group4.dicechess.Representation.Board;
+import com.group4.dicechess.Representation.Piece;
+import com.group4.dicechess.Representation.Square;
 
 public class Pawn extends Piece{
-    private boolean firstMove;
-
-    public Pawn(boolean whiteStatus){
-        this.setWhiteStatus(whiteStatus);
-        this.setValue("P");
-        firstMove = true;
+    public Pawn(boolean whiteStatus, int currentSquareRow, int currentSquareCol){
+        super(whiteStatus, 1, 1, "P", currentSquareRow, currentSquareCol);
     }
 
     @Override
     public ArrayList<Square> getPossibleMoves(Board board, Square currentSquare) {
         ArrayList<Square> result = new ArrayList<Square>();
         int row = currentSquare.getRow();
-        int col = currentSquare.getColumn();
+        int col = currentSquare.getCol();
         int white = this.getWhiteStatus() ? 1 : 0;
-        for(int i = col - 1; i <= col + 1; i++){
-            if(i != col && board.getSquare(row + 1 + (white * (-2)), i).getPiece().getWhiteStatus() != this.getWhiteStatus()){
-                result.add(board.getSquare(row + 1 + (white * (-2)), i));
+        int leftBound = col - 1 < 0 ? col : col - 1;
+        int rightBound = col + 1 > 7 ? col : col + 1;
+        for(int i = leftBound; i <= rightBound; i++){
+            Square square = board.getSquare(row + 1 + (white * (-2)), i);
+            if(i != col && square.getPiece() != null && square.getPiece().getWhiteStatus() != this.getWhiteStatus()){
+                result.add(square);
             }
-            else if(i == col && board.getSquare(row + 1 + (white * (-2)), i).getPiece() == null){
-                result.add(board.getSquare(row + 1 + (white * (-2)), i));
+            else if(i == col && square.getPiece() == null){
+                result.add(square);
             }
         }
-        if(firstMove && board.getSquare(row + 2 + (white * (-4)), col).getPiece() == null){
-            result.add(board.getSquare(row + 2 + (white * (-4)), col));
+        Square square = board.getSquare(row + 2 + (white * (-4)), col);
+        if(this.getIsFirstMove() && square.getPiece() == null){
+            result.add(square);
         }
         return result;
     }
-
 }
