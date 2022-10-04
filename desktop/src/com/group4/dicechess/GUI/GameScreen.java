@@ -38,29 +38,9 @@ public class GameScreen implements Screen {
             if(y > yPos[i] && y < yPos[i+1]){
                 tempPos[1] = i;
                 y1 = yPos[i+1] + 10;
-                //System.out.println(y1);
             }
         }
         System.out.println(tempPos[1] + ", " + tempPos[0]);
-        return tempPos;
-    }
-
-    public int[] calculatePos(int x, int y){
-        int [] tempPos  = new int[2];
-        int [] xPos = {105, 158, 211, 264, 317, 370, 423, 476, 529};
-        int [] yPos = {99, 152, 205, 258, 311, 364, 417, 470, 523};
-        for(int i = 0; i < xPos.length - 1; i++){
-            if(x > xPos[i] && x < xPos[i+1]){
-                x1 = xPos[i] ;
-                tempPos[0] = x1;
-            }
-        }
-        for(int i = 0; i < yPos.length - 1; i++){
-            if(y > yPos[i] && y < yPos[i+1]){
-                y1 = yPos[i];
-                tempPos[1] = y1;
-            }
-        }
         return tempPos;
     }
 
@@ -87,8 +67,7 @@ public class GameScreen implements Screen {
                     } else{
                         tempPoss2 = translateToArrayPos(screenX, screenY);
                         textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]] = textureUtils.pieceStorage[tempPoss[1]][tempPoss[0]] ;
-                        textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]] = textureUtils.pieceStorage[tempPoss[1]][tempPoss[0]] ;
-                        // add width and height reference
+                        textureUtils.pieceStorage[tempPoss[1]][tempPoss[0]] = null;
                         // add the selection ring
                         textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].setPosition(textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].getX() + 54*(tempPoss2[0] - tempPoss[0]) , textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].getY() - 53*(tempPoss2[1] - tempPoss[1]));
                         tempPoss[0] = -1;
