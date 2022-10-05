@@ -42,9 +42,9 @@ public class GameScreen implements Screen {
                     gameLoop.turnCounter++;
                     cnt++;
                     if(cnt % 2 == 0){
-                        System.out.println("Black's turn!");
+                        System.out.println("Black's turn! Please select your piece..");
                     } else {
-                        System.out.println("White's turn!");
+                        System.out.println("White's turn! Please select your piece..");
                     }
                     rolled = true;
                 }
@@ -68,7 +68,7 @@ public class GameScreen implements Screen {
                                 System.out.println("Valid!");
                                 diceN = 0;
                             } else {
-                                System.out.println("Please try another cell!");
+                                System.out.println("Please try another cell as destination!");
                             }
                         } else{
                             System.out.println("Try a new initial piece!");
