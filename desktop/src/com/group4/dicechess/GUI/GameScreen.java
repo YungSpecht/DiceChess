@@ -27,6 +27,7 @@ public class GameScreen implements Screen {
         gameLoop = new UIInterface();
     }
     boolean isPlayable = false;
+
     @Override
     public void render(float delta) {
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -41,25 +42,22 @@ public class GameScreen implements Screen {
                     gameLoop.turnCounter++;
                     cnt++;
                     if(cnt % 2 == 0){
-                        System.out.println("Black turn!");
+                        System.out.println("Black's turn!");
                     } else {
-                        System.out.println("White turn!");
+                        System.out.println("White's turn!");
                     }
                     rolled = true;
                 }
                 if(screenX >= 105 && screenX <= 529 && screenY <= 523 && screenY >= 99){
-                    System.out.println(diceN);
                     isPlayable = gameLoop.legalMovesAreAvailable(diceN);
-                    System.out.println(isPlayable);
                     if(isPlayable){
                         if(tempPoss[0] == -1){
                             tempPoss = translateToArrayPos(screenX, screenY);
+                            System.out.println("---------------------------");
                             System.out.println("Piece selected: "+tempPoss[1] + ", " +  tempPoss[0]);
-                            System.out.println(gameLoop.isLegalPiece(tempPoss[1], tempPoss[0]));
                         } else if(gameLoop.isLegalPiece(tempPoss[1], tempPoss[0])){
                             tempPoss2 = translateToArrayPos(screenX, screenY);
                             System.out.println("Future position selected: "+tempPoss2[1] + ", " +  tempPoss2[0]);
-                            System.out.println(gameLoop.isLegalMove(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]));
                             if(gameLoop.isLegalMove(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0])){
                                 gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]);
                                 textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]] = textureUtils.pieceStorage[tempPoss[1]][tempPoss[0]] ;
@@ -67,6 +65,8 @@ public class GameScreen implements Screen {
                                 textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].setPosition(textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].getX() + 54*(tempPoss2[0] - tempPoss[0]) , textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].getY() - 53*(tempPoss2[1] - tempPoss[1]));
                                 tempPoss[0] = -1;
                                 tempPoss[1] = -1;
+                                System.out.println("Valid!");
+                                diceN = 0;
                             } else {
                                 System.out.println("Please try another cell!");
                             }
@@ -77,6 +77,7 @@ public class GameScreen implements Screen {
                         }
                     } else{
                         System.out.println("Please roll the dice once again!");
+                        diceN = 0;
                     }
                 }
                 return true;
@@ -110,18 +111,22 @@ public class GameScreen implements Screen {
             game.batch.draw(textureUtils.spriteDice1, textureUtils.spriteDice1.getX(), textureUtils.spriteDice1.getY(), textureUtils.spriteDice1.getWidth(), textureUtils.spriteDice1.getHeight());
         } else if (textureUtils.currentSide == 2) {
             diceN = 2;
+
             game.batch.draw(textureUtils.spriteDice2, textureUtils.spriteDice2.getX(), textureUtils.spriteDice2.getY(), textureUtils.spriteDice2.getWidth(), textureUtils.spriteDice2.getHeight());
         } else if (textureUtils.currentSide == 3) {
             diceN = 3;
             game.batch.draw(textureUtils.spriteDice3, textureUtils.spriteDice3.getX(), textureUtils.spriteDice3.getY(), textureUtils.spriteDice3.getWidth(), textureUtils.spriteDice3.getHeight());
         } else if (textureUtils.currentSide == 4) {
             diceN = 4;
+
             game.batch.draw(textureUtils.spriteDice4, textureUtils.spriteDice4.getX(), textureUtils.spriteDice4.getY(), textureUtils.spriteDice4.getWidth(), textureUtils.spriteDice4.getHeight());
         } else if (textureUtils.currentSide == 5) {
             diceN = 5;
+
             game.batch.draw(textureUtils.spriteDice5, textureUtils.spriteDice5.getX(), textureUtils.spriteDice5.getY(), textureUtils.spriteDice5.getWidth(), textureUtils.spriteDice5.getHeight());
         } else if (textureUtils.currentSide == 6) {
             diceN = 6;
+
             isPlayable = gameLoop.legalMovesAreAvailable(diceN);
             game.batch.draw(textureUtils.spriteDice6, textureUtils.spriteDice6.getX(), textureUtils.spriteDice6.getY(), textureUtils.spriteDice6.getWidth(), textureUtils.spriteDice6.getHeight());
         }
@@ -146,7 +151,6 @@ public class GameScreen implements Screen {
                 y1 = yPos[i+1] + 10;
             }
         }
-        System.out.println(tempPos[1] + ", " + tempPos[0]);
         return tempPos;
     }
 
