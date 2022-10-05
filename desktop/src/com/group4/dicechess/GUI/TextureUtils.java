@@ -281,9 +281,7 @@ public class TextureUtils {
         pieceStorage[7][7] = srook1;
     }
 
-    public void Roll() {
-        int max = 6;
-        Random random = new Random();
-        currentSide = random.nextInt(max) + 1;
+    public void Roll(int diceN) {
+        currentSide = diceN;
     }
 }
