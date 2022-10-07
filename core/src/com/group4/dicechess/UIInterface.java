@@ -78,7 +78,12 @@ public class UIInterface {
         ArrayList<Piece> white = board.getWhiteCaptured();
         ArrayList<Piece> black = board.getBlackCaptured();
         for(int i = 0; i < white.size(); i++){
-            if(white.get(i).getId().equals("K") || black.get(i).getId().equals("K")){
+            if(white.get(i).getId().equals("K")){
+                return true;
+            }
+        }
+        for(int i = 0; i < black.size(); i++){
+            if(black.get(i).getId().equals("K")){
                 return true;
             }
         }
