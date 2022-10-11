@@ -203,18 +203,14 @@ public class TextureUtils {
         sknightBlack2.setPosition(167, 447);
         sknight2.setSize(32, 54);
         sknight2.setPosition(168, 82);
-
         sbishop1.setSize(32, 52);
         sbishop1.setPosition(383, 80);
         sbishopBlack1.setSize(32, 46);
         sbishopBlack1.setPosition(383, 451);
-
         sbishop2.setSize(32, 52);
         sbishop2.setPosition(221, 80);
         sbishopBlack2.setSize(32, 46);
         sbishopBlack2.setPosition(221, 451);
-
-
         sking.setSize(33, 47);
         sking.setPosition(331, 80);
         skingBlack.setSize(25, 51);
@@ -223,7 +219,7 @@ public class TextureUtils {
         squeen.setPosition(276, 81);
         squeenBlack.setSize(34, 53);
         squeenBlack.setPosition(276, 447);
-        spriteHighlight.setSize(140, 90);
+        spriteHighlight.setSize(55, 55);
         spriteArrow.setPosition(10, 550);
         spriteArrow.setSize(50, 50);
         spriteBoard.setPosition(55, 30);

@@ -117,14 +117,14 @@ public class GameScreen implements Screen {
         }
         else{
             String winner = cnt%2==0 ? "Black" : "White";
-            System.out.println("The game is over! " + winner + " won.");
+            game.setScreen(new GameOverScreen(game, winner));
         }
         
         ScreenUtils.clear(1, 1, 1, 1);
         game.batch.begin();
         game.batch.draw(textureUtils.notation, textureUtils.spriteNotation.getX(), textureUtils.spriteNotation.getY(), textureUtils.spriteNotation.getWidth(), textureUtils.spriteNotation.getHeight());
         game.batch.draw(textureUtils.board, textureUtils.spriteBoard.getX(), textureUtils.spriteBoard.getY(), textureUtils.spriteBoard.getWidth(), textureUtils.spriteBoard.getHeight());
-        if(x1 != 0){
+        if(tempPoss[0] == -1){
             //game.batch.draw(textureUtils.highlight, x1, y1, textureUtils.spriteHighlight.getWidth(), textureUtils.spriteHighlight.getHeight());
         }
 
