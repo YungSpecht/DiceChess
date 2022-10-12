@@ -1,12 +1,16 @@
 package com.group4.dicechess.GUI;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.group4.dicechess.Representation.Square;
 import com.group4.dicechess.UIInterface;
 
 public class GameScreen implements Screen {
@@ -22,16 +26,28 @@ public class GameScreen implements Screen {
     int x1 = 0;
     int y1 = 0;
     int cnt = -1;
-    boolean turnActive = false;
     boolean playerSwitch = true;
+    boolean turnActive = false;
+    boolean isPlayable = false;
+    boolean justSelected = false;
+    ArrayList<Square> possibleMoves;
+    String[] txtOtp = new String[5];
+    BitmapFont font = new BitmapFont();
 
 
     public GameScreen(DiceChessGame currentGame){
         this.game = currentGame;
         this.textureUtils = new TextureUtils();
         gameLoop = new UIInterface();
+        enableTxt();
     }
-    boolean isPlayable = false;
+
+    public void enableTxt(){
+        txtOtp[0] = "Welcome! Please roll the dice.";
+        for (int i = 1; i < txtOtp.length; i++) {
+            txtOtp[i] = "";
+        }
+    }
 
     @Override
     public void render(float delta) {
@@ -52,6 +68,9 @@ public class GameScreen implements Screen {
             Gdx.input.setInputProcessor(new InputAdapter() {
                 @Override
                 public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                    System.out.println("x"+ screenX);
+                    System.out.println("y"+ screenY);
+
                     if (screenX >= 15 && screenX <= 45 && screenY >= 10 && screenY <= 40) {
                         game.setScreen(new MenuScreen(game));
                         Gdx.input.setInputProcessor(null);
@@ -85,9 +104,12 @@ public class GameScreen implements Screen {
                             tempPoss = translateToArrayPos(screenX, screenY);
                             System.out.println("---------------------------");
                             System.out.println("Piece selected: "+tempPoss[1] + ", " +  tempPoss[0]);
+                            possibleMoves = gameLoop.getLegalMoves(tempPoss[1], tempPoss[0]);
+                            justSelected = true;
                         }
                         else if(gameLoop.isLegalPiece(tempPoss[1], tempPoss[0])){
                             tempPoss2 = translateToArrayPos(screenX, screenY);
+                            justSelected = false;
                             System.out.println("Future position selected: "+tempPoss2[1] + ", " +  tempPoss2[0]);
                             if(gameLoop.isLegalMove(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0])){
                                 gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]);
@@ -103,6 +125,7 @@ public class GameScreen implements Screen {
                             }
                             else {
                                 System.out.println("Please try another cell as destination!");
+                                justSelected = true;
                             }
                         }
                         else{
@@ -124,14 +147,25 @@ public class GameScreen implements Screen {
         game.batch.begin();
         game.batch.draw(textureUtils.notation, textureUtils.spriteNotation.getX(), textureUtils.spriteNotation.getY(), textureUtils.spriteNotation.getWidth(), textureUtils.spriteNotation.getHeight());
         game.batch.draw(textureUtils.board, textureUtils.spriteBoard.getX(), textureUtils.spriteBoard.getY(), textureUtils.spriteBoard.getWidth(), textureUtils.spriteBoard.getHeight());
-        if(tempPoss[0] == -1){
-            //game.batch.draw(textureUtils.highlight, x1, y1, textureUtils.spriteHighlight.getWidth(), textureUtils.spriteHighlight.getHeight());
+        for (int i = 0; i < txtOtp.length; i++) {
+            if(!txtOtp[i].isEmpty()){
+                font.draw(game.batch, txtOtp[i], 650, 380);
+            }
         }
 
         for (int i = 0; i < textureUtils.pieceStorage.length; i++) {
             for (int j = 0; j < textureUtils.pieceStorage[0].length; j++) {
                 if(textureUtils.pieceStorage[i][j] != null){
                     game.batch.draw(textureUtils.pieceStorage[i][j], textureUtils.pieceStorage[i][j].getX(), textureUtils.pieceStorage[i][j].getY(), textureUtils.pieceStorage[i][j].getWidth(), textureUtils.pieceStorage[i][j].getHeight());
+                }
+            }
+        }
+        if(justSelected){
+            for (int i = 0; i < possibleMoves.size(); i++) {
+                if(possibleMoves.get(i).getRow() == 0 && possibleMoves.get(i).getCol() == 0){
+                    game.batch.draw(textureUtils.highlight, 103, 449, 55, 54);
+                } else {
+                    game.batch.draw(textureUtils.highlight, 103 + possibleMoves.get(i).getCol()*(54), 449 - possibleMoves.get(i).getRow()*(53), 55, 54);
                 }
             }
         }
