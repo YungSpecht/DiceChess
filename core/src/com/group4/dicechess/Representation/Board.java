@@ -150,8 +150,21 @@ public class Board {
         } else {
             lastMovedPieceBlack = piece;
         }
-        start.setPiece(null);
-        if(destination.getPiece() == null){
+        if(enPassant(start, destination)){
+            captureValue = 1;
+            if(piece.getWhiteStatus()){
+                blackPieces.remove(board[start.getRow()][destination.getCol()].getPiece());
+                blackCaptured.add(board[start.getRow()][destination.getCol()].getPiece());
+            }
+            else{
+                whitePieces.remove(board[start.getRow()][destination.getCol()].getPiece());
+                whiteCaptured.add(board[start.getRow()][destination.getCol()].getPiece());
+            }
+            System.out.println("The piece about to get en passanted is: "+ board[start.getRow()][destination.getCol()].getPiece());
+            board[start.getRow()][destination.getCol()].setPiece(null);
+            System.out.println("The piece was en passanted : "+ board[start.getRow()][destination.getCol()].getPiece());
+        }
+        else if(destination.getPiece() == null && !enPassant(start, destination)){
             captureValue = 0;
         }
         else{
@@ -166,11 +179,23 @@ public class Board {
                 blackCaptured.add(capturedPiece);
             }
         }
+        start.setPiece(null);
         destination.setPiece(piece);
         piece.setRow(destination.getRow());
         piece.setCol(destination.getCol());
         piece.increaseMoveCounter();
         return captureValue;
+    }
+
+    private boolean enPassant(Square start, Square destination){
+        Piece piece = start.getPiece();
+        if(piece.getWhiteStatus() && piece.getId().equals("P") && start.getRow() == 3 && board[destination.getRow()][destination.getCol()].getPiece() == null){
+            return true;
+        }
+        else if(!piece.getWhiteStatus() && piece.getId().equals("P") && start.getRow() == 4 && board[destination.getRow()][destination.getCol()].getPiece() == null){
+            return true;
+        }
+        return false;
     }
 
 }

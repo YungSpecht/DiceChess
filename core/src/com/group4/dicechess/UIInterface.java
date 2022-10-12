@@ -57,6 +57,14 @@ public class UIInterface {
         return legalPieces.contains(piece);
     }
 
+    public boolean isLegalPieceChess(int row, int col){
+        Piece piece = board.getSquare(row, col).getPiece();
+        if(piece == null || piece.getWhiteStatus() != (turnCounter % 2 == 0)){
+            return false;
+        }
+        return legalPieces.contains(piece);
+    }
+
     public boolean isLegalMove(int startRow, int startCol, int row, int col){
         return moveList.get(legalPieces.indexOf(board.getSquare(startRow, startCol).getPiece())).contains(board.getSquare(row, col));
     }
@@ -77,10 +85,9 @@ public class UIInterface {
 
     public int diceRoll(){
         ArrayList<Integer> rolls = new ArrayList<Integer>();
-        boolean white = turnCounter % 2 == 0 ? true : false;
         legalPieces.clear();
         moveList.clear();
-        ArrayList<Piece> allPieces = white ? board.getWhitePieces() : board.getBlackPieces();
+        ArrayList<Piece> allPieces = turnCounter % 2 == 0 ? board.getWhitePieces() : board.getBlackPieces();
         for(Piece piece : allPieces){
             ArrayList<Square> moves = piece.getPossibleMoves(board, board.getSquare(piece.getRow(), piece.getCol()));
             if(moves.size() > 0){
@@ -93,6 +100,19 @@ public class UIInterface {
         }
         Random rand = new Random();
         return rolls.get(rand.nextInt(rolls.size()));
+    }
+
+    public void prepareTurn(){
+        legalPieces.clear();
+        moveList.clear();
+        ArrayList<Piece> allPieces = turnCounter % 2 == 0 ? board.getWhitePieces() : board.getBlackPieces();
+        for(Piece piece : allPieces){
+            ArrayList<Square> moves = piece.getPossibleMoves(board, board.getSquare(piece.getRow(), piece.getCol()));
+            if(moves.size() > 0){
+                legalPieces.add(piece);
+                moveList.add(moves);
+            }
+        }
     }
 
     public boolean gameOver(){

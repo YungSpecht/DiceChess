@@ -85,7 +85,7 @@ public class Queen extends Piece{
             }
             if(upLeft){
                 if(canCapture(board, row - i, col-i, this.getWhiteStatus()) || SquareFree(board, row - i, col-i)){
-                    result.add(board.getSquare(row + i, col-i));
+                    result.add(board.getSquare(row - i, col-i));
                     if(canCapture(board, row - i, col-i, this.getWhiteStatus())) upLeft = false;
                 }
                 else{
