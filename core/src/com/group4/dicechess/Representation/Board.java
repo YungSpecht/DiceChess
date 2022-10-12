@@ -15,6 +15,8 @@ public class Board {
     private ArrayList<Piece> blackPieces;
     private ArrayList<Piece> whiteCaptured;
     private ArrayList<Piece> blackCaptured;
+    private Piece lastMovedPieceBlack;
+    private Piece lastMovedPieceWhite;
 
     public Board(){
         board = new Square[8][8];
@@ -44,6 +46,14 @@ public class Board {
     public ArrayList<Piece> getBlackPieces(){
         return blackPieces;
     }
+    
+    public Piece getLastMovedPieceWhite(){
+        return lastMovedPieceWhite;
+    }
+
+    public Piece getLastMovePieceBlack() {
+        return lastMovedPieceBlack;
+        }
 
     /**
      * Prints the current state of the chessboard to the terminal. Pieces are printed by a prefix
@@ -135,6 +145,11 @@ public class Board {
     public int movePiece(Square start, Square destination){
         int captureValue = 0;
         Piece piece = start.getPiece();
+        if(piece.getWhiteStatus()){
+            lastMovedPieceWhite = piece;
+        } else {
+            lastMovedPieceBlack = piece;
+        }
         start.setPiece(null);
         if(destination.getPiece() == null){
             captureValue = 0;
@@ -154,7 +169,7 @@ public class Board {
         destination.setPiece(piece);
         piece.setRow(destination.getRow());
         piece.setCol(destination.getCol());
-        piece.hasMoved();
+        piece.increaseMoveCounter();
         return captureValue;
     }
 

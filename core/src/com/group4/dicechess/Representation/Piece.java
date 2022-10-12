@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public abstract class Piece {
     private boolean whiteStatus;
     private boolean isFirstMove;
+    private int moveCounter;
     private int value;
     private int diceChessId;
     private String identifier;
@@ -18,7 +19,7 @@ public abstract class Piece {
         this.identifier = identifier;
         this.currentSquareRow = currentSquareRow;
         this.currentSquareCol = currentSquareCol;
-        isFirstMove = true;
+        moveCounter = 0;
     }
 
 
@@ -31,6 +32,13 @@ public abstract class Piece {
         return whiteStatus;
     }
 
+    public int getMoveCounter(){
+        return moveCounter;
+    }
+
+    public void increaseMoveCounter(){
+        moveCounter++;
+    }
 
     public int getValue(){
         return value;
@@ -56,13 +64,6 @@ public abstract class Piece {
         return diceChessId;
     }
 
-    public void hasMoved(){
-        isFirstMove = false;
-    }
-
-    public boolean getIsFirstMove() {
-        return isFirstMove;
-    }
 
     /**
      * Checks whether a square is empty and a piece can move to it
