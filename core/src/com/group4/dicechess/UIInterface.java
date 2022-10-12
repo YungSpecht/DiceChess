@@ -1,6 +1,7 @@
 package com.group4.dicechess;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.group4.dicechess.Representation.Board;
 import com.group4.dicechess.Representation.Piece;
@@ -72,6 +73,26 @@ public class UIInterface {
         else{
             blackScore = board.movePiece(board.getSquare(startRow, startCol), board.getSquare(row, col));
         }
+    }
+
+    public int diceRoll(){
+        ArrayList<Integer> rolls = new ArrayList<Integer>();
+        boolean white = turnCounter % 2 == 0 ? true : false;
+        legalPieces.clear();
+        moveList.clear();
+        ArrayList<Piece> allPieces = white ? board.getWhitePieces() : board.getBlackPieces();
+        for(Piece piece : allPieces){
+            ArrayList<Square> moves = piece.getPossibleMoves(board, board.getSquare(piece.getRow(), piece.getCol()));
+            if(moves.size() > 0){
+                legalPieces.add(piece);
+                moveList.add(moves);
+                if(!rolls.contains(piece.getDiceChessId())){
+                    rolls.add(piece.getDiceChessId());
+                }
+            }
+        }
+        Random rand = new Random();
+        return rolls.get(rand.nextInt(rolls.size()));
     }
 
     public boolean gameOver(){
