@@ -7,8 +7,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.group4.dicechess.Representation.Square;
 import com.group4.dicechess.UIInterface;
@@ -21,18 +19,22 @@ public class GameScreen implements Screen {
     public boolean rolledBefore = false;
     int [] tempPoss = {-1,-1};
     int [] tempPoss2 = {-1,-1};
+    String [] helperNot;
     UIInterface gameLoop;
     int diceN = 0;
     int x1 = 0;
     int y1 = 0;
     int cnt = -1;
+    int txtTracker = 1;
+    int decider = 0;
     boolean playerSwitch = true;
     boolean turnActive = false;
     boolean isPlayable = false;
     boolean justSelected = false;
     ArrayList<Square> possibleMoves;
-    String[] txtOtp = new String[5];
+    ArrayList<String>  txtOtp;
     BitmapFont font = new BitmapFont();
+    String moveN;
 
 
     public GameScreen(DiceChessGame currentGame){
@@ -43,10 +45,8 @@ public class GameScreen implements Screen {
     }
 
     public void enableTxt(){
-        txtOtp[0] = "Welcome! Please roll the dice.";
-        for (int i = 1; i < txtOtp.length; i++) {
-            txtOtp[i] = "";
-        }
+        txtOtp = new ArrayList<>();
+        txtOtp.add("Welcome!");
     }
 
     @Override
@@ -56,11 +56,15 @@ public class GameScreen implements Screen {
                 cnt++;
                 gameLoop.turnCounter++;
                 if(cnt % 2 == 0){
-                    System.out.println("White's turn! Please roll the dice..");
-                    System.out.println();
+                    txtOtp.add("------------White's turn------------");
+                    txtTracker++;
+                    txtOtp.add("Please roll the dice..");
+                    txtTracker++;
                 } else {
-                    System.out.println("Black's turn! Please roll the dice..");
-                    System.out.println();
+                    txtOtp.add("------------Black's turn------------");
+                    txtTracker++;
+                    txtOtp.add("Please roll the dice..");
+                    txtTracker++;
                 }
                 playerSwitch = false;
             }
@@ -68,33 +72,26 @@ public class GameScreen implements Screen {
             Gdx.input.setInputProcessor(new InputAdapter() {
                 @Override
                 public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                    System.out.println("x"+ screenX);
-                    System.out.println("y"+ screenY);
 
                     if (screenX >= 15 && screenX <= 45 && screenY >= 10 && screenY <= 40) {
                         game.setScreen(new MenuScreen(game));
                         Gdx.input.setInputProcessor(null);
                     }
                     if (screenX >= 710 && screenX <= 785 && screenY >= 75 && screenY <= 147 && !turnActive) {
-                        System.out.println("Rolling dice..");
-                        System.out.println();
                         Random random = new Random();
                         diceN = random.nextInt(5) + 1;
                         rolled = true;
+                        txtOtp.add("Dice rolled. Result is " + diceN);
+                        txtTracker++;
                         isPlayable = gameLoop.legalMovesAreAvailable(diceN);
                         if(isPlayable){
-                            if(cnt % 2 == 0){
-                                System.out.println("White's turn! Please select your piece..");
-                                System.out.println();
-                            } else {
-                                System.out.println("Black's turn! Please select your piece..");
-                                System.out.println();
-                            }
+                            txtOtp.add("Valid! Please select your piece..");
+                            txtTracker++;
                             turnActive = true;
                         }
                         else{
-                            System.out.println("Your dice roll doesn't grant you any moves. Next Player!");
-                            System.out.println();
+                            txtOtp.add("Not valid. Next Player!");
+                            txtTracker++;
                             playerSwitch = true;
                         }
                         rolled = true;
@@ -102,16 +99,24 @@ public class GameScreen implements Screen {
                     if(screenX >= 105 && screenX <= 529 && screenY <= 523 && screenY >= 99 && turnActive){
                         if(tempPoss[0] == -1){
                             tempPoss = translateToArrayPos(screenX, screenY);
-                            System.out.println("---------------------------");
-                            System.out.println("Piece selected: "+tempPoss[1] + ", " +  tempPoss[0]);
-                            possibleMoves = gameLoop.getLegalMoves(tempPoss[1], tempPoss[0]);
-                            justSelected = true;
+                            if(gameLoop.isLegalPiece(tempPoss[1], tempPoss[0])){
+                                helperNot = intoCoorNotation(tempPoss[0], tempPoss[1]);
+                                moveN = "Selected: " + helperNot[0] + helperNot[1];
+                                txtOtp.add(moveN);
+                                txtTracker++;
+                                possibleMoves = gameLoop.getLegalMoves(tempPoss[1], tempPoss[0]);
+                                justSelected = true;
+                            }
                         }
                         else if(gameLoop.isLegalPiece(tempPoss[1], tempPoss[0])){
                             tempPoss2 = translateToArrayPos(screenX, screenY);
                             justSelected = false;
-                            System.out.println("Future position selected: "+tempPoss2[1] + ", " +  tempPoss2[0]);
                             if(gameLoop.isLegalMove(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0])){
+                                helperNot = intoCoorNotation(tempPoss[0], tempPoss[1]);
+                                String [] helperNot2 = intoCoorNotation(tempPoss2[0], tempPoss2[1]);
+                                moveN = helperNot[0] + helperNot[1] + " -> " + helperNot2[0] + helperNot2[1];
+                                txtOtp.add(moveN);
+                                txtTracker++;
                                 gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]);
                                 textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]] = textureUtils.pieceStorage[tempPoss[1]][tempPoss[0]] ;
                                 textureUtils.pieceStorage[tempPoss[1]][tempPoss[0]] = null;
@@ -124,12 +129,14 @@ public class GameScreen implements Screen {
                                 diceN = 0;
                             }
                             else {
-                                System.out.println("Please try another cell as destination!");
+                                txtOtp.add("Please try another cell as destination!");
+                                txtTracker++;
                                 justSelected = true;
                             }
                         }
                         else{
-                            System.out.println("Try a new initial piece!");
+                            txtOtp.add("Try a new initial piece!");
+                            txtTracker++;
                             tempPoss[0] = -1;
                             tempPoss[1] = -1;
                         }
@@ -147,10 +154,14 @@ public class GameScreen implements Screen {
         game.batch.begin();
         game.batch.draw(textureUtils.notation, textureUtils.spriteNotation.getX(), textureUtils.spriteNotation.getY(), textureUtils.spriteNotation.getWidth(), textureUtils.spriteNotation.getHeight());
         game.batch.draw(textureUtils.board, textureUtils.spriteBoard.getX(), textureUtils.spriteBoard.getY(), textureUtils.spriteBoard.getWidth(), textureUtils.spriteBoard.getHeight());
-        for (int i = 0; i < txtOtp.length; i++) {
-            if(!txtOtp[i].isEmpty()){
-                font.draw(game.batch, txtOtp[i], 650, 380);
-            }
+
+        int xTxt = 650;
+        int yTxt = 380;
+        if(txtTracker > 18){
+            decider = txtTracker -18;
+        }
+        for (int i = decider; i < txtOtp.size(); i++) {
+            font.draw(game.batch, txtOtp.get(i), xTxt, yTxt+((i-decider)*-15));
         }
 
         for (int i = 0; i < textureUtils.pieceStorage.length; i++) {
@@ -214,6 +225,45 @@ public class GameScreen implements Screen {
         return tempPos;
     }
 
+    public String [] intoCoorNotation(int n, int z){
+        String [] not = new String[2];
+        if(n == 0){
+            not[0] = "a";
+        } else if (n == 1) {
+            not[0] = "b";
+        } else if (n == 2) {
+            not[0] = "c";
+        } else if (n == 3) {
+            not[0] = "d";
+        } else if (n == 4) {
+            not[0] = "e";
+        } else if (n == 5) {
+            not[0] = "f";
+        } else if (n==6) {
+            not[0] = "g";
+        } else if (n == 7) {
+            not[0] = "h";
+        }
+        if(z == 0){
+            not[1] = "8";
+        } else if (z == 1) {
+            not[1] = "7";
+        } else if (z == 2) {
+            not[1] = "6";
+        } else if (z == 3) {
+            not[1] = "5";
+        } else if (z == 4) {
+            not[1] = "4";
+        } else if (z == 5) {
+            not[1] = "3";
+        } else if (z == 6) {
+            not[1] = "2";
+        } else if (z == 7) {
+            not[1] = "1";
+        }
+        return not;
+    }
+
     @Override
     public void show() {}
     @Override
@@ -225,8 +275,5 @@ public class GameScreen implements Screen {
     @Override
     public void hide() {}
     @Override
-    public void dispose() {
-        textureUtils.backArrow.dispose();
-        textureUtils.dice1.dispose();
-    }
+    public void dispose() {}
 }
