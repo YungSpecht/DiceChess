@@ -42,8 +42,6 @@ public class King extends Piece{
         if(canCapture(board, row - 1, col-1, this.getWhiteStatus()) || SquareFree(board, row - 1, col-1)){
             result.add(board.getSquare(row - 1, col-1));
         }
-        return result;
-        /*
         if(this.getMoveCounter() == 0){
             if(queenside(board, currentSquare)){
                 result.add(board.getSquare(row, col-2));
@@ -52,14 +50,14 @@ public class King extends Piece{
                 result.add(board.getSquare(row, col+2));
             }
         }
-        */
+        return result;
     }
 
     private boolean queenside(Board board, Square currentSquare){
         int row = currentSquare.getRow();
         if(board.getSquare(row, 0).getPiece().getMoveCounter() == 0){
             for(int i = currentSquare.getCol()-1; i > 0; i--){
-                if(board.getSquare(row, i) != null){
+                if(board.getSquare(row, i).getPiece() != null){
                     return false;
                 }
             }
@@ -72,7 +70,7 @@ public class King extends Piece{
         int row = currentSquare.getRow();
         if(board.getSquare(row, 7).getPiece().getMoveCounter() == 0){
             for(int i = currentSquare.getCol()+1; i < 7; i++){
-                if(board.getSquare(row, i) != null){
+                if(board.getSquare(row, i).getPiece() != null){
                     return false;
                 }
             }

@@ -151,7 +151,7 @@ public class Board {
      * @return integer that represents the value of the captured piece
      */
     public int movePiece(Square start, Square destination){
-        int captureValue = 0;
+        int captureValue =0;
         Piece piece = start.getPiece();
         if(piece.getWhiteStatus()){
             lastMovedPieceWhite = piece;
@@ -170,7 +170,24 @@ public class Board {
             }
             this.board[start.getRow()][destination.getCol()].setPiece(null);
         }
-        else if(destination.getPiece() == null && !enPassant(start, destination)){
+        else if(castling(start, destination)){
+            int white = start.getPiece().getWhiteStatus() ? 1 : 0;
+            if(destination.getCol() < start.getCol()){
+                Piece rook = this.board[0 + (white * 7)][0].getPiece();
+                this.board[0 + (white * 7)][3].setPiece(rook);
+                this.board[0 + (white * 7)][0].setPiece(null);
+                rook.increaseMoveCounter();
+                rook.setCol(3);
+            }
+            else{
+                Piece rook = this.board[0 + (white * 7)][7].getPiece();
+                this.board[0 + (white * 7)][5].setPiece(rook);
+                this.board[0 + (white * 7)][7].setPiece(null);
+                rook.increaseMoveCounter();
+                rook.setCol(5);
+            }
+        }
+        else if(destination.getPiece() == null){
             captureValue = 0;
         }
         else{
@@ -200,6 +217,14 @@ public class Board {
             return true;
         }
         else if(!piece.getWhiteStatus() && piece.getId().equals("P") && start.getRow() == 4 && board[destination.getRow()][destination.getCol()].getPiece() == null){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean castling(Square start, Square destination){
+        Piece piece = start.getPiece();
+        if(piece.getId().equals("K") && (destination.getCol() != start.getCol()+1 || destination.getCol() != start.getCol()-1)){
             return true;
         }
         return false;
