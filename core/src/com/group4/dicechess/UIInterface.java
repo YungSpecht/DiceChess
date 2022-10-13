@@ -32,10 +32,25 @@ public class UIInterface {
 
     public boolean isLegalPiece(int row, int col){
         Piece piece = board.getSquare(row, col).getPiece();
-        if(piece == null || piece.getWhiteStatus() != (turnCounter % 2 == 0) || (piece.getDiceChessId() != diceRoll && !piece.getId().equals("P"))){
+        if(piece == null || piece.getWhiteStatus() != (turnCounter % 2 == 0) ||  (piece.getDiceChessId() != diceRoll && !isPromotingPawn(piece))){
             return false;
         }
         return legalPieces.contains(piece);
+    }
+
+    private boolean isPromotingPawn(Piece piece){
+        if(diceRoll == 6){
+            return false;
+        }
+        else if(piece.getWhiteStatus() && piece.getId().equals("P") && piece.getRow() == 1){
+            return true;
+        }
+        else if(!piece.getWhiteStatus() && piece.getId().equals("P") && piece.getRow() == 6){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public boolean isLegalPieceChess(int row, int col){

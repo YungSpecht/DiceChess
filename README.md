@@ -17,15 +17,7 @@ The rules are very similar to those of traditional chess with three main excepti
 | 6 | King   |  
 
 3. If a pawn is to be promoted (would advance to the last row), the player can move it even if the die does not show 1. However, he can only promote it to the piece chosen by the die roll - for example, if 3 is rolled, the pawn can be promoted to a bishop only. If 1 is rolled, the pawn can be promoted to any piece.  
-  
-  
-    
-
-
-
-
-
-
+Note: If you roll a 6 you cannot move the pawn forward as that would mean the pawn could promote to a second king.  
 
 ## Installation
 This program is a gradle project created using the LibGDX framework and written in java. Therefore, to run it you have to have gradle installed.  
@@ -34,12 +26,15 @@ To run the code:
 $ git clone https://github.com/YungSpecht/DiceChess.git
 $ cd DiceChess # change directory to the cloned repository
 $ gradle run # run the project via gradle
-```
+```  
 ## Usage
 - Once you have started the program you will find yourself in the main menu of the game.  
 - Press start to start a new game. Instructions about the gameplay can be found to the right of the board at all times.
-- There is an option to switch to a regular chess mode in the Settings Section. You can navigate back to the main menu by pressing the arrow in the top-left corner of the screen.
-## Authors
+- To roll the dice just press on it with your cursor.
+- If you have a pawn that can be promoted on the next move and you roll a 1, you can move the pawn forward and in the terminal you will be prompted to enter what piece you want to promote to.
+- To switch to a mode closer to regular chess (without check) you can navigate to the GameScreen.java class inside `desktop\src\com\group4\dicechess\GUI\GameScreen.java` and change the method `diceChess()` at the beginning of the `render()` method to `chess()` to remove the rolling of the dice.  
+
+## Authors  
 
 - [Deyvla2](https://github.com/Deyvla2)
 - [Jack Waterman](https://github.com/jackwaterman13)
