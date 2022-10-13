@@ -269,7 +269,8 @@ public class Board {
 
     private boolean castling(Square start, Square destination){
         Piece piece = start.getPiece();
-        if(piece.getId().equals("K") && (destination.getCol() != start.getCol()+1 || destination.getCol() != start.getCol()-1)){
+
+        if(piece.getId().equals("K") && piece.getMoveCounter() == 0 && (destination.getCol() == start.getCol()-2 || destination.getCol() == start.getCol()+2)){
             return true;
         }
         return false;

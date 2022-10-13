@@ -24,6 +24,7 @@ public class UIInterface {
         blackScore = 0;
         moveList = new ArrayList<ArrayList<Square>>();
         legalPieces = new ArrayList<Piece>();
+        diceRoll = 1;
     }
 
     public boolean isLegalPiece(int row, int col){
@@ -89,9 +90,8 @@ public class UIInterface {
                 }
             }
         }
-        System.out.println(rolls);
         Random rand = new Random();
-        this.diceRoll = 1; //rolls.get(rand.nextInt(rolls.size()));
+        this.diceRoll = rolls.get(rand.nextInt(rolls.size()));
         return this.diceRoll;
     }
 
