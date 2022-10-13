@@ -42,6 +42,7 @@ public class GameScreen implements Screen {
         this.textureUtils = new TextureUtils();
         gameLoop = new UIInterface();
         enableTxt();
+        textureUtils.setUpBoard(gameLoop.getBoard());
     }
 
     public void enableTxt(){
@@ -51,7 +52,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        chess();
+        diceChess();
         
         ScreenUtils.clear(1, 1, 1, 1);
         game.batch.begin();
@@ -67,10 +68,25 @@ public class GameScreen implements Screen {
             font.draw(game.batch, txtOtp.get(i), xTxt, yTxt+((i-decider)*-15));
         }
 
+        //update board.
         for (int i = 0; i < textureUtils.pieceStorage.length; i++) {
             for (int j = 0; j < textureUtils.pieceStorage[0].length; j++) {
                 if(textureUtils.pieceStorage[i][j] != null){
-                    game.batch.draw(textureUtils.pieceStorage[i][j], textureUtils.pieceStorage[i][j].getX(), textureUtils.pieceStorage[i][j].getY(), textureUtils.pieceStorage[i][j].getWidth(), textureUtils.pieceStorage[i][j].getHeight());
+                    if(textureUtils.boardTranslate[i][j].equals("bk1") || textureUtils.boardTranslate[i][j].equals("bk2")){
+                        game.batch.draw(textureUtils.pieceStorage[i][j], 111 + j*54, 449 - i*53, textureUtils.pieceStorage[i][j].getWidth(), textureUtils.pieceStorage[i][j].getHeight());
+                    } else if(textureUtils.boardTranslate[i][j].equals("k1") || textureUtils.boardTranslate[i][j].equals("k2")){
+                        game.batch.draw(textureUtils.pieceStorage[i][j], 113 + j*54, 453 - i*53, textureUtils.pieceStorage[i][j].getWidth(), textureUtils.pieceStorage[i][j].getHeight());
+                    } else if(textureUtils.boardTranslate[i][j].equals("k")){
+                        game.batch.draw(textureUtils.pieceStorage[i][j], 115 + j*54, 453 - i*53, textureUtils.pieceStorage[i][j].getWidth(), textureUtils.pieceStorage[i][j].getHeight());
+                    } else if(textureUtils.boardTranslate[i][j].equals("bk")){
+                        game.batch.draw(textureUtils.pieceStorage[i][j], 117 + j*54, 450 - i*53, textureUtils.pieceStorage[i][j].getWidth(), textureUtils.pieceStorage[i][j].getHeight());
+                    }else if(textureUtils.boardTranslate[i][j].equals("q")) {
+                        game.batch.draw(textureUtils.pieceStorage[i][j], 113 + j * 54, 454 - i * 53, textureUtils.pieceStorage[i][j].getWidth(), textureUtils.pieceStorage[i][j].getHeight());
+                    }else if(textureUtils.boardTranslate[i][j].equals("bq")) {
+                        game.batch.draw(textureUtils.pieceStorage[i][j], 113 + j * 54, 451 - i * 53, textureUtils.pieceStorage[i][j].getWidth(), textureUtils.pieceStorage[i][j].getHeight());
+                    }else {
+                        game.batch.draw(textureUtils.pieceStorage[i][j], 113 + j*54, 452 - i*53, textureUtils.pieceStorage[i][j].getWidth(), textureUtils.pieceStorage[i][j].getHeight());
+                    }
                 }
             }
         }
@@ -149,7 +165,7 @@ public class GameScreen implements Screen {
                         if(tempPoss[0] == -1){
                             tempPoss = translateToArrayPos(screenX, screenY);
                             if(gameLoop.isLegalPiece(tempPoss[1], tempPoss[0])){
-                                helperNot = intoCoorNotation(tempPoss[0], tempPoss[1]);
+                                helperNot = textureUtils.intoCoorNotation(tempPoss[0], tempPoss[1]);
                                 moveN = "Selected: " + helperNot[0] + helperNot[1];
                                 txtOtp.add(moveN);
                                 txtTracker++;
@@ -161,15 +177,13 @@ public class GameScreen implements Screen {
                             tempPoss2 = translateToArrayPos(screenX, screenY);
                             justSelected = false;
                             if(gameLoop.isLegalMove(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0])){
-                                helperNot = intoCoorNotation(tempPoss[0], tempPoss[1]);
-                                String [] helperNot2 = intoCoorNotation(tempPoss2[0], tempPoss2[1]);
+                                helperNot = textureUtils.intoCoorNotation(tempPoss[0], tempPoss[1]);
+                                String [] helperNot2 = textureUtils.intoCoorNotation(tempPoss2[0], tempPoss2[1]);
                                 moveN = helperNot[0] + helperNot[1] + " -> " + helperNot2[0] + helperNot2[1];
                                 txtOtp.add(moveN);
                                 txtTracker++;
                                 gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]);
-                                textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]] = textureUtils.pieceStorage[tempPoss[1]][tempPoss[0]] ;
-                                textureUtils.pieceStorage[tempPoss[1]][tempPoss[0]] = null;
-                                textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].setPosition(textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].getX() + 54*(tempPoss2[0] - tempPoss[0]) , textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].getY() - 53*(tempPoss2[1] - tempPoss[1]));
+                                textureUtils.updateBoard(gameLoop.getBoard());
                                 tempPoss[0] = -1;
                                 tempPoss[1] = -1;
                                 System.out.println("Valid!");
@@ -229,7 +243,7 @@ public class GameScreen implements Screen {
                         if(tempPoss[0] == -1){
                             tempPoss = translateToArrayPos(screenX, screenY);
                             if(gameLoop.isLegalPieceChess(tempPoss[1], tempPoss[0])){
-                                helperNot = intoCoorNotation(tempPoss[0], tempPoss[1]);
+                                helperNot = textureUtils.intoCoorNotation(tempPoss[0], tempPoss[1]);
                                 moveN = "Selected: " + helperNot[0] + helperNot[1];
                                 txtOtp.add(moveN);
                                 txtTracker++;
@@ -241,15 +255,13 @@ public class GameScreen implements Screen {
                             tempPoss2 = translateToArrayPos(screenX, screenY);
                             justSelected = false;
                             if(gameLoop.isLegalMove(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0])){
-                                helperNot = intoCoorNotation(tempPoss[0], tempPoss[1]);
-                                String [] helperNot2 = intoCoorNotation(tempPoss2[0], tempPoss2[1]);
+                                helperNot = textureUtils.intoCoorNotation(tempPoss[0], tempPoss[1]);
+                                String [] helperNot2 = textureUtils.intoCoorNotation(tempPoss2[0], tempPoss2[1]);
                                 moveN = helperNot[0] + helperNot[1] + " -> " + helperNot2[0] + helperNot2[1];
                                 txtOtp.add(moveN);
                                 txtTracker++;
                                 gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]);
-                                textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]] = textureUtils.pieceStorage[tempPoss[1]][tempPoss[0]] ;
-                                textureUtils.pieceStorage[tempPoss[1]][tempPoss[0]] = null;
-                                textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].setPosition(textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].getX() + 54*(tempPoss2[0] - tempPoss[0]) , textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].getY() - 53*(tempPoss2[1] - tempPoss[1]));
+                                textureUtils.updateBoard(gameLoop.getBoard());
                                 tempPoss[0] = -1;
                                 tempPoss[1] = -1;
                                 System.out.println("Valid!");
@@ -300,44 +312,6 @@ public class GameScreen implements Screen {
         return tempPos;
     }
 
-    public String [] intoCoorNotation(int n, int z){
-        String [] not = new String[2];
-        if(n == 0){
-            not[0] = "a";
-        } else if (n == 1) {
-            not[0] = "b";
-        } else if (n == 2) {
-            not[0] = "c";
-        } else if (n == 3) {
-            not[0] = "d";
-        } else if (n == 4) {
-            not[0] = "e";
-        } else if (n == 5) {
-            not[0] = "f";
-        } else if (n==6) {
-            not[0] = "g";
-        } else if (n == 7) {
-            not[0] = "h";
-        }
-        if(z == 0){
-            not[1] = "8";
-        } else if (z == 1) {
-            not[1] = "7";
-        } else if (z == 2) {
-            not[1] = "6";
-        } else if (z == 3) {
-            not[1] = "5";
-        } else if (z == 4) {
-            not[1] = "4";
-        } else if (z == 5) {
-            not[1] = "3";
-        } else if (z == 6) {
-            not[1] = "2";
-        } else if (z == 7) {
-            not[1] = "1";
-        }
-        return not;
-    }
 
     @Override
     public void show() {}

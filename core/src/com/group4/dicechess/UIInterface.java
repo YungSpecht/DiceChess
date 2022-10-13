@@ -26,6 +26,10 @@ public class UIInterface {
         legalPieces = new ArrayList<Piece>();
     }
 
+    public Board getBoard(){
+        return board;
+    }
+
     public boolean legalMovesAreAvailable(int diceRoll){
         this.diceRoll = diceRoll;
         boolean white = turnCounter % 2 == 0 ? true : false;
@@ -51,7 +55,7 @@ public class UIInterface {
 
     public boolean isLegalPiece(int row, int col){
         Piece piece = board.getSquare(row, col).getPiece();
-        if(piece == null || piece.getWhiteStatus() != (turnCounter % 2 == 0) || piece.getDiceChessId() != diceRoll){
+        if(piece == null || piece.getWhiteStatus() != (turnCounter % 2 == 0) || (piece.getDiceChessId() != diceRoll && !piece.getId().equals("P"))){
             return false;
         }
         return legalPieces.contains(piece);
@@ -76,10 +80,24 @@ public class UIInterface {
     public void movePiece(int startRow, int startCol, int row, int col){
         boolean white = turnCounter % 2 == 0 ? true : false;
         if(white){
-            whiteScore = board.movePiece(board.getSquare(startRow, startCol), board.getSquare(row, col));
+            whiteScore = board.movePiece(board.getSquare(startRow, startCol), board.getSquare(row, col), this.diceRoll);
         }
         else{
-            blackScore = board.movePiece(board.getSquare(startRow, startCol), board.getSquare(row, col));
+            blackScore = board.movePiece(board.getSquare(startRow, startCol), board.getSquare(row, col), this.diceRoll);
+        }
+    }
+
+    public void prepareTurn(){
+        legalPieces.clear();
+        moveList.clear();
+        ArrayList<Piece> allPieces = turnCounter % 2 == 0 ? board.getWhitePieces() : board.getBlackPieces();
+        for(Piece piece : allPieces){
+
+            ArrayList<Square> moves = piece.getPossibleMoves(board, board.getSquare(piece.getRow(), piece.getCol()));
+            if(moves.size() > 0){
+                legalPieces.add(piece);
+                moveList.add(moves);
+            }
         }
     }
 
@@ -98,24 +116,9 @@ public class UIInterface {
                 }
             }
         }
-        System.out.println(rolls);
         Random rand = new Random();
         this.diceRoll = rolls.get(rand.nextInt(rolls.size()));
         return this.diceRoll;
-    }
-
-    public void prepareTurn(){
-        legalPieces.clear();
-        moveList.clear();
-        ArrayList<Piece> allPieces = turnCounter % 2 == 0 ? board.getWhitePieces() : board.getBlackPieces();
-        for(Piece piece : allPieces){
-
-            ArrayList<Square> moves = piece.getPossibleMoves(board, board.getSquare(piece.getRow(), piece.getCol()));
-            if(moves.size() > 0){
-                legalPieces.add(piece);
-                moveList.add(moves);
-            }
-        }
     }
 
     public boolean gameOver(){

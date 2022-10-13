@@ -55,7 +55,7 @@ public class King extends Piece{
 
     private boolean queenside(Board board, Square currentSquare){
         int row = currentSquare.getRow();
-        if(board.getSquare(row, 0).getPiece().getMoveCounter() == 0){
+        if(board.getSquare(row, 0).getPiece() != null  && board.getSquare(row, 0).getPiece().getMoveCounter() == 0){
             for(int i = currentSquare.getCol()-1; i > 0; i--){
                 if(board.getSquare(row, i).getPiece() != null){
                     return false;
@@ -68,7 +68,7 @@ public class King extends Piece{
 
     private boolean kingside(Board board, Square currentSquare){
         int row = currentSquare.getRow();
-        if(board.getSquare(row, 7).getPiece().getMoveCounter() == 0){
+        if(board.getSquare(row, 7).getPiece() != null && board.getSquare(row, 7).getPiece().getMoveCounter() == 0){
             for(int i = currentSquare.getCol()+1; i < 7; i++){
                 if(board.getSquare(row, i).getPiece() != null){
                     return false;

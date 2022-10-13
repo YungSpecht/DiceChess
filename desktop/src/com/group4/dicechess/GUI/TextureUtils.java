@@ -2,7 +2,9 @@ package com.group4.dicechess.GUI;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import java.util.Random;
+import com.group4.dicechess.Representation.Board;
+import com.group4.dicechess.Representation.Piece;
+import com.group4.dicechess.Representation.Square;
 
 public class TextureUtils {
 
@@ -275,6 +277,157 @@ public class TextureUtils {
         pieceStorage[7][5] = sbishop1;
         pieceStorage[7][6] = sknight1;
         pieceStorage[7][7] = srook1;
+    }
+
+    String [][] boardTranslate ={{"br1","bk1","bb1","bq","bk","bb2","bk2","br2"},
+                                {"bp1","bp2","bp3","bp4","bp5","bp6","bp7","bp8"},
+                                {" 0 "," 0 "," 0 "," 0 "," 0  "," 0 "," 0 "," 0 "},
+                                {" 0 "," 0 "," 0 "," 0 "," 0  "," 0 "," 0 "," 0 "},
+                                {" 0 "," 0 "," 0 "," 0 "," 0  "," 0 "," 0 "," 0 "},
+                                {" 0 "," 0 "," 0 "," 0 "," 0  "," 0 "," 0 "," 0 "},
+                                {"p1","p2","p3","p4","p5","p6","p7","p8"},
+                                {"r1","k1","b1","q","k","b2","k2","r2"}};
+
+
+    public Sprite getCorrectPiece(Square square){
+        Piece piece = square.getPiece();
+        switch (piece.getNotation()){
+            case "0":
+                return null;
+            case "r1":
+                return srook1;
+            case "k1":
+                return sknight1;
+            case "b1":
+                return sbishop1;
+            case "q":
+                return squeen;
+            case "k":
+                return sking;
+            case "b2":
+                return sbishop2;
+            case "k2":
+                return sknight2;
+            case "r2":
+                return srook2;
+            case "br1":
+                return srookBlack1;
+            case "bk1":
+                return sknightBlack1;
+            case "bb1":
+                return sbishopBlack1;
+            case "bq":
+                return squeenBlack;
+            case "bk":
+                return skingBlack;
+            case "bb2":
+                return sbishopBlack2;
+            case "bk2":
+                return sknightBlack2;
+            case "br2":
+                return srookBlack2;
+            case "p1":
+                return spawn1;
+            case "p2":
+                return spawn2;
+            case "p3":
+                return spawn3;
+            case "p4":
+                return spawn4;
+            case "p5":
+                return spawn5;
+            case "p6":
+                return spawn6;
+            case "p7":
+                return spawn7;
+            case "p8":
+                return spawn8;
+            case "bp1":
+                return spawnBlack1;
+            case "bp2":
+                return spawnBlack2;
+            case "bp3":
+                return spawnBlack3;
+            case "bp4":
+                return spawnBlack4;
+            case "bp5":
+                return spawnBlack5;
+            case "bp6":
+                return spawnBlack6;
+            case "bp7":
+                return spawnBlack7;
+            case "bp8":
+                return spawnBlack8;
+        }
+        return null;
+    }
+
+    public void setUpBoard(Board boardN){
+        for (int row = 0; row < pieceStorage.length; row++) {
+            for (int col = 0; col < pieceStorage[0].length; col++) {
+                if(boardN.getMBoard()[row][col].getPiece() != null){
+                    boardN.getMBoard()[row][col].getPiece().setNotation(boardTranslate[row][col]);
+                }else {
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public void updateBoard(Board boardN){
+        Square[][] tempBoard = boardN.getMBoard();
+        for (int row = 0; row < pieceStorage.length; row++) {
+            for (int col = 0; col < pieceStorage[0].length; col++) {
+                if(tempBoard[row][col].getPiece() != null){
+                    boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
+                    pieceStorage[row][col] = getCorrectPiece(boardN.getMBoard()[row][col]);
+                    System.out.print(boardN.getMBoard()[row][col].getPiece().getNotation() + " ");
+                }else{
+                    pieceStorage[row][col] = null;
+                    System.out.print(" 0 ");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public String [] intoCoorNotation(int n, int z){
+        String [] not = new String[2];
+        if(n == 0){
+            not[0] = "a";
+        } else if (n == 1) {
+            not[0] = "b";
+        } else if (n == 2) {
+            not[0] = "c";
+        } else if (n == 3) {
+            not[0] = "d";
+        } else if (n == 4) {
+            not[0] = "e";
+        } else if (n == 5) {
+            not[0] = "f";
+        } else if (n==6) {
+            not[0] = "g";
+        } else if (n == 7) {
+            not[0] = "h";
+        }
+        if(z == 0){
+            not[1] = "8";
+        } else if (z == 1) {
+            not[1] = "7";
+        } else if (z == 2) {
+            not[1] = "6";
+        } else if (z == 3) {
+            not[1] = "5";
+        } else if (z == 4) {
+            not[1] = "4";
+        } else if (z == 5) {
+            not[1] = "3";
+        } else if (z == 6) {
+            not[1] = "2";
+        } else if (z == 7) {
+            not[1] = "1";
+        }
+        return not;
     }
 
     public void Roll(int diceN) {

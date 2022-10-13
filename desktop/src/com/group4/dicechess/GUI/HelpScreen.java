@@ -17,7 +17,6 @@ public class HelpScreen implements Screen {
     public HelpScreen(DiceChessGame currentGame){
         this.game = currentGame;
         this.textureUtils = new TextureUtils();
-
     }
 
     @Override

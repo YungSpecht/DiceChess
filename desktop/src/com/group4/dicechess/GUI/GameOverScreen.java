@@ -61,9 +61,9 @@ public class GameOverScreen implements Screen, InputProcessor {
         ScreenUtils.clear(1, 1, 1, 1);
         game.batch.draw(spriteStart, spriteStart.getX(), spriteStart.getY(), spriteStart.getWidth(), spriteStart.getHeight());
         game.batch.draw(spriteExit,spriteExit.getX(), spriteExit.getY(), spriteExit.getWidth(), spriteExit.getHeight());
-        if(this.winner.equals("White")){
+        if(this.winner.equals("Black")){
             game.batch.draw(swwon,swwon.getX()-60, swwon.getY(), swwon.getWidth()+135, swwon.getHeight());
-        } else if(this.winner.equals("Black")){
+        } else if(this.winner.equals("White")){
             game.batch.draw(sbwon,sbwon.getX()-60, sbwon.getY(), sbwon.getWidth()+135, sbwon.getHeight());
         }
         game.batch.draw(diceM, 350, 365, 200, 200);

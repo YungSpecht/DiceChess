@@ -11,6 +11,8 @@ public abstract class Piece {
     private String identifier;
     private int currentSquareRow;
     private int currentSquareCol;
+    private String notation;
+
 
     public Piece(boolean whiteStatus, int value, int diceChessId, String identifier, int currentSquareRow, int currentSquareCol){
         this.whiteStatus = whiteStatus;
@@ -19,10 +21,17 @@ public abstract class Piece {
         this.identifier = identifier;
         this.currentSquareRow = currentSquareRow;
         this.currentSquareCol = currentSquareCol;
+        this.notation = "";
         moveCounter = 0;
     }
 
+    public void setNotation(String nt){
+        this.notation = nt;
+    }
 
+    public String getNotation(){
+        return this.notation;
+    }
 
     public String getId(){
         return identifier;
