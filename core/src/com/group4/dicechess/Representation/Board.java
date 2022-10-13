@@ -1,6 +1,7 @@
 package com.group4.dicechess.Representation;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import com.group4.dicechess.Pieces.Bishop;
 import com.group4.dicechess.Pieces.King;
@@ -150,7 +151,7 @@ public class Board {
      * @param legalMoves ArrayList containing all the squares the piece can be moved to
      * @return integer that represents the value of the captured piece
      */
-    public int movePiece(Square start, Square destination){
+    public int movePiece(Square start, Square destination, int diceRoll){
         int captureValue =0;
         Piece piece = start.getPiece();
         if(piece.getWhiteStatus()){
@@ -185,6 +186,50 @@ public class Board {
                 this.board[0 + (white * 7)][7].setPiece(null);
                 rook.increaseMoveCounter();
                 rook.setCol(5);
+            }
+        }
+        else if(pawnPromotion(start, destination)){
+            if(destination.getPiece() != null){
+                Piece capturedPiece = destination.getPiece();
+                captureValue = capturedPiece.getValue();
+                if(destination.getPiece().getWhiteStatus()){
+                    whitePieces.remove(capturedPiece);
+                    whiteCaptured.add(capturedPiece);
+                }
+                else{
+                    blackPieces.remove(capturedPiece);
+                    blackCaptured.add(capturedPiece);
+                }
+            }
+            if(diceRoll != 1){
+                piece = pieceFactory(diceRoll, start.getPiece().getWhiteStatus(), destination);
+                if(piece.getWhiteStatus()){
+                    whitePieces.add(piece);
+                }
+                else{
+                    blackPieces.add(piece);
+                }
+            }
+            else{
+                int choice = 0;
+                Scanner in = new Scanner(System.in);
+                do{
+                    System.out.println("Please enter the Piece you want to promote to: ");
+                    System.out.println("1 - Pawn");
+                    System.out.println("2 - Knight");
+                    System.out.println("3 - Bishop");
+                    System.out.println("4 - Rook");
+                    System.out.println("5 - Queen");
+                    choice = in.nextInt();
+                }while(choice < 1 || choice > 5);
+                in.close();
+                piece = pieceFactory(choice, start.getPiece().getWhiteStatus(), destination);
+                if(piece.getWhiteStatus()){
+                    whitePieces.add(piece);
+                }
+                else{
+                    blackPieces.add(piece);
+                }
             }
         }
         else if(destination.getPiece() == null){
@@ -228,6 +273,25 @@ public class Board {
             return true;
         }
         return false;
+    }
+
+    private boolean pawnPromotion(Square start, Square destination){
+        Piece piece = start.getPiece();
+        if(piece.getId().equals("P") && (destination.getRow() == 0 || destination.getRow() == 7)){
+            return true;
+        }
+        return false;
+    }
+
+    private Piece pieceFactory(int id, boolean white, Square sq){
+        switch(id){
+            case 1 : return new Pawn(white, sq.getRow(), sq.getCol());
+            case 2 : return new Knight(white, sq.getRow(), sq.getCol());
+            case 3 : return new Bishop(white, sq.getRow(), sq.getCol());
+            case 4 : return new Rook(white, sq.getRow(), sq.getCol());
+            case 5 : return new Queen(white, sq.getRow(), sq.getCol());
+            default : return null;
+        }
     }
 
 }

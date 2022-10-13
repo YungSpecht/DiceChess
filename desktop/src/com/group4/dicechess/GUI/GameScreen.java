@@ -51,7 +51,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        chess();
+        diceChess();
         
         ScreenUtils.clear(1, 1, 1, 1);
         game.batch.begin();
