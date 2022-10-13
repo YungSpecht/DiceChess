@@ -1,6 +1,7 @@
 
-# Dice Chess
-![App Screenshot](https://i.imgur.com/9WL7IEy.png)
+# Dice Chess  
+![App Screenshot](https://i.imgur.com/9WL7IEy.png)  
+  
 This game is called "Dice Chess" and it is a stochastic version of the classic game of chess.
 The rules are very similar to those of traditional chess with three main exceptions:  
 
