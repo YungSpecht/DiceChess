@@ -51,7 +51,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        chess();
+        diceChess();
         
         ScreenUtils.clear(1, 1, 1, 1);
         game.batch.begin();
@@ -108,7 +108,7 @@ public class GameScreen implements Screen {
         game.batch.end();
     }
 
-    private void diceChess1(){
+    private void diceChess(){
         if(!gameLoop.gameOver()){
             if(playerSwitch && !turnActive){
                 cnt++;
@@ -124,107 +124,7 @@ public class GameScreen implements Screen {
                     txtOtp.add("Please roll the dice..");
                     txtTracker++;
                 }
-                playerSwitch = false;
-            }
-    
-            Gdx.input.setInputProcessor(new InputAdapter() {
-                @Override
-                public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
-                    if (screenX >= 15 && screenX <= 45 && screenY >= 10 && screenY <= 40) {
-                        game.setScreen(new MenuScreen(game));
-                        Gdx.input.setInputProcessor(null);
-                    }
-                    if (screenX >= 710 && screenX <= 785 && screenY >= 75 && screenY <= 147 && !turnActive) {
-                        Random random = new Random();
-                        diceN = random.nextInt(5) + 1;
-                        rolled = true;
-                        txtOtp.add("Dice rolled. Result is " + diceN);
-                        txtTracker++;
-                        isPlayable = gameLoop.legalMovesAreAvailable(diceN);
-                        if(isPlayable){
-                            txtOtp.add("Valid! Please select your piece..");
-                            txtTracker++;
-                            turnActive = true;
-                        }
-                        else{
-                            txtOtp.add("Not valid. Next Player!");
-                            txtTracker++;
-                            playerSwitch = true;
-                        }
-                        rolled = true;
-                    }
-                    if(screenX >= 105 && screenX <= 529 && screenY <= 523 && screenY >= 99 && turnActive){
-                        if(tempPoss[0] == -1){
-                            tempPoss = translateToArrayPos(screenX, screenY);
-                            if(gameLoop.isLegalPiece(tempPoss[1], tempPoss[0])){
-                                helperNot = intoCoorNotation(tempPoss[0], tempPoss[1]);
-                                moveN = "Selected: " + helperNot[0] + helperNot[1];
-                                txtOtp.add(moveN);
-                                txtTracker++;
-                                possibleMoves = gameLoop.getLegalMoves(tempPoss[1], tempPoss[0]);
-                                justSelected = true;
-                            }
-                        }
-                        else if(gameLoop.isLegalPiece(tempPoss[1], tempPoss[0])){
-                            tempPoss2 = translateToArrayPos(screenX, screenY);
-                            justSelected = false;
-                            if(gameLoop.isLegalMove(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0])){
-                                helperNot = intoCoorNotation(tempPoss[0], tempPoss[1]);
-                                String [] helperNot2 = intoCoorNotation(tempPoss2[0], tempPoss2[1]);
-                                moveN = helperNot[0] + helperNot[1] + " -> " + helperNot2[0] + helperNot2[1];
-                                txtOtp.add(moveN);
-                                txtTracker++;
-                                gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]);
-                                textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]] = textureUtils.pieceStorage[tempPoss[1]][tempPoss[0]] ;
-                                textureUtils.pieceStorage[tempPoss[1]][tempPoss[0]] = null;
-                                textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].setPosition(textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].getX() + 54*(tempPoss2[0] - tempPoss[0]) , textureUtils.pieceStorage[tempPoss2[1]][tempPoss2[0]].getY() - 53*(tempPoss2[1] - tempPoss[1]));
-                                tempPoss[0] = -1;
-                                tempPoss[1] = -1;
-                                System.out.println("Valid!");
-                                turnActive = false;
-                                playerSwitch = true;
-                                diceN = 0;
-                            }
-                            else {
-                                txtOtp.add("Please try another cell as destination!");
-                                txtTracker++;
-                                justSelected = true;
-                            }
-                        }
-                        else{
-                            txtOtp.add("Try a new initial piece!");
-                            txtTracker++;
-                            tempPoss[0] = -1;
-                            tempPoss[1] = -1;
-                        }
-                    }
-                    return true;
-                }
-            });
-        }
-        else{
-            String winner = cnt%2==0 ? "Black" : "White";
-            game.setScreen(new GameOverScreen(game, winner));
-        }
-    }
-
-    private void diceChess2(){
-        if(!gameLoop.gameOver()){
-            if(playerSwitch && !turnActive){
-                cnt++;
-                gameLoop.turnCounter++;
-                if(cnt % 2 == 0){
-                    txtOtp.add("------------White's turn------------");
-                    txtTracker++;
-                    txtOtp.add("Please roll the dice..");
-                    txtTracker++;
-                } else {
-                    txtOtp.add("------------Black's turn------------");
-                    txtTracker++;
-                    txtOtp.add("Please roll the dice..");
-                    txtTracker++;
-                }
+                gameLoop.prepareTurn();
                 playerSwitch = false;
             }
     
@@ -241,17 +141,9 @@ public class GameScreen implements Screen {
                         rolled = true;
                         txtOtp.add("Dice rolled. Result is " + diceN);
                         txtTracker++;
-                        isPlayable = gameLoop.legalMovesAreAvailable(diceN);
-                        if(isPlayable){
-                            txtOtp.add("Valid! Please select your piece..");
-                            txtTracker++;
-                            turnActive = true;
-                        }
-                        else{
-                            txtOtp.add("Not valid. Next Player!");
-                            txtTracker++;
-                            playerSwitch = true;
-                        }
+                        txtOtp.add("Please select your piece..");
+                        txtTracker++;
+                        turnActive = true;
                     }
                     if(screenX >= 105 && screenX <= 529 && screenY <= 523 && screenY >= 99 && turnActive){
                         if(tempPoss[0] == -1){

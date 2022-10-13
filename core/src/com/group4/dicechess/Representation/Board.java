@@ -18,6 +18,14 @@ public class Board {
     private Piece lastMovedPieceBlack;
     private Piece lastMovedPieceWhite;
 
+    public static void main(String[] args) {
+        Board test = new Board();
+        test.printBoard();
+
+        ArrayList<Square> result = test.getSquare(0, 4).getPiece().getPossibleMoves(test, test.getSquare(0, 4));
+        System.out.println(result.size());
+    }
+
     public Board(){
         board = new Square[8][8];
         whitePieces = new ArrayList<Piece>();
@@ -82,14 +90,14 @@ public class Board {
      */
     private void setUpBoard(){
         // Set up the pawns
-        for(int i = 0; i < board.length; i++){
+        for(int i = 0; i < 8; i++){
             board[1][i] = new Square(1, i, new Pawn(false, 1, i));
             board[6][i] = new Square(6, i, new Pawn(true, 6, i));
         }
-
+       
         // Set up empty squares
         for(int i = 2; i < 6; i++) {
-            for(int j = 0; j < board[i].length; j++) {
+            for(int j = 0; j < 8; j++) {
                 board[i][j] = new Square(i, j, null);
             }
 
@@ -118,8 +126,8 @@ public class Board {
         board[7][3] = new Square(7, 3, new Queen(true, 7, 3));
 
         // Set up the Kings
-        board[0][4] = new Square(0, 3, new King(false, 0, 4));
-        board[7][4] = new Square(7, 3, new King(true, 7, 4));
+        board[0][4] = new Square(0, 4, new King(false, 0, 4));
+        board[7][4] = new Square(7, 4, new King(true, 7, 4));
 
         for(int i = 0; i < 2; i++){
             for(int j = 0; j < 8; j++){
@@ -160,9 +168,7 @@ public class Board {
                 whitePieces.remove(board[start.getRow()][destination.getCol()].getPiece());
                 whiteCaptured.add(board[start.getRow()][destination.getCol()].getPiece());
             }
-            System.out.println("The piece about to get en passanted is: "+ board[start.getRow()][destination.getCol()].getPiece());
-            board[start.getRow()][destination.getCol()].setPiece(null);
-            System.out.println("The piece was en passanted : "+ board[start.getRow()][destination.getCol()].getPiece());
+            this.board[start.getRow()][destination.getCol()].setPiece(null);
         }
         else if(destination.getPiece() == null && !enPassant(start, destination)){
             captureValue = 0;
@@ -184,6 +190,7 @@ public class Board {
         piece.setRow(destination.getRow());
         piece.setCol(destination.getCol());
         piece.increaseMoveCounter();
+        this.printBoard();
         return captureValue;
     }
 

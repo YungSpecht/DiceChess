@@ -21,16 +21,17 @@ public class Pawn extends Piece{
         int rightBound = col + 1 > 7 ? col : col + 1;
         for(int i = leftBound; i <= rightBound; i++){
             Square square = board.getSquare(row + 1 + (white * (-2)), i);
-            if((i != col && square.getPiece() != null && square.getPiece().getWhiteStatus() != this.getWhiteStatus()) || (enPassantPossible(board, currentSquare, square))){
+            if((i != col && square.getPiece() != null && square.getPiece().getWhiteStatus() != this.getWhiteStatus() || (enPassantPossible(board, currentSquare, square)))){
                 result.add(square);
             }
             else if(i == col && square.getPiece() == null){
                 result.add(square);
             }
         }
-        Square square = board.getSquare(row + 2 + (white * (-4)), col);
-        if(this.getMoveCounter() == 0 && square.getPiece() == null){
-            result.add(square);
+        if(this.getMoveCounter() == 0){
+            if(board.getSquare(row + 2 + (white * (-4)), col).getPiece() == null && board.getSquare(row + 1 + (white * (-2)), col).getPiece() == null){
+                result.add(board.getSquare(row + 2 + (white * (-4)), col));
+            }
         }
         return result;
     }

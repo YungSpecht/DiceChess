@@ -74,7 +74,9 @@ public abstract class Piece {
      * @return true if the square is free, false if it is occupied or the coordinates are out of bounds
      */
     public static boolean SquareFree(Board board, int row, int col){
-        if(row < 0 || row > 7 || col < 0 || col > 7) return false;
+        if(row < 0 || row > 7 || col < 0 || col > 7){
+            return false;
+        }
         if(board.getSquare(row, col).getPiece() == null){
             return true;
         }
@@ -90,9 +92,10 @@ public abstract class Piece {
      * @return true if the square contains a piece that can be captured, false otherwise
      */
     public static boolean canCapture(Board board, int row, int col, boolean white){
-        if(row < 0 || row > 7 || col < 0 || col > 7) return false;
+        if(row < 0 || row > 7 || col < 0 || col > 7){
+            return false;
+        }
         Piece piece = board.getSquare(row, col).getPiece();
-        
         if(piece != null && piece.getWhiteStatus() != white){
             return true;
         }

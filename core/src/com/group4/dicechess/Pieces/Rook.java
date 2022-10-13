@@ -23,7 +23,9 @@ public class Rook extends Piece{
             if(left){
                 if(canCapture(board, row, col - i, this.getWhiteStatus()) || SquareFree(board, row, col - i)){
                     result.add(board.getSquare(row, col - i));
-                    if(canCapture(board, row, col - i, this.getWhiteStatus())) left = false;
+                    if(canCapture(board, row, col - i, this.getWhiteStatus())){
+                        left = false;
+                    }
                 }
                 else{
                     left = false;
@@ -32,7 +34,9 @@ public class Rook extends Piece{
             if(right){
                 if(canCapture(board, row, col + i, this.getWhiteStatus()) || SquareFree(board, row, col + i)){
                     result.add(board.getSquare(row, col + i));
-                    if(canCapture(board, row, col + i, this.getWhiteStatus())) right = false;
+                    if(canCapture(board, row, col + i, this.getWhiteStatus())){
+                        right = false;
+                    }
                 }
                 else{
                     right = false;
@@ -41,7 +45,9 @@ public class Rook extends Piece{
             if(up){
                 if(canCapture(board, row - i, col, this.getWhiteStatus()) || SquareFree(board, row - i, col)){
                     result.add(board.getSquare(row - i, col));
-                    if(canCapture(board, row - i, col, this.getWhiteStatus())) up = false;
+                    if(canCapture(board, row - i, col, this.getWhiteStatus())){
+                        up = false;
+                    }
                 }
                 else{
                     up = false;
@@ -50,7 +56,9 @@ public class Rook extends Piece{
             if(down){
                 if(canCapture(board, row + i, col, this.getWhiteStatus()) || SquareFree(board, row + i, col)){
                     result.add(board.getSquare(row + i, col));
-                    if(canCapture(board, row + i, col, this.getWhiteStatus())) down = false;
+                    if(canCapture(board, row + i, col, this.getWhiteStatus())){
+                        down = false;
+                    }
                 }
                 else{
                     down = false;
