@@ -170,8 +170,7 @@ public class GameScreen implements Screen {
                                 possibleMoves = gameLoop.getLegalMoves(tempPoss[1], tempPoss[0]);
                                 justSelected = true;
                             }
-                        }
-                        else if(gameLoop.isLegalPiece(tempPoss[1], tempPoss[0])){
+                        } else if(gameLoop.isLegalPiece(tempPoss[1], tempPoss[0])){
                             tempPoss2 = translateToArrayPos(screenX, screenY);
                             justSelected = false;
                             if(gameLoop.isLegalMove(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0])){
@@ -192,6 +191,8 @@ public class GameScreen implements Screen {
                             else {
                                 txtOtp.add("Please try another cell as destination!");
                                 txtTracker++;
+                                tempPoss[0] = -1;
+                                tempPoss[1] = -1;
                                 justSelected = true;
                             }
                         }
@@ -268,9 +269,14 @@ public class GameScreen implements Screen {
                                 diceN = 0;
                             }
                             else {
-                                txtOtp.add("Please try another cell as destination!");
-                                txtTracker++;
-                                justSelected = true;
+                                if(gameLoop.isLegalPieceChess(tempPoss2[1], tempPoss2[0])){
+                                    tempPoss[0] = -1;
+                                    tempPoss[1] = -1;
+                                } else {
+                                    txtOtp.add("Please try another cell!");
+                                    txtTracker++;
+                                    justSelected = true;
+                                }
                             }
                         }
                         else{
