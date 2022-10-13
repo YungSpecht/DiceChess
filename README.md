@@ -6,14 +6,15 @@ The rules are very similar to those of traditional chess with three main excepti
 
 1. There is no check or checkmate, it is allowed to move the king to a square attacked by opponent's piece. The goal is to capture opponent's king.
 2. A die is rolled for every move. The die is displayed below the game board and the number determines which piece can be used to make the move.  
+
 | 1 | Pawn   |
 |---|--------|
 | 2 | Knight |
 | 3 | Bishop |
 | 4 | Rook   |
 | 5 | Queen  |
-| 6 | King   |
-  
+| 6 | King   |  
+
 3. If a pawn is to be promoted (would advance to the last row), the player can move it even if the die does not show 1. However, he can only promote it to the piece chosen by the die roll - for example, if 3 is rolled, the pawn can be promoted to a bishop only. If 1 is rolled, the pawn can be promoted to any piece.  
   
   
