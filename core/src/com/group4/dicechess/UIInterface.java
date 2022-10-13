@@ -2,12 +2,12 @@ package com.group4.dicechess;
 
 import java.util.ArrayList;
 import java.util.Random;
-
 import com.group4.dicechess.Representation.Board;
 import com.group4.dicechess.Representation.Piece;
 import com.group4.dicechess.Representation.Square;
 
 public class UIInterface {
+
     private Board board;
     public int turnCounter;
     private int whiteScore;
@@ -16,7 +16,6 @@ public class UIInterface {
     private ArrayList<ArrayList<Square>> moveList;
     private ArrayList<Piece> legalPieces;
 
-
     public UIInterface(){
         board = new Board();
         turnCounter = -1;
@@ -24,33 +23,11 @@ public class UIInterface {
         blackScore = 0;
         moveList = new ArrayList<ArrayList<Square>>();
         legalPieces = new ArrayList<Piece>();
+        diceRoll = 1;
     }
 
     public Board getBoard(){
         return board;
-    }
-
-    public boolean legalMovesAreAvailable(int diceRoll){
-        this.diceRoll = diceRoll;
-        boolean white = turnCounter % 2 == 0 ? true : false;
-        legalPieces.clear();
-        ArrayList<Piece> allPieces = white ? board.getWhitePieces() : board.getBlackPieces();
-        for(Piece piece : allPieces){
-            if(piece.getDiceChessId() == diceRoll){
-                legalPieces.add(piece);
-            }
-        }
-        moveList.clear();
-        for(int i = 0; i < legalPieces.size(); i++){
-            Piece piece = legalPieces.get(i);
-            moveList.add(piece.getPossibleMoves(board, board.getSquare(piece.getRow(), piece.getCol())));
-        }
-        for(ArrayList<Square> list : moveList){
-            if(list.size() > 0){
-                return true;
-            }
-        }
-        return false;
     }
 
     public boolean isLegalPiece(int row, int col){
@@ -92,7 +69,6 @@ public class UIInterface {
         moveList.clear();
         ArrayList<Piece> allPieces = turnCounter % 2 == 0 ? board.getWhitePieces() : board.getBlackPieces();
         for(Piece piece : allPieces){
-
             ArrayList<Square> moves = piece.getPossibleMoves(board, board.getSquare(piece.getRow(), piece.getCol()));
             if(moves.size() > 0){
                 legalPieces.add(piece);
@@ -116,7 +92,9 @@ public class UIInterface {
                 }
             }
         }
+        System.out.println(rolls);
         Random rand = new Random();
+        this.diceRoll = 1; //rolls.get(rand.nextInt(rolls.size()));
         this.diceRoll = rolls.get(rand.nextInt(rolls.size()));
         return this.diceRoll;
     }
@@ -137,15 +115,7 @@ public class UIInterface {
         return false;
     }
 
-    public int getWhiteScore(){
-        return whiteScore;
-    }
-
-    public int getBlackScore(){
-        return blackScore;
-    }
-    
-    public int getTurnCount(){
-        return turnCounter;
-    }
+    public int getWhiteScore(){return whiteScore;}
+    public int getBlackScore(){return blackScore;}
+    public int getTurnCount(){return turnCounter;}
 }
