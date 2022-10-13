@@ -1,8 +1,6 @@
 package com.group4.dicechess.GUI;
 
 import java.util.ArrayList;
-import java.util.Random;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
@@ -52,7 +50,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        diceChess();
+        chess();
         
         ScreenUtils.clear(1, 1, 1, 1);
         game.batch.begin();

@@ -244,7 +244,6 @@ public class TextureUtils {
         spriteSound.setSize(200, 50);
         spriteBots.setPosition(350, 330);
         spriteBots.setSize(200, 50);
-
         pieceStorage[0][0] = srookBlack2;
         pieceStorage[0][1] = sknightBlack2;
         pieceStorage[0][2] = sbishopBlack2;
@@ -367,10 +366,8 @@ public class TextureUtils {
             for (int col = 0; col < pieceStorage[0].length; col++) {
                 if(boardN.getMBoard()[row][col].getPiece() != null){
                     boardN.getMBoard()[row][col].getPiece().setNotation(boardTranslate[row][col]);
-                }else {
                 }
             }
-            System.out.println();
         }
     }
 
@@ -381,51 +378,67 @@ public class TextureUtils {
                 if(tempBoard[row][col].getPiece() != null){
                     boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
                     pieceStorage[row][col] = getCorrectPiece(boardN.getMBoard()[row][col]);
-                    System.out.print(boardN.getMBoard()[row][col].getPiece().getNotation() + " ");
                 }else{
                     pieceStorage[row][col] = null;
-                    System.out.print(" 0 ");
                 }
             }
-            System.out.println();
         }
     }
 
     public String [] intoCoorNotation(int n, int z){
+
         String [] not = new String[2];
-        if(n == 0){
-            not[0] = "a";
-        } else if (n == 1) {
-            not[0] = "b";
-        } else if (n == 2) {
-            not[0] = "c";
-        } else if (n == 3) {
-            not[0] = "d";
-        } else if (n == 4) {
-            not[0] = "e";
-        } else if (n == 5) {
-            not[0] = "f";
-        } else if (n==6) {
-            not[0] = "g";
-        } else if (n == 7) {
-            not[0] = "h";
+        switch (n){
+            case 0:
+                not[0] = "a";
+                break;
+            case 1:
+                not[0] = "b";
+                break;
+            case 2:
+                not[0] = "c";
+                break;
+            case 3:
+                not[0] = "d";
+                break;
+            case 4:
+                not[0] = "e";
+                break;
+            case 5:
+                not[0] = "f";
+                break;
+            case 6:
+                not[0] = "g";
+                break;
+            case 7:
+                not[0] = "h";
+                break;
         }
-        if(z == 0){
-            not[1] = "8";
-        } else if (z == 1) {
-            not[1] = "7";
-        } else if (z == 2) {
-            not[1] = "6";
-        } else if (z == 3) {
-            not[1] = "5";
-        } else if (z == 4) {
-            not[1] = "4";
-        } else if (z == 5) {
-            not[1] = "3";
-        } else if (z == 6) {
-            not[1] = "2";
-        } else if (z == 7) {
-            not[1] = "1";
+        switch (z){
+            case 0:
+                not[1] = "8";
+                break;
+            case 1:
+                not[1] = "7";
+                break;
+            case 2:
+                not[1] = "6";
+                break;
+            case 3:
+                not[1] = "5";
+                break;
+            case 4:
+                not[1] = "4";
+                break;
+            case 5:
+                not[1] = "3";
+                break;
+            case 6:
+                not[1] = "2";
+                break;
+            case 7:
+                not[1] = "1";
+                break;
         }
         return not;
     }

@@ -22,7 +22,6 @@ public class Board {
     public static void main(String[] args) {
         Board test = new Board();
         test.printBoard();
-
         ArrayList<Square> result = test.getSquare(0, 4).getPiece().getPossibleMoves(test, test.getSquare(0, 4));
         System.out.println(result.size());
     }
