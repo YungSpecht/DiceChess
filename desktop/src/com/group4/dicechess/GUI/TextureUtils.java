@@ -816,6 +816,16 @@ public class TextureUtils {
     }
 
     public void setUpBoard(Board boardN){
+        for (int i = 0; i < 9; i++) {
+            bpromotedQueens.get(i).setSize(33,47);
+            promotedQueens.get(i).setSize(33, 47);
+            promotedRook.get(i).setSize(33, 47);
+            bpromotedRook.get(i).setSize(32, 54);
+            promotedBishops.get(i).setSize(32, 52);
+            bpromotedBishops.get(i).setSize(32, 52);
+            promotedKnight.get(i).setSize(32, 54);
+            bpromotedKnight.get(i).setSize(32, 54);
+        }
         for (int row = 0; row < pieceStorage.length; row++) {
             for (int col = 0; col < pieceStorage[0].length; col++) {
                 if(boardN.getMBoard()[row][col].getPiece() != null){
@@ -841,7 +851,6 @@ public class TextureUtils {
                                     String promotedTemp = "r" + tem;
                                     boardN.getMBoard()[row][col].getPiece().setNotation(promotedTemp);
                                     boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
-                                    promotedRook.get(rookCounter).setSize(33, 47);
                                     pieceStorage[row][col] = promotedRook.get(rookCounter);
                                     rookCounter++;
                                     break;
@@ -850,7 +859,6 @@ public class TextureUtils {
                                     String promotedTemp = "br" + tem;
                                     boardN.getMBoard()[row][col].getPiece().setNotation(promotedTemp);
                                     boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
-                                    bpromotedRook.get(brookCounter).setSize(32, 54);
                                     pieceStorage[row][col] = bpromotedRook.get(brookCounter);
                                     brookCounter++;
                                     break;
@@ -861,7 +869,6 @@ public class TextureUtils {
                                     String promotedTemp1 = "k" + tem1;
                                     boardN.getMBoard()[row][col].getPiece().setNotation(promotedTemp1);
                                     boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
-                                    promotedKnight.get(knightCounter).setSize(32, 54);
                                     pieceStorage[row][col] = promotedKnight.get(knightCounter);
                                     knightCounter++;
                                     break;
@@ -870,7 +877,6 @@ public class TextureUtils {
                                     String promotedTemp1 = "bk" + tem1;
                                     boardN.getMBoard()[row][col].getPiece().setNotation(promotedTemp1);
                                     boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
-                                    bpromotedKnight.get(bknightCounter).setSize(32, 54);
                                     pieceStorage[row][col] = bpromotedKnight.get(bknightCounter);
                                     bknightCounter++;
                                     break;
@@ -882,7 +888,6 @@ public class TextureUtils {
                                     String promotedTemp2 = "q" + tem2;
                                     boardN.getMBoard()[row][col].getPiece().setNotation(promotedTemp2);
                                     boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
-                                    promotedQueens.get(queenCounter).setSize(33, 47);
                                     pieceStorage[row][col] = promotedQueens.get(queenCounter);
                                     queenCounter++;
                                     break;
@@ -891,7 +896,6 @@ public class TextureUtils {
                                     String promotedTemp2 = "bq" + tem2;
                                     boardN.getMBoard()[row][col].getPiece().setNotation(promotedTemp2);
                                     boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
-                                    bpromotedQueens.get(bqueenCounter).setSize(33, 47);
                                     pieceStorage[row][col] = bpromotedQueens.get(bqueenCounter);
                                     bqueenCounter++;
                                     break;
@@ -902,7 +906,6 @@ public class TextureUtils {
                                     String promotedTemp3 = "b" + tem3;
                                     boardN.getMBoard()[row][col].getPiece().setNotation(promotedTemp3);
                                     boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
-                                    promotedBishops.get(bishopCounter).setSize(32, 52);
                                     pieceStorage[row][col] = promotedBishops.get(bishopCounter);
                                     bishopCounter++;
                                     break;
@@ -911,7 +914,6 @@ public class TextureUtils {
                                     String promotedTemp3 = "bb" + tem3;
                                     boardN.getMBoard()[row][col].getPiece().setNotation(promotedTemp3);
                                     boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
-                                    bpromotedBishops.get(bbishopCounter).setSize(32, 52);
                                     pieceStorage[row][col] = bpromotedBishops.get(bbishopCounter);
                                     bbishopCounter++;
                                     break;
