@@ -83,6 +83,16 @@ public class TextureUtils {
     Sprite promotedQ8;
     Sprite promotedQ9;
 
+    Sprite bpromotedQ1;
+    Sprite bpromotedQ2;
+    Sprite bpromotedQ3;
+    Sprite bpromotedQ4;
+    Sprite bpromotedQ5;
+    Sprite bpromotedQ6;
+    Sprite bpromotedQ7;
+    Sprite bpromotedQ8;
+    Sprite bpromotedQ9;
+
     Sprite promotedR1;
     Sprite promotedR2;
     Sprite promotedR3;
@@ -93,6 +103,18 @@ public class TextureUtils {
     Sprite promotedR8;
     Sprite promotedR9;
     Sprite promotedR10;
+
+
+    Sprite bpromotedR1;
+    Sprite bpromotedR2;
+    Sprite bpromotedR3;
+    Sprite bpromotedR4;
+    Sprite bpromotedR5;
+    Sprite bpromotedR6;
+    Sprite bpromotedR7;
+    Sprite bpromotedR8;
+    Sprite bpromotedR9;
+    Sprite bpromotedR10;
 
     Sprite promotedK1;
     Sprite promotedK2;
@@ -105,6 +127,18 @@ public class TextureUtils {
     Sprite promotedK9;
     Sprite promotedK10;
 
+
+    Sprite bpromotedK1;
+    Sprite bpromotedK2;
+    Sprite bpromotedK3;
+    Sprite bpromotedK4;
+    Sprite bpromotedK5;
+    Sprite bpromotedK6;
+    Sprite bpromotedK7;
+    Sprite bpromotedK8;
+    Sprite bpromotedK9;
+    Sprite bpromotedK10;
+
     Sprite promotedB1;
     Sprite promotedB2;
     Sprite promotedB3;
@@ -115,15 +149,38 @@ public class TextureUtils {
     Sprite promotedB8;
     Sprite promotedB9;
     Sprite promotedB10;
+
+    Sprite bpromotedB1;
+    Sprite bpromotedB2;
+    Sprite bpromotedB3;
+    Sprite bpromotedB4;
+    Sprite bpromotedB5;
+    Sprite bpromotedB6;
+    Sprite bpromotedB7;
+    Sprite bpromotedB8;
+    Sprite bpromotedB9;
+    Sprite bpromotedB10;
+
     Array<Sprite> promotedQueens = new Array<>();
+    Array<Sprite> bpromotedQueens = new Array<>();
 
     int knightCounter = 1;
+    int bknightCounter = 1;
     int queenCounter = 1;
+    int bqueenCounter = 1;
     int bishopCounter = 1;
+    int bbishopCounter = 1;
     int rookCounter = 1;
+    int brookCounter = 1;
+
     Array<Sprite> promotedKnight = new Array<>();
+    Array<Sprite> bpromotedKnight = new Array<>();
+
     Array<Sprite> promotedBishops = new Array<>();
+    Array<Sprite> bpromotedBishops = new Array<>();
+
     Array<Sprite> promotedRook = new Array<>();
+    Array<Sprite> bpromotedRook = new Array<>();
 
 
     Sprite spriteDice4;
@@ -212,9 +269,13 @@ public class TextureUtils {
         spriteBoard = new Sprite(board);
 
         promotedB1 = new Sprite(bishop);
+        promotedB1.setSize(32, 52);
         promotedB2 = new Sprite(bishop);
+        promotedB2.setSize(32, 52);
         promotedB3 = new Sprite(bishop);
+        promotedB3.setSize(32, 52);
         promotedB4 = new Sprite(bishop);
+        promotedB4.setSize(32, 52);
         promotedB5 = new Sprite(bishop);
         promotedB6 = new Sprite(bishop);
         promotedB7 = new Sprite(bishop);
@@ -222,28 +283,24 @@ public class TextureUtils {
         promotedB9 = new Sprite(bishop);
         promotedB10 = new Sprite(bishop);
 
-        promotedBishops.add(promotedB1);
-        promotedBishops.add(promotedB2);
-        promotedBishops.add(promotedB3);
-        promotedBishops.add(promotedB4);
-        promotedBishops.add(promotedB5);
-        promotedBishops.add(promotedB6);
-        promotedBishops.add(promotedB7);
-        promotedBishops.add(promotedB8);
-        promotedBishops.add(promotedB9);
-        promotedBishops.add(promotedB10);
+        bpromotedB1 = new Sprite(bishopBlack);
+        bpromotedB1.setSize(32, 52);
+        bpromotedB2 = new Sprite(bishopBlack);
+        bpromotedB2.setSize(32, 52);
+        bpromotedB3 = new Sprite(bishopBlack);
+        bpromotedB3.setSize(32, 52);
+        bpromotedB4 = new Sprite(bishopBlack);
+        bpromotedB4.setSize(32, 52);
+        bpromotedB5 = new Sprite(bishopBlack);
+        bpromotedB6 = new Sprite(bishopBlack);
+        bpromotedB7 = new Sprite(bishopBlack);
+        bpromotedB8 = new Sprite(bishopBlack);
+        bpromotedB9 = new Sprite(bishopBlack);
+        bpromotedB10 = new Sprite(bishopBlack);
 
-        promotedQueens.add(promotedQ1);
-        promotedQueens.add(promotedQ2);
-        promotedQueens.add(promotedQ3);
-        promotedQueens.add(promotedQ4);
-        promotedQueens.add(promotedQ5);
-        promotedQueens.add(promotedQ6);
-        promotedQueens.add(promotedQ7);
-        promotedQueens.add(promotedQ8);
-        promotedQueens.add(promotedQ9);
 
         promotedK1 = new Sprite(knight);
+        promotedK1.setSize(32, 54);
         promotedK2 = new Sprite(knight);
         promotedK3 = new Sprite(knight);
         promotedK4 = new Sprite(knight);
@@ -254,28 +311,28 @@ public class TextureUtils {
         promotedK9 = new Sprite(knight);
         promotedK10 = new Sprite(knight);
 
-        promotedKnight.add(promotedK1);
-        promotedKnight.add(promotedK2);
-        promotedKnight.add(promotedK3);
-        promotedKnight.add(promotedK4);
-        promotedKnight.add(promotedK5);
-        promotedKnight.add(promotedK6);
-        promotedKnight.add(promotedK7);
-        promotedKnight.add(promotedK8);
-        promotedKnight.add(promotedK9);
-        promotedKnight.add(promotedK10);
+        bpromotedK1 = new Sprite(knightBlack);
+        bpromotedK1.setSize(32, 54);
+        bpromotedK2 = new Sprite(knightBlack);
+        bpromotedK3 = new Sprite(knightBlack);
+        bpromotedK4 = new Sprite(knightBlack);
+        bpromotedK5 = new Sprite(knightBlack);
+        bpromotedK6 = new Sprite(knightBlack);
+        bpromotedK7 = new Sprite(knightBlack);
+        bpromotedK8 = new Sprite(knightBlack);
+        bpromotedK9 = new Sprite(knightBlack);
+        bpromotedK10 = new Sprite(knightBlack);
 
-        promotedRook.add(promotedR1);
-        promotedRook.add(promotedR2);
-        promotedRook.add(promotedR3);
-        promotedRook.add(promotedR4);
-        promotedRook.add(promotedR5);
-        promotedRook.add(promotedR6);
-        promotedRook.add(promotedR7);
-        promotedRook.add(promotedR8);
-        promotedRook.add(promotedR9);
-        promotedRook.add(promotedR10);
 
+        bpromotedQ1 = new Sprite(queenBlack);
+        bpromotedQ2 = new Sprite(queenBlack);
+        bpromotedQ3 = new Sprite(queenBlack);
+        bpromotedQ4 = new Sprite(queenBlack);
+        bpromotedQ5 = new Sprite(queenBlack);
+        bpromotedQ6 = new Sprite(queenBlack);
+        bpromotedQ7 = new Sprite(queenBlack);
+        bpromotedQ8 = new Sprite(queenBlack);
+        bpromotedQ9 = new Sprite(queenBlack);
 
         promotedQ1 = new Sprite(queen);
         promotedQ2 = new Sprite(queen);
@@ -286,6 +343,18 @@ public class TextureUtils {
         promotedQ7 = new Sprite(queen);
         promotedQ8 = new Sprite(queen);
         promotedQ9 = new Sprite(queen);
+
+
+        bpromotedR1 = new Sprite(rookBlack);
+        bpromotedR2 = new Sprite(rookBlack);
+        bpromotedR3 = new Sprite(rookBlack);
+        bpromotedR4 = new Sprite(rookBlack);
+        bpromotedR5 = new Sprite(rookBlack);
+        bpromotedR6 = new Sprite(rookBlack);
+        bpromotedR7 = new Sprite(rookBlack);
+        bpromotedR8 = new Sprite(rookBlack);
+        bpromotedR9 = new Sprite(rookBlack);
+        bpromotedR10 = new Sprite(rookBlack);
 
         promotedR1 = new Sprite(rook);
         promotedR2 = new Sprite(rook);
@@ -298,6 +367,80 @@ public class TextureUtils {
         promotedR9 = new Sprite(rook);
         promotedR10 = new Sprite(rook);
 
+        promotedKnight.add(promotedK1);
+        promotedKnight.add(promotedK2);
+        promotedKnight.add(promotedK3);
+        promotedKnight.add(promotedK4);
+        promotedKnight.add(promotedK5);
+        promotedKnight.add(promotedK6);
+        promotedKnight.add(promotedK7);
+        promotedKnight.add(promotedK8);
+        promotedKnight.add(promotedK9);
+        promotedKnight.add(promotedK10);
+
+        bpromotedKnight.add(bpromotedK1);
+        bpromotedKnight.add(bpromotedK2);
+        bpromotedKnight.add(bpromotedK3);
+        bpromotedKnight.add(bpromotedK4);
+        bpromotedKnight.add(bpromotedK5);
+        bpromotedKnight.add(bpromotedK6);
+        bpromotedKnight.add(bpromotedK7);
+        bpromotedKnight.add(bpromotedK8);
+        bpromotedKnight.add(bpromotedK9);
+        bpromotedKnight.add(bpromotedK10);
+
+        promotedRook.add(promotedR1);
+        promotedRook.add(promotedR2);
+        promotedRook.add(promotedR3);
+        promotedRook.add(promotedR4);
+        promotedRook.add(promotedR5);
+        promotedRook.add(promotedR6);
+        promotedRook.add(promotedR7);
+        promotedRook.add(promotedR8);
+        promotedRook.add(promotedR9);
+        promotedRook.add(promotedR10);
+        bpromotedRook.add(bpromotedR1);
+        bpromotedRook.add(bpromotedR2);
+        bpromotedRook.add(bpromotedR3);
+        bpromotedRook.add(bpromotedR4);
+        bpromotedRook.add(bpromotedR5);
+        bpromotedRook.add(bpromotedR6);
+        bpromotedRook.add(bpromotedR7);
+        bpromotedRook.add(bpromotedR8);
+        bpromotedRook.add(bpromotedR9);
+        bpromotedRook.add(bpromotedR10);
+
+        promotedBishops.add(promotedB1);
+        promotedBishops.add(promotedB2);
+        promotedBishops.add(promotedB3);
+        promotedBishops.add(promotedB4);
+        promotedBishops.add(promotedB5);
+        promotedBishops.add(promotedB6);
+        promotedBishops.add(promotedB7);
+        promotedBishops.add(promotedB8);
+        promotedBishops.add(promotedB9);
+        promotedBishops.add(promotedB10);
+
+        bpromotedBishops.add(bpromotedB1);
+        bpromotedBishops.add(bpromotedB2);
+        bpromotedBishops.add(bpromotedB3);
+        bpromotedBishops.add(bpromotedB4);
+        bpromotedBishops.add(bpromotedB5);
+        bpromotedBishops.add(bpromotedB6);
+        bpromotedBishops.add(bpromotedB7);
+        bpromotedBishops.add(bpromotedB8);
+        bpromotedBishops.add(bpromotedB9);
+        bpromotedBishops.add(bpromotedB10);
+
+        promotedQueens.add(bpromotedQ1);
+        promotedQueens.add(bpromotedQ2);
+        promotedQueens.add(bpromotedQ3);
+        promotedQueens.add(bpromotedQ4);
+        promotedQueens.add(bpromotedQ5);
+        promotedQueens.add(bpromotedQ6);
+        promotedQueens.add(promotedQ7);
+        promotedQueens.add(promotedQ8);
+        promotedQueens.add(promotedQ9);
 
         spriteNotation.setPosition(625, 50);
         spriteNotation.setSize(250, 350);
@@ -388,6 +531,7 @@ public class TextureUtils {
         spriteSound.setSize(200, 50);
         spriteBots.setPosition(350, 330);
         spriteBots.setSize(200, 50);
+
         pieceStorage[0][0] = srookBlack2;
         pieceStorage[0][1] = sknightBlack2;
         pieceStorage[0][2] = sbishopBlack2;
@@ -501,6 +645,131 @@ public class TextureUtils {
                 return spawnBlack7;
             case "bp8":
                 return spawnBlack8;
+            case "r3":
+                return promotedR1;
+            case "r4":
+                return promotedR2;
+            case "r5":
+                return promotedR3;
+            case "r6":
+                return promotedR4;
+
+            case "r7":
+                return promotedR5;
+            case "r8":
+                return promotedR6;
+            case "r9":
+                return promotedR7;
+            case "r10":
+                return promotedR8;
+            case "r11":
+                return promotedR9;
+            case "r12":
+                return promotedR10;
+            case "k3":
+                return promotedK1;
+            case "k4":
+                return promotedK2;
+            case "k5":
+                return promotedK3;
+            case "k6":
+                return promotedK4;
+            case "bk3":
+                return bpromotedK1;
+            case "bk4":
+                return bpromotedK2;
+            case "bk5":
+                return bpromotedK3;
+            case "bk6":
+                return bpromotedK4;
+            case "k7":
+                return promotedK5;
+            case "k8":
+                return promotedK6;
+            case "k9":
+                return promotedK7;
+            case "k10":
+                return promotedK8;
+            case "k11":
+                return promotedK9;
+            case "k12":
+                return promotedK10;
+            case "q2":
+                return promotedQ1;
+            case "q3":
+                return promotedQ2;
+            case "q4":
+                return promotedQ3;
+            case "q5":
+                return promotedQ4;
+            case "bq2":
+                return bpromotedQ1;
+            case "bq3":
+                return bpromotedQ2;
+            case "bq4":
+                return bpromotedQ3;
+            case "bq5":
+                return bpromotedQ4;
+            case "q6":
+                return promotedQ5;
+            case "q7":
+                return promotedQ6;
+            case "q8":
+                return promotedQ7;
+            case "q9":
+                return promotedQ8;
+            case "q10":
+                return promotedQ9;
+            case "b3":
+                return promotedB1;
+            case "b4":
+                return promotedB2;
+            case "b5":
+                return promotedB3;
+            case "b6":
+                return promotedB4;
+            case "b7":
+                return promotedB5;
+            case "bb3":
+                return bpromotedB1;
+            case "bb4":
+                return bpromotedB2;
+            case "bb5":
+                return bpromotedB3;
+            case "bb6":
+                return bpromotedB4;
+            case "bb7":
+                return bpromotedB5;
+            case "b8":
+                return promotedB6;
+            case "b9":
+                return promotedB7;
+            case "b10":
+                return promotedB8;
+            case "b11":
+                return promotedB9;
+            case "b12":
+                return promotedB10;
+            case "br3":
+                return bpromotedR1;
+            case "br4":
+                return bpromotedR2;
+            case "br5":
+                return bpromotedR3;
+            case "br6":
+                return bpromotedR4;
+            case "br7":
+                return bpromotedR5;
+            case "br8":
+                return bpromotedR6;
+            case "br9":
+                return bpromotedR7;
+            case "br10":
+                return bpromotedR8;
+            case "br11":
+                return bpromotedR9;
+            case "br12":
+                return bpromotedR10;
         }
         return null;
     }
@@ -527,25 +796,87 @@ public class TextureUtils {
                     } else{
                         System.out.println(boardN.getMBoard()[row][col].getPiece().getIdentifier());
                         switch (boardN.getMBoard()[row][col].getPiece().getIdentifier()){
-                            case "bN":
-                            case "bB":
-                            case "bQ":
-                            case "bK":
-                            case "bP":
+                            case "R":
+                                if(boardN.getMBoard()[row][col].getPiece().getWhiteStatus()){
+                                    int tem = rookCounter+2;
+                                    String promotedTemp = "r" + tem;
+                                    boardN.getMBoard()[row][col].getPiece().setNotation(promotedTemp);
+                                    boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
+                                    promotedRook.get(rookCounter).setSize(33, 47);
+                                    pieceStorage[row][col] = promotedRook.get(rookCounter);
+                                    rookCounter++;
+                                    break;
+                                }else {
+                                    int tem = brookCounter+2;
+                                    String promotedTemp = "br" + tem;
+                                    boardN.getMBoard()[row][col].getPiece().setNotation(promotedTemp);
+                                    boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
+                                    bpromotedRook.get(brookCounter).setSize(32, 54);
+                                    pieceStorage[row][col] = bpromotedRook.get(brookCounter);
+                                    brookCounter++;
+                                    break;
+                                }
                             case "N":
-                                int tem = knightCounter+2;
-                                String promotedTemp = "k" + tem;
-                                boardN.getMBoard()[row][col].getPiece().setNotation(promotedTemp);
-                                boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
-                                promotedKnight.get(knightCounter);
-                                promotedKnight.get(knightCounter).setSize(32, 54);
-                                pieceStorage[row][col] = promotedKnight.get(knightCounter);
-                                knightCounter++;
-                                break;
-                            case "wB":
-                            case "wQ":
-                            case "wK":
-                            case "wP":
+                                if(boardN.getMBoard()[row][col].getPiece().getWhiteStatus()){
+                                    int tem1 = knightCounter+2;
+                                    String promotedTemp1 = "k" + tem1;
+                                    boardN.getMBoard()[row][col].getPiece().setNotation(promotedTemp1);
+                                    boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
+                                    promotedKnight.get(knightCounter).setSize(32, 54);
+                                    pieceStorage[row][col] = promotedKnight.get(knightCounter);
+                                    knightCounter++;
+                                    break;
+                                }else{
+                                    int tem1 = bknightCounter+2;
+                                    String promotedTemp1 = "bk" + tem1;
+                                    boardN.getMBoard()[row][col].getPiece().setNotation(promotedTemp1);
+                                    boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
+                                    bpromotedKnight.get(bknightCounter).setSize(32, 54);
+                                    pieceStorage[row][col] = bpromotedKnight.get(bknightCounter);
+                                    bknightCounter++;
+                                    break;
+                                }
+
+                            case "Q":
+                                if(boardN.getMBoard()[row][col].getPiece().getWhiteStatus()){
+                                    int tem2 = queenCounter+2;
+                                    String promotedTemp2 = "q" + tem2;
+                                    boardN.getMBoard()[row][col].getPiece().setNotation(promotedTemp2);
+                                    boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
+                                    promotedQueens.get(queenCounter).setSize(33, 47);
+                                    pieceStorage[row][col] = promotedQueens.get(queenCounter);
+                                    queenCounter++;
+                                    break;
+                                } else{
+                                    int tem2 = bqueenCounter+2;
+                                    String promotedTemp2 = "bq" + tem2;
+                                    boardN.getMBoard()[row][col].getPiece().setNotation(promotedTemp2);
+                                    boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
+                                    bpromotedQueens.get(bqueenCounter).setSize(33, 47);
+                                    pieceStorage[row][col] = bpromotedQueens.get(bqueenCounter);
+                                    bqueenCounter++;
+                                    break;
+                                }
+                            case "B":
+                                if(boardN.getMBoard()[row][col].getPiece().getWhiteStatus()){
+                                    int tem3 = bishopCounter+2;
+                                    String promotedTemp3 = "b" + tem3;
+                                    boardN.getMBoard()[row][col].getPiece().setNotation(promotedTemp3);
+                                    boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
+                                    promotedBishops.get(bishopCounter).setSize(32, 52);
+                                    pieceStorage[row][col] = promotedBishops.get(bishopCounter);
+                                    bishopCounter++;
+                                    break;
+                                }else {
+                                    int tem3 = bbishopCounter+2;
+                                    String promotedTemp3 = "bb" + tem3;
+                                    boardN.getMBoard()[row][col].getPiece().setNotation(promotedTemp3);
+                                    boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
+                                    bpromotedBishops.get(bbishopCounter).setSize(32, 52);
+                                    pieceStorage[row][col] = bpromotedBishops.get(bbishopCounter);
+                                    bbishopCounter++;
+                                    break;
+                                }
                         }
                     System.out.println(boardN.getMBoard()[row][col].getPiece().getNotation() + " ");
                     }

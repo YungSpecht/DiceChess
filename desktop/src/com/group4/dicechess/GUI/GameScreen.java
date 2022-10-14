@@ -50,7 +50,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        chess();
+        diceChess();
         ScreenUtils.clear(1, 1, 1, 1);
         game.batch.begin();
         game.batch.draw(textureUtils.notation, textureUtils.spriteNotation.getX(), textureUtils.spriteNotation.getY(), textureUtils.spriteNotation.getWidth(), textureUtils.spriteNotation.getHeight());
@@ -228,7 +228,6 @@ public class GameScreen implements Screen {
                 playerSwitch = false;
                 turnActive = true;
             }
-    
             Gdx.input.setInputProcessor(new InputAdapter() {
                 @Override
                 public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -259,7 +258,10 @@ public class GameScreen implements Screen {
                                 txtOtp.add(moveN);
                                 txtTracker++;
                                 gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]);
+                                System.out.println("okay");
+
                                 textureUtils.updateBoard(gameLoop.getBoard());
+                                System.out.println("!!!");
                                 tempPoss[0] = -1;
                                 tempPoss[1] = -1;
                                 System.out.println("Valid!");
@@ -286,6 +288,7 @@ public class GameScreen implements Screen {
                         }
                     }
                     return true;
+
                 }
             });
         }
