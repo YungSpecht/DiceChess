@@ -109,7 +109,6 @@ public class UIInterface {
         }
         System.out.println(rolls);
         Random rand = new Random();
-        this.diceRoll = 1; //rolls.get(rand.nextInt(rolls.size()));
         this.diceRoll = rolls.get(rand.nextInt(rolls.size()));
         return this.diceRoll;
     }

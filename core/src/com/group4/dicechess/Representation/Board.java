@@ -18,6 +18,7 @@ public class Board {
     private ArrayList<Piece> blackCaptured;
     private Piece lastMovedPieceBlack;
     private Piece lastMovedPieceWhite;
+    private static Scanner in;
 
     public static void main(String[] args) {
         Board test = new Board();
@@ -32,6 +33,7 @@ public class Board {
         blackPieces = new ArrayList<Piece>();
         whiteCaptured = new ArrayList<Piece>();
         blackCaptured = new ArrayList<Piece>();
+        in = new Scanner(System.in);
         setUpBoard();
     }
 
@@ -216,7 +218,6 @@ public class Board {
             }
             else{
                 int choice = 0;
-                Scanner in = new Scanner(System.in);
                 do{
                     System.out.println("Please enter the Piece you want to promote to: ");
                     System.out.println("2 - Knight");
@@ -225,7 +226,6 @@ public class Board {
                     System.out.println("5 - Queen");
                     choice = in.nextInt();
                 }while(choice < 2 || choice > 5);
-                in.close();
                 piece = pieceFactory(choice, start.getPiece().getWhiteStatus(), destination);
                 if(piece.getWhiteStatus()){
                     whitePieces.add(piece);
