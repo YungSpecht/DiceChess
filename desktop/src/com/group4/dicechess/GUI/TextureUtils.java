@@ -2,6 +2,7 @@ package com.group4.dicechess.GUI;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.utils.Array;
 import com.group4.dicechess.Representation.Board;
 import com.group4.dicechess.Representation.Piece;
 import com.group4.dicechess.Representation.Square;
@@ -71,6 +72,60 @@ public class TextureUtils {
     Sprite spriteDice2;
     Sprite spriteBoard;
     Sprite spriteDice3;
+
+    Sprite promotedQ1;
+    Sprite promotedQ2;
+    Sprite promotedQ3;
+    Sprite promotedQ4;
+    Sprite promotedQ5;
+    Sprite promotedQ6;
+    Sprite promotedQ7;
+    Sprite promotedQ8;
+    Sprite promotedQ9;
+
+    Sprite promotedR1;
+    Sprite promotedR2;
+    Sprite promotedR3;
+    Sprite promotedR4;
+    Sprite promotedR5;
+    Sprite promotedR6;
+    Sprite promotedR7;
+    Sprite promotedR8;
+    Sprite promotedR9;
+    Sprite promotedR10;
+
+    Sprite promotedK1;
+    Sprite promotedK2;
+    Sprite promotedK3;
+    Sprite promotedK4;
+    Sprite promotedK5;
+    Sprite promotedK6;
+    Sprite promotedK7;
+    Sprite promotedK8;
+    Sprite promotedK9;
+    Sprite promotedK10;
+
+    Sprite promotedB1;
+    Sprite promotedB2;
+    Sprite promotedB3;
+    Sprite promotedB4;
+    Sprite promotedB5;
+    Sprite promotedB6;
+    Sprite promotedB7;
+    Sprite promotedB8;
+    Sprite promotedB9;
+    Sprite promotedB10;
+    Array<Sprite> promotedQueens = new Array<>();
+
+    int knightCounter = 1;
+    int queenCounter = 1;
+    int bishopCounter = 1;
+    int rookCounter = 1;
+    Array<Sprite> promotedKnight = new Array<>();
+    Array<Sprite> promotedBishops = new Array<>();
+    Array<Sprite> promotedRook = new Array<>();
+
+
     Sprite spriteDice4;
     Sprite spriteDice5;
     Sprite spriteDice6;
@@ -155,6 +210,95 @@ public class TextureUtils {
         spriteDice6 = new Sprite(dice6);
         spriteArrow = new Sprite(backArrow);
         spriteBoard = new Sprite(board);
+
+        promotedB1 = new Sprite(bishop);
+        promotedB2 = new Sprite(bishop);
+        promotedB3 = new Sprite(bishop);
+        promotedB4 = new Sprite(bishop);
+        promotedB5 = new Sprite(bishop);
+        promotedB6 = new Sprite(bishop);
+        promotedB7 = new Sprite(bishop);
+        promotedB8 = new Sprite(bishop);
+        promotedB9 = new Sprite(bishop);
+        promotedB10 = new Sprite(bishop);
+
+        promotedBishops.add(promotedB1);
+        promotedBishops.add(promotedB2);
+        promotedBishops.add(promotedB3);
+        promotedBishops.add(promotedB4);
+        promotedBishops.add(promotedB5);
+        promotedBishops.add(promotedB6);
+        promotedBishops.add(promotedB7);
+        promotedBishops.add(promotedB8);
+        promotedBishops.add(promotedB9);
+        promotedBishops.add(promotedB10);
+
+        promotedQueens.add(promotedQ1);
+        promotedQueens.add(promotedQ2);
+        promotedQueens.add(promotedQ3);
+        promotedQueens.add(promotedQ4);
+        promotedQueens.add(promotedQ5);
+        promotedQueens.add(promotedQ6);
+        promotedQueens.add(promotedQ7);
+        promotedQueens.add(promotedQ8);
+        promotedQueens.add(promotedQ9);
+
+        promotedK1 = new Sprite(knight);
+        promotedK2 = new Sprite(knight);
+        promotedK3 = new Sprite(knight);
+        promotedK4 = new Sprite(knight);
+        promotedK5 = new Sprite(knight);
+        promotedK6 = new Sprite(knight);
+        promotedK7 = new Sprite(knight);
+        promotedK8 = new Sprite(knight);
+        promotedK9 = new Sprite(knight);
+        promotedK10 = new Sprite(knight);
+
+        promotedKnight.add(promotedK1);
+        promotedKnight.add(promotedK2);
+        promotedKnight.add(promotedK3);
+        promotedKnight.add(promotedK4);
+        promotedKnight.add(promotedK5);
+        promotedKnight.add(promotedK6);
+        promotedKnight.add(promotedK7);
+        promotedKnight.add(promotedK8);
+        promotedKnight.add(promotedK9);
+        promotedKnight.add(promotedK10);
+
+        promotedRook.add(promotedR1);
+        promotedRook.add(promotedR2);
+        promotedRook.add(promotedR3);
+        promotedRook.add(promotedR4);
+        promotedRook.add(promotedR5);
+        promotedRook.add(promotedR6);
+        promotedRook.add(promotedR7);
+        promotedRook.add(promotedR8);
+        promotedRook.add(promotedR9);
+        promotedRook.add(promotedR10);
+
+
+        promotedQ1 = new Sprite(queen);
+        promotedQ2 = new Sprite(queen);
+        promotedQ3 = new Sprite(queen);
+        promotedQ4 = new Sprite(queen);
+        promotedQ5 = new Sprite(queen);
+        promotedQ6 = new Sprite(queen);
+        promotedQ7 = new Sprite(queen);
+        promotedQ8 = new Sprite(queen);
+        promotedQ9 = new Sprite(queen);
+
+        promotedR1 = new Sprite(rook);
+        promotedR2 = new Sprite(rook);
+        promotedR3 = new Sprite(rook);
+        promotedR4 = new Sprite(rook);
+        promotedR5 = new Sprite(rook);
+        promotedR6 = new Sprite(rook);
+        promotedR7 = new Sprite(rook);
+        promotedR8 = new Sprite(rook);
+        promotedR9 = new Sprite(rook);
+        promotedR10 = new Sprite(rook);
+
+
         spriteNotation.setPosition(625, 50);
         spriteNotation.setSize(250, 350);
         spawn1.setSize(33, 47);
@@ -376,12 +520,41 @@ public class TextureUtils {
         for (int row = 0; row < pieceStorage.length; row++) {
             for (int col = 0; col < pieceStorage[0].length; col++) {
                 if(tempBoard[row][col].getPiece() != null){
-                    boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
-                    pieceStorage[row][col] = getCorrectPiece(boardN.getMBoard()[row][col]);
+                    if(!boardN.getMBoard()[row][col].getPiece().getNotation().equals("")){
+                        boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
+                        System.out.print(boardTranslate[row][col] + " ");
+                        pieceStorage[row][col] = getCorrectPiece(boardN.getMBoard()[row][col]);
+                    } else{
+                        System.out.println(boardN.getMBoard()[row][col].getPiece().getIdentifier());
+                        switch (boardN.getMBoard()[row][col].getPiece().getIdentifier()){
+                            case "bN":
+                            case "bB":
+                            case "bQ":
+                            case "bK":
+                            case "bP":
+                            case "N":
+                                int tem = knightCounter+2;
+                                String promotedTemp = "k" + tem;
+                                boardN.getMBoard()[row][col].getPiece().setNotation(promotedTemp);
+                                boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
+                                promotedKnight.get(knightCounter);
+                                promotedKnight.get(knightCounter).setSize(32, 54);
+                                pieceStorage[row][col] = promotedKnight.get(knightCounter);
+                                knightCounter++;
+                                break;
+                            case "wB":
+                            case "wQ":
+                            case "wK":
+                            case "wP":
+                        }
+                    System.out.println(boardN.getMBoard()[row][col].getPiece().getNotation() + " ");
+                    }
                 }else{
                     pieceStorage[row][col] = null;
+                    System.out.print(" 0 ");
                 }
             }
+            System.out.println();
         }
     }
 

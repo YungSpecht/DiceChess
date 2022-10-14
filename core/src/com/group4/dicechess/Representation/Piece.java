@@ -73,6 +73,10 @@ public abstract class Piece {
         return diceChessId;
     }
 
+    public String getIdentifier(){
+        return identifier;
+    }
+
 
     /**
      * Checks whether a square is empty and a piece can move to it
