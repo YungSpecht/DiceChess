@@ -154,7 +154,21 @@ public class GameScreen implements Screen {
                         rolled = true;
                         txtOtp.add("Dice rolled. Result is " + diceN);
                         txtTracker++;
-                        txtOtp.add("Please select your piece..");
+                        String txt1 = "";
+                        if(diceN == 1){
+                            txt1 = "Pawn";
+                        } else if (diceN == 2) {
+                            txt1 = "Knight";
+                        }else if (diceN == 3) {
+                            txt1 = "Bishop";
+                        }else if (diceN == 4) {
+                            txt1 = "Rook";
+                        }else if (diceN == 5) {
+                            txt1 = "Queen";
+                        }else if (diceN == 6) {
+                            txt1 = "King";
+                        }
+                        txtOtp.add("Please select your " + txt1 + "..");
                         txtTracker++;
                         turnActive = true;
                     }
