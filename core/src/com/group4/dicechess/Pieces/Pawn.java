@@ -37,12 +37,12 @@ public class Pawn extends Piece{
     }
 
     private boolean enPassantPossible(Board board, Square currentSquare, Square destination){
-        if(this.getWhiteStatus() && currentSquare.getRow() == 3 ) {
+        if(currentSquare.getPiece().getWhiteStatus() && currentSquare.getRow() == 3 ) {
             Square sq = board.getSquare(destination.getRow()+1, destination.getCol());
             if(sq.getPiece() != null && sq.getPiece().getId().equals("P") && sq.getPiece() == board.getLastMovePieceBlack() && sq.getPiece().getMoveCounter() == 1){
                 return true;
             }
-        } else if (!this.getWhiteStatus() && currentSquare.getRow() == 4) {
+        } else if (!currentSquare.getPiece().getWhiteStatus() && currentSquare.getRow() == 4) {
             Square sq = board.getSquare(destination.getRow()-1, destination.getCol());
             if(sq.getPiece() != null && sq.getPiece().getId().equals("P") && sq.getPiece() == board.getLastMovedPieceWhite() && sq.getPiece().getMoveCounter() == 1) {
                 return true;

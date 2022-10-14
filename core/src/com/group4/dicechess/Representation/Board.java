@@ -172,7 +172,7 @@ public class Board {
                 whitePieces.remove(board[start.getRow()][destination.getCol()].getPiece());
                 whiteCaptured.add(board[start.getRow()][destination.getCol()].getPiece());
             }
-            this.board[start.getRow()][destination.getCol()].setPiece(null);
+            board[start.getRow()][destination.getCol()].setPiece(null);
         }
         else if(castling(start, destination)){
             int white = start.getPiece().getWhiteStatus() ? 1 : 0;
@@ -208,6 +208,7 @@ public class Board {
                 piece = pieceFactory(diceRoll, start.getPiece().getWhiteStatus(), destination);
                 if(piece.getWhiteStatus()){
                     whitePieces.add(piece);
+                    whitePieces.remove(start.getPiece());
                 }
                 else{
                     blackPieces.add(piece);
@@ -229,9 +230,11 @@ public class Board {
                 piece = pieceFactory(choice, start.getPiece().getWhiteStatus(), destination);
                 if(piece.getWhiteStatus()){
                     whitePieces.add(piece);
+                    whitePieces.remove(start.getPiece());
                 }
                 else{
                     blackPieces.add(piece);
+                    blackPieces.remove(start.getPiece());
                 }
             }
         }
