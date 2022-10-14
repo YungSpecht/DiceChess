@@ -219,13 +219,12 @@ public class Board {
                 Scanner in = new Scanner(System.in);
                 do{
                     System.out.println("Please enter the Piece you want to promote to: ");
-                    System.out.println("1 - Pawn");
                     System.out.println("2 - Knight");
                     System.out.println("3 - Bishop");
                     System.out.println("4 - Rook");
                     System.out.println("5 - Queen");
                     choice = in.nextInt();
-                }while(choice < 1 || choice > 5);
+                }while(choice < 2 || choice > 5);
                 in.close();
                 piece = pieceFactory(choice, start.getPiece().getWhiteStatus(), destination);
                 if(piece.getWhiteStatus()){
@@ -295,7 +294,6 @@ public class Board {
 
     private Piece pieceFactory(int id, boolean white, Square sq){
         switch(id){
-            case 1 : return new Pawn(white, sq.getRow(), sq.getCol());
             case 2 : return new Knight(white, sq.getRow(), sq.getCol());
             case 3 : return new Bishop(white, sq.getRow(), sq.getCol());
             case 4 : return new Rook(white, sq.getRow(), sq.getCol());
