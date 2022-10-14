@@ -261,6 +261,9 @@ public class Board {
 
     private boolean enPassant(Square start, Square destination){
         Piece piece = start.getPiece();
+        if(!piece.getId().equals("P")){
+            return false;
+        }
         if(piece.getWhiteStatus() && piece.getId().equals("P") && start.getRow() == 3 && board[destination.getRow()][destination.getCol()].getPiece() == null){
             return true;
         }

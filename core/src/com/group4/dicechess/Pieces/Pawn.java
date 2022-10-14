@@ -20,12 +20,12 @@ public class Pawn extends Piece{
         int leftBound = col - 1 < 0 ? col : col - 1;
         int rightBound = col + 1 > 7 ? col : col + 1;
         for(int i = leftBound; i <= rightBound; i++){
-            Square square = board.getSquare(row + 1 + (white * (-2)), i);
-            if((i != col && square.getPiece() != null && square.getPiece().getWhiteStatus() != this.getWhiteStatus() || (enPassantPossible(board, currentSquare, square)))){
-                result.add(square);
+            Square destination = board.getSquare(row + 1 + (white * (-2)), i);
+            if((i != col && destination.getPiece() != null && destination.getPiece().getWhiteStatus() != this.getWhiteStatus() || (enPassantPossible(board, currentSquare, destination)))){
+                result.add(destination);
             }
-            else if(i == col && square.getPiece() == null){
-                result.add(square);
+            else if(i == col && destination.getPiece() == null){
+                result.add(destination);
             }
         }
         if(this.getMoveCounter() == 0){
@@ -36,14 +36,14 @@ public class Pawn extends Piece{
         return result;
     }
 
-    private boolean enPassantPossible(Board board, Square currentSquare, Square square){
-        if(currentSquare.getPiece().getWhiteStatus() && currentSquare.getRow() == 3 ) {
-            Square sq = board.getSquare(square.getRow()+1, square.getCol());
+    private boolean enPassantPossible(Board board, Square currentSquare, Square destination){
+        if(this.getWhiteStatus() && currentSquare.getRow() == 3 ) {
+            Square sq = board.getSquare(destination.getRow()+1, destination.getCol());
             if(sq.getPiece() != null && sq.getPiece().getId().equals("P") && sq.getPiece() == board.getLastMovePieceBlack() && sq.getPiece().getMoveCounter() == 1){
                 return true;
             }
-        } else if (!currentSquare.getPiece().getWhiteStatus() && currentSquare.getRow() == 4) {
-            Square sq = board.getSquare(square.getRow()-1, square.getCol());
+        } else if (!this.getWhiteStatus() && currentSquare.getRow() == 4) {
+            Square sq = board.getSquare(destination.getRow()-1, destination.getCol());
             if(sq.getPiece() != null && sq.getPiece().getId().equals("P") && sq.getPiece() == board.getLastMovedPieceWhite() && sq.getPiece().getMoveCounter() == 1) {
                 return true;
             }
