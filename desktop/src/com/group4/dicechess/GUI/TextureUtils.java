@@ -344,7 +344,6 @@ public class TextureUtils {
         promotedQ8 = new Sprite(queen);
         promotedQ9 = new Sprite(queen);
 
-
         bpromotedR1 = new Sprite(rookBlack);
         bpromotedR2 = new Sprite(rookBlack);
         bpromotedR3 = new Sprite(rookBlack);
@@ -399,6 +398,7 @@ public class TextureUtils {
         promotedRook.add(promotedR8);
         promotedRook.add(promotedR9);
         promotedRook.add(promotedR10);
+
         bpromotedRook.add(bpromotedR1);
         bpromotedRook.add(bpromotedR2);
         bpromotedRook.add(bpromotedR3);
@@ -432,15 +432,25 @@ public class TextureUtils {
         bpromotedBishops.add(bpromotedB9);
         bpromotedBishops.add(bpromotedB10);
 
-        promotedQueens.add(bpromotedQ1);
-        promotedQueens.add(bpromotedQ2);
-        promotedQueens.add(bpromotedQ3);
-        promotedQueens.add(bpromotedQ4);
-        promotedQueens.add(bpromotedQ5);
-        promotedQueens.add(bpromotedQ6);
+        promotedQueens.add(promotedQ1);
+        promotedQueens.add(promotedQ2);
+        promotedQueens.add(promotedQ3);
+        promotedQueens.add(promotedQ4);
+        promotedQueens.add(promotedQ5);
+        promotedQueens.add(promotedQ6);
         promotedQueens.add(promotedQ7);
         promotedQueens.add(promotedQ8);
         promotedQueens.add(promotedQ9);
+
+        bpromotedQueens.add(bpromotedQ1);
+        bpromotedQueens.add(bpromotedQ2);
+        bpromotedQueens.add(bpromotedQ3);
+        bpromotedQueens.add(bpromotedQ4);
+        bpromotedQueens.add(bpromotedQ5);
+        bpromotedQueens.add(bpromotedQ6);
+        bpromotedQueens.add(bpromotedQ7);
+        bpromotedQueens.add(bpromotedQ8);
+        bpromotedQueens.add(bpromotedQ9);
 
         spriteNotation.setPosition(625, 50);
         spriteNotation.setSize(250, 350);
@@ -653,7 +663,6 @@ public class TextureUtils {
                 return promotedR3;
             case "r6":
                 return promotedR4;
-
             case "r7":
                 return promotedR5;
             case "r8":
@@ -674,14 +683,6 @@ public class TextureUtils {
                 return promotedK3;
             case "k6":
                 return promotedK4;
-            case "bk3":
-                return bpromotedK1;
-            case "bk4":
-                return bpromotedK2;
-            case "bk5":
-                return bpromotedK3;
-            case "bk6":
-                return bpromotedK4;
             case "k7":
                 return promotedK5;
             case "k8":
@@ -694,6 +695,26 @@ public class TextureUtils {
                 return promotedK9;
             case "k12":
                 return promotedK10;
+            case "bk3":
+                return bpromotedK1;
+            case "bk4":
+                return bpromotedK2;
+            case "bk5":
+                return bpromotedK3;
+            case "bk6":
+                return bpromotedK4;
+            case "bk7":
+                return bpromotedK5;
+            case "bk8":
+                return bpromotedK6;
+            case "bk9":
+                return bpromotedK7;
+            case "bk10":
+                return bpromotedK8;
+            case "bk11":
+                return bpromotedK9;
+            case "bk12":
+                return bpromotedK10;
             case "q2":
                 return promotedQ1;
             case "q3":
@@ -702,14 +723,6 @@ public class TextureUtils {
                 return promotedQ3;
             case "q5":
                 return promotedQ4;
-            case "bq2":
-                return bpromotedQ1;
-            case "bq3":
-                return bpromotedQ2;
-            case "bq4":
-                return bpromotedQ3;
-            case "bq5":
-                return bpromotedQ4;
             case "q6":
                 return promotedQ5;
             case "q7":
@@ -720,6 +733,24 @@ public class TextureUtils {
                 return promotedQ8;
             case "q10":
                 return promotedQ9;
+            case "bq2":
+                return bpromotedQ1;
+            case "bq3":
+                return bpromotedQ2;
+            case "bq4":
+                return bpromotedQ3;
+            case "bq5":
+                return bpromotedQ4;
+            case "bq6":
+                return bpromotedQ5;
+            case "bq7":
+                return bpromotedQ6;
+            case "bq8":
+                return bpromotedQ7;
+            case "bq9":
+                return bpromotedQ8;
+            case "bq10":
+                return bpromotedQ9;
             case "b3":
                 return promotedB1;
             case "b4":
@@ -730,16 +761,6 @@ public class TextureUtils {
                 return promotedB4;
             case "b7":
                 return promotedB5;
-            case "bb3":
-                return bpromotedB1;
-            case "bb4":
-                return bpromotedB2;
-            case "bb5":
-                return bpromotedB3;
-            case "bb6":
-                return bpromotedB4;
-            case "bb7":
-                return bpromotedB5;
             case "b8":
                 return promotedB6;
             case "b9":
@@ -750,6 +771,26 @@ public class TextureUtils {
                 return promotedB9;
             case "b12":
                 return promotedB10;
+            case "bb3":
+                return bpromotedB1;
+            case "bb4":
+                return bpromotedB2;
+            case "bb5":
+                return bpromotedB3;
+            case "bb6":
+                return bpromotedB4;
+            case "bb7":
+                return bpromotedB5;
+            case "bb8":
+                return bpromotedB6;
+            case "bb9":
+                return bpromotedB7;
+            case "bb10":
+                return bpromotedB8;
+            case "bb11":
+                return bpromotedB9;
+            case "bb12":
+                return bpromotedB10;
             case "br3":
                 return bpromotedR1;
             case "br4":
