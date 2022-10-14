@@ -197,31 +197,31 @@ public class TextureUtils {
     public TextureUtils(){
         this.currentSide = 1;
         pieceStorage = new Sprite[8][8];
-        bishop = new Texture("TestAssets/Bishop.png");
-        bishopBlack= new Texture("TestAssets/Bishop_Black.png");
-        king= new Texture("TestAssets/King.png");
-        kingBlack= new Texture("TestAssets/King_Black.png");
-        knight= new Texture("TestAssets/Knight.png");
-        knightBlack= new Texture("TestAssets/Knight_Black.png");
-        pawn= new Texture("TestAssets/Pawn.png");
-        pawnBlack= new Texture("TestAssets/Pawn_Black.png");
-        queen= new Texture("TestAssets/Queen.png");
-        queenBlack= new Texture("TestAssets/Queen_Black.png");
-        rook= new Texture("TestAssets/Rook.png");
-        rookBlack= new Texture("TestAssets/Rook_Black.png");
-        notation = new Texture("TestAssets/nt.png");
-        board = new Texture("TestAssets/board.jpg");
+        bishop = new Texture("FinalAssets/Bishop.png");
+        bishopBlack= new Texture("FinalAssets/Bishop_Black.png");
+        king= new Texture("FinalAssets/King.png");
+        kingBlack= new Texture("FinalAssets/King_Black.png");
+        knight= new Texture("FinalAssets/Knight.png");
+        knightBlack= new Texture("FinalAssets/Knight_Black.png");
+        pawn= new Texture("FinalAssets/Pawn.png");
+        pawnBlack= new Texture("FinalAssets/Pawn_Black.png");
+        queen= new Texture("FinalAssets/Queen.png");
+        queenBlack= new Texture("FinalAssets/Queen_Black.png");
+        rook= new Texture("FinalAssets/Rook.png");
+        rookBlack= new Texture("FinalAssets/Rook_Black.png");
+        notation = new Texture("FinalAssets/nt.png");
+        board = new Texture("FinalAssets/board.jpg");
         dice1 = new Texture("FinalAssets/1.jpg");
         dice2 = new Texture("FinalAssets/2.jpg");
         dice3 = new Texture("FinalAssets/3.jpg");
         dice4 = new Texture("FinalAssets/4.jpg");
-        highlight = new Texture("TestAssets/highlight.png");
+        highlight = new Texture("FinalAssets/highlight.png");
         dice5 = new Texture("FinalAssets/5.jpg");
         dice6 = new Texture("FinalAssets/6.jpg");
         backArrow = new Texture("FinalAssets/backArrow.png");
-        help = new Texture("TestAssets/help.png");
-        sound = new Texture("TestAssets/soundON.png");
-        bots = new Texture("TestAssets/bots.png");
+        help = new Texture("FinalAssets/help.png");
+        sound = new Texture("FinalAssets/soundON.png");
+        bots = new Texture("FinalAssets/bots.png");
         spriteHighlight = new Sprite(highlight);
         sbishop1 = new Sprite(bishop);
         sbishopBlack1 = new Sprite(bishopBlack);
@@ -832,10 +832,8 @@ public class TextureUtils {
                 if(tempBoard[row][col].getPiece() != null){
                     if(!boardN.getMBoard()[row][col].getPiece().getNotation().equals("")){
                         boardTranslate[row][col] =  boardN.getMBoard()[row][col].getPiece().getNotation();
-                        System.out.print(boardTranslate[row][col] + " ");
                         pieceStorage[row][col] = getCorrectPiece(boardN.getMBoard()[row][col]);
                     } else{
-                        System.out.println(boardN.getMBoard()[row][col].getPiece().getIdentifier());
                         switch (boardN.getMBoard()[row][col].getPiece().getIdentifier()){
                             case "R":
                                 if(boardN.getMBoard()[row][col].getPiece().getWhiteStatus()){
@@ -919,14 +917,11 @@ public class TextureUtils {
                                     break;
                                 }
                         }
-                    System.out.println(boardN.getMBoard()[row][col].getPiece().getNotation() + " ");
                     }
                 }else{
                     pieceStorage[row][col] = null;
-                    System.out.print(" 0 ");
                 }
             }
-            System.out.println();
         }
     }
 

@@ -35,8 +35,8 @@ public class GameOverScreen implements Screen, InputProcessor {
         exitButton = new Texture("FinalAssets/exitF.png");
         settingsButton = new Texture("FinalAssets/settingsF.png");
         diceM = new Texture("FinalAssets/menuP.jpg");
-        wwon = new Texture("TestAssets/wwon.png");
-        bwon = new Texture("TestAssets/bwon.png");
+        wwon = new Texture("FinalAssets/wwon.png");
+        bwon = new Texture("FinalAssets/bwon.png");
         swwon = new Sprite(wwon);
         swwon.setPosition(350, 200);
         swwon.setSize(200, 50);
