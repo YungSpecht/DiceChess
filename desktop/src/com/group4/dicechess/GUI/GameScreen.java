@@ -50,7 +50,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        chess();
+        diceChess();
         ScreenUtils.clear(1, 1, 1, 1);
         game.batch.begin();
         game.batch.draw(textureUtils.notation, textureUtils.spriteNotation.getX(), textureUtils.spriteNotation.getY(), textureUtils.spriteNotation.getWidth(), textureUtils.spriteNotation.getHeight());
