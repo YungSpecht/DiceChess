@@ -14,50 +14,32 @@ public class King extends Piece{
     }
 
     @Override
-    public ArrayList<Square> getPossibleMoves(Board board, Square currentSquare) {
+    public ArrayList<Square> getPossibleMoves(Board board) {
         ArrayList<Square> result = new ArrayList<Square>();
-        int row = currentSquare.getRow();
-        int col = currentSquare.getCol();
-        if(canCapture(board, row, col - 1, this.getWhiteStatus()) || SquareFree(board, row, col - 1)){
-            result.add(board.getSquare(row, col - 1));
-        }
-        if(canCapture(board, row, col + 1, this.getWhiteStatus()) || SquareFree(board, row, col + 1)){
-            result.add(board.getSquare(row, col + 1));
-        }
-        if(canCapture(board, row - 1, col, this.getWhiteStatus()) || SquareFree(board, row - 1, col)){
-            result.add(board.getSquare(row - 1, col));
-        }
-        if(canCapture(board, row + 1, col, this.getWhiteStatus()) || SquareFree(board, row + 1, col)){
-            result.add(board.getSquare(row + 1, col));
-        }
-        if(canCapture(board, row+1, col - 1, this.getWhiteStatus()) || SquareFree(board, row+1, col - 1)){
-            result.add(board.getSquare(row+1, col - 1));
-        }
-        if(canCapture(board, row+1, col + 1, this.getWhiteStatus()) || SquareFree(board, row+1, col + 1)){
-            result.add(board.getSquare(row+1, col + 1));
-        }
-        if(canCapture(board, row - 1, col+1, this.getWhiteStatus()) || SquareFree(board, row - 1, col+1)){
-            result.add(board.getSquare(row - 1, col+1));
-        }
-        if(canCapture(board, row - 1, col-1, this.getWhiteStatus()) || SquareFree(board, row - 1, col-1)){
-            result.add(board.getSquare(row - 1, col-1));
-        }
-        if(this.getMoveCounter() == 0){
-            if(queenside(board, currentSquare)){
-                result.add(board.getSquare(row, col-2));
+
+        for(int i = this.getRow() -  1; i <= this.getRow() + 1; i++){
+            for(int j = this.getCol() - 1; j <= this.getCol() + 1; j++){
+                if(canCapture(board, i, j, this.getWhiteStatus()) || SquareFree(board, i, j)){
+                    result.add(board.getSquare(i, j));
+                }
             }
-            if(kingside(board, currentSquare)){
-                result.add(board.getSquare(row, col+2));
+        }
+
+        if(this.getMoveCounter() == 0){
+            if(queenside(board)){
+                result.add(board.getSquare(this.getRow(), this.getCol()-2));
+            }
+            if(kingside(board)){
+                result.add(board.getSquare(this.getRow(), this.getCol()+2));
             }
         }
         return result;
     }
 
-    private boolean queenside(Board board, Square currentSquare){
-        int row = currentSquare.getRow();
-        if(board.getSquare(row, 0).getPiece() != null  && board.getSquare(row, 0).getPiece().getMoveCounter() == 0){
-            for(int i = currentSquare.getCol()-1; i > 0; i--){
-                if(board.getSquare(row, i).getPiece() != null){
+    private boolean queenside(Board board){
+        if(board.getSquare(this.getRow(), 0).getPiece() != null && board.getSquare(this.getRow(), 0).getPiece().getMoveCounter() == 0){
+            for(int i = this.getCol()-1; i > 0; i--){
+                if(board.getSquare(this.getRow(), i).getPiece() != null){
                     return false;
                 }
             }
@@ -66,11 +48,10 @@ public class King extends Piece{
         return false;
     }
 
-    private boolean kingside(Board board, Square currentSquare){
-        int row = currentSquare.getRow();
-        if(board.getSquare(row, 7).getPiece() != null && board.getSquare(row, 7).getPiece().getMoveCounter() == 0){
-            for(int i = currentSquare.getCol()+1; i < 7; i++){
-                if(board.getSquare(row, i).getPiece() != null){
+    private boolean kingside(Board board){
+        if(board.getSquare(this.getRow(), 7).getPiece() != null && board.getSquare(this.getRow(), 7).getPiece().getMoveCounter() == 0){
+            for(int i = this.getCol()+1; i < 7; i++){
+                if(board.getSquare(this.getRow(), i).getPiece() != null){
                     return false;
                 }
             }

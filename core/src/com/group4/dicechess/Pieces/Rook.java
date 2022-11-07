@@ -13,10 +13,10 @@ public class Rook extends Piece{
     }
 
     @Override
-    public ArrayList<Square> getPossibleMoves(Board board, Square currentSquare) {
+    public ArrayList<Square> getPossibleMoves(Board board) {
         ArrayList<Square> result = new ArrayList<Square>();
-        int row = currentSquare.getRow();
-        int col = currentSquare.getCol();
+        int row = this.getRow();
+        int col = this.getCol();
         int i = 1;
         boolean left = true, right = true, up = true, down = true;
         while(left || right || up || down){

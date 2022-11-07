@@ -20,13 +20,6 @@ public class Board {
     private Piece lastMovedPieceWhite;
     private static Scanner in;
 
-    public static void main(String[] args) {
-        Board test = new Board();
-        test.printBoard();
-        ArrayList<Square> result = test.getSquare(0, 4).getPiece().getPossibleMoves(test, test.getSquare(0, 4));
-        System.out.println(result.size());
-    }
-
     public Board(){
         board = new Square[8][8];
         whitePieces = new ArrayList<Piece>();
@@ -63,7 +56,7 @@ public class Board {
 
     public Piece getLastMovePieceBlack() {
         return lastMovedPieceBlack;
-        }
+    }
 
     /**
      * Prints the current state of the chessboard to the terminal. Pieces are printed by a prefix

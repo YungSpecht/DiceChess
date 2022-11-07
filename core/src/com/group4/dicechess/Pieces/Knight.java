@@ -13,33 +13,24 @@ public class Knight extends Piece{
     }
 
     @Override
-    public ArrayList<Square> getPossibleMoves(Board board, Square currentSquare) {
+    public ArrayList<Square> getPossibleMoves(Board board) {
         ArrayList<Square> result = new ArrayList<Square>();
-        int row = currentSquare.getRow();
-        int col = currentSquare.getCol();
-        if(canCapture(board, row-1, col-2, this.getWhiteStatus()) || SquareFree(board, row-1, col-2)){
-            result.add(board.getSquare(row-1, col-2));
+        int row = this.getRow();
+        int col = this.getCol();
+
+        for(int i = col - 2; i <= col + 2; i += 4){
+            for(int j = row - 1; j <= row + 1; j += 2){
+                if(canCapture(board, j, i, this.getWhiteStatus()) || SquareFree(board, j, i)){
+                    result.add(board.getSquare(j, i));
+                }
+            }
         }
-        if(canCapture(board, row+1, col-2, this.getWhiteStatus()) || SquareFree(board, row+1, col-2)){
-            result.add(board.getSquare(row+1, col-2));
-        }
-        if(canCapture(board, row-1, col+2, this.getWhiteStatus()) || SquareFree(board, row-1, col+2)){
-            result.add(board.getSquare(row-1, col+2));
-        }
-        if(canCapture(board, row+1, col+2, this.getWhiteStatus()) || SquareFree(board, row+1, col+2)){
-            result.add(board.getSquare(row+1, col+2));
-        }
-        if(canCapture(board, row+2, col+1, this.getWhiteStatus()) || SquareFree(board, row+2, col+1)){
-            result.add(board.getSquare(row+2, col+1));
-        }
-        if(canCapture(board, row+2, col-1, this.getWhiteStatus()) || SquareFree(board, row+2, col-1)){
-            result.add(board.getSquare(row+2, col-1));
-        }
-        if(canCapture(board, row-2, col+1, this.getWhiteStatus()) || SquareFree(board, row-2, col+1)){
-            result.add(board.getSquare(row-2, col+1));
-        }
-        if(canCapture(board, row-2, col-1, this.getWhiteStatus()) || SquareFree(board, row-2, col-1)){
-            result.add(board.getSquare(row-2, col-1));
+        for(int i = row - 2; i <= row + 2; i += 4){
+            for(int j = col - 1; j <= col + 1; j += 2){
+                if(canCapture(board, i, j, this.getWhiteStatus()) || SquareFree(board, i, j)){
+                    result.add(board.getSquare(i, j));
+                }
+            }
         }
         return result;
     }

@@ -12,16 +12,16 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public ArrayList<Square> getPossibleMoves(Board board, Square currentSquare) {
+    public ArrayList<Square> getPossibleMoves(Board board) {
         ArrayList<Square> result = new ArrayList<Square>();
-        int row = currentSquare.getRow();
-        int col = currentSquare.getCol();
+        int row = this.getRow();
+        int col = this.getCol();
         int white = this.getWhiteStatus() ? 1 : 0;
         int leftBound = col - 1 < 0 ? col : col - 1;
         int rightBound = col + 1 > 7 ? col : col + 1;
         for(int i = leftBound; i <= rightBound; i++){
             Square destination = board.getSquare(row + 1 + (white * (-2)), i);
-            if((i != col && destination.getPiece() != null && destination.getPiece().getWhiteStatus() != this.getWhiteStatus() || (enPassantPossible(board, currentSquare, destination)))){
+            if((i != col && destination.getPiece() != null && destination.getPiece().getWhiteStatus() != this.getWhiteStatus() || (enPassantPossible(board, board.getSquare(this.getRow(), this.getCol()), destination)))){
                 result.add(destination);
             }
             else if(i == col && destination.getPiece() == null){

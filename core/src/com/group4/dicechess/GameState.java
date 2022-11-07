@@ -6,7 +6,7 @@ import com.group4.dicechess.Representation.Board;
 import com.group4.dicechess.Representation.Piece;
 import com.group4.dicechess.Representation.Square;
 
-public class UIInterface {
+public class GameState {
 
     private Board board;
     public int turnCounter;
@@ -16,7 +16,7 @@ public class UIInterface {
     private ArrayList<ArrayList<Square>> moveList;
     private ArrayList<Piece> legalPieces;
 
-    public UIInterface(){
+    public GameState(){
         board = new Board();
         turnCounter = -1;
         whiteScore = 0;
@@ -84,7 +84,7 @@ public class UIInterface {
         moveList.clear();
         ArrayList<Piece> allPieces = turnCounter % 2 == 0 ? board.getWhitePieces() : board.getBlackPieces();
         for(Piece piece : allPieces){
-            ArrayList<Square> moves = piece.getPossibleMoves(board, board.getSquare(piece.getRow(), piece.getCol()));
+            ArrayList<Square> moves = piece.getPossibleMoves(board);
             if(moves.size() > 0){
                 legalPieces.add(piece);
                 moveList.add(moves);
@@ -98,7 +98,7 @@ public class UIInterface {
         moveList.clear();
         ArrayList<Piece> allPieces = turnCounter % 2 == 0 ? board.getWhitePieces() : board.getBlackPieces();
         for(Piece piece : allPieces){
-            ArrayList<Square> moves = piece.getPossibleMoves(board, board.getSquare(piece.getRow(), piece.getCol()));
+            ArrayList<Square> moves = piece.getPossibleMoves(board);
             if(moves.size() > 0){
                 legalPieces.add(piece);
                 moveList.add(moves);

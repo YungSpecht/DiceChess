@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public abstract class Piece {
     private boolean whiteStatus;
-    private boolean isFirstMove;
     private int moveCounter;
     private int value;
     private int diceChessId;
@@ -122,6 +121,6 @@ public abstract class Piece {
      * @param currentSquare represents the Square the piece is currently positioned on
      * @return ArrayList containing all the Squares the piece can legally move to
      */
-    public abstract ArrayList<Square> getPossibleMoves(Board board, Square currentSquare);
+    public abstract ArrayList<Square> getPossibleMoves(Board board);
 
 }

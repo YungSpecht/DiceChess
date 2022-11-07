@@ -7,7 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.group4.dicechess.Representation.Square;
-import com.group4.dicechess.UIInterface;
+import com.group4.dicechess.GameState;
 
 public class GameScreen implements Screen {
 
@@ -18,7 +18,7 @@ public class GameScreen implements Screen {
     int [] tempPoss = {-1,-1};
     int [] tempPoss2 = {-1,-1};
     String [] helperNot;
-    UIInterface gameLoop;
+    GameState gameLoop;
     int diceN = 0;
     int x1 = 0;
     int y1 = 0;
@@ -38,7 +38,7 @@ public class GameScreen implements Screen {
     public GameScreen(DiceChessGame currentGame){
         this.game = currentGame;
         this.textureUtils = new TextureUtils();
-        gameLoop = new UIInterface();
+        gameLoop = new GameState();
         enableTxt();
         textureUtils.setUpBoard(gameLoop.getBoard());
     }
