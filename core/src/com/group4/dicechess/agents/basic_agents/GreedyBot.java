@@ -1,11 +1,11 @@
-package com.group4.dicechess.Bots;
+package com.group4.dicechess.agents.basic_agents;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 import com.group4.dicechess.GameState;
 import com.group4.dicechess.Representation.Move;
-import com.group4.dicechess.Representation.Piece;
+import com.group4.dicechess.agents.Bot;
 
 public class GreedyBot implements Bot {
     private GameState state;

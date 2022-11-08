@@ -1,4 +1,4 @@
-package com.group4.dicechess.Bots;
+package com.group4.dicechess.agents;
 
 import com.group4.dicechess.Representation.Move;
 
