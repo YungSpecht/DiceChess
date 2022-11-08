@@ -2,6 +2,7 @@ package com.group4.dicechess.Pieces;
 import java.util.ArrayList;
 
 import com.group4.dicechess.Representation.Board;
+import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.Representation.Piece;
 import com.group4.dicechess.Representation.Square;
 
@@ -12,8 +13,8 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public ArrayList<Square> getPossibleMoves(Board board) {
-        ArrayList<Square> result = new ArrayList<Square>();
+    public ArrayList<Move> getPossibleMoves(Board board) {
+        ArrayList<Move> result = new ArrayList<Move>();
         int row = this.getRow();
         int col = this.getCol();
         int white = this.getWhiteStatus() ? 1 : 0;
@@ -22,15 +23,15 @@ public class Pawn extends Piece{
         for(int i = leftBound; i <= rightBound; i++){
             Square destination = board.getSquare(row + 1 + (white * (-2)), i);
             if((i != col && destination.getPiece() != null && destination.getPiece().getWhiteStatus() != this.getWhiteStatus() || (enPassantPossible(board, board.getSquare(this.getRow(), this.getCol()), destination)))){
-                result.add(destination);
+                result.add(new Move(board.getSquare(this.getRow(), this.getCol()), destination, this));
             }
             else if(i == col && destination.getPiece() == null){
-                result.add(destination);
+                result.add(new Move(board.getSquare(this.getRow(), this.getCol()), destination, this));
             }
         }
         if(this.getMoveCounter() == 0){
             if(board.getSquare(row + 2 + (white * (-4)), col).getPiece() == null && board.getSquare(row + 1 + (white * (-2)), col).getPiece() == null){
-                result.add(board.getSquare(row + 2 + (white * (-4)), col));
+                result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row + 2 + (white * (-4)), col), this));
             }
         }
         return result;

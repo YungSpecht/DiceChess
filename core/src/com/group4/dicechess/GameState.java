@@ -3,8 +3,8 @@ package com.group4.dicechess;
 import java.util.ArrayList;
 import java.util.Random;
 import com.group4.dicechess.Representation.Board;
+import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.Representation.Piece;
-import com.group4.dicechess.Representation.Square;
 
 public class GameState {
 
@@ -13,7 +13,7 @@ public class GameState {
     private int whiteScore;
     private int blackScore;
     private int diceRoll;
-    private ArrayList<ArrayList<Square>> moveList;
+    private ArrayList<ArrayList<Move>> moveList;
     private ArrayList<Piece> legalPieces;
 
     public GameState(){
@@ -21,13 +21,17 @@ public class GameState {
         turnCounter = -1;
         whiteScore = 0;
         blackScore = 0;
-        moveList = new ArrayList<ArrayList<Square>>();
+        moveList = new ArrayList<ArrayList<Move>>();
         legalPieces = new ArrayList<Piece>();
         diceRoll = 1;
     }
 
     public Board getBoard(){
         return board;
+    }
+
+    public ArrayList<ArrayList<Move>> getMoveList(){
+        return moveList;
     }
 
     public boolean isLegalPiece(int row, int col){
@@ -62,10 +66,16 @@ public class GameState {
     }
 
     public boolean isLegalMove(int startRow, int startCol, int row, int col){
-        return moveList.get(legalPieces.indexOf(board.getSquare(startRow, startCol).getPiece())).contains(board.getSquare(row, col));
+        ArrayList<Move> moves = getLegalMoves(startRow, startCol);
+        for(Move m : moves){
+            if(m.getDestination().getRow() == row && m.getDestination().getCol() == col){
+                return true;
+            }
+        }
+        return false;
     }
 
-    public ArrayList<Square> getLegalMoves(int row, int col){
+    public ArrayList<Move> getLegalMoves(int row, int col){
         return moveList.get(legalPieces.indexOf(board.getSquare(row, col).getPiece()));
     }
 
@@ -84,7 +94,7 @@ public class GameState {
         moveList.clear();
         ArrayList<Piece> allPieces = turnCounter % 2 == 0 ? board.getWhitePieces() : board.getBlackPieces();
         for(Piece piece : allPieces){
-            ArrayList<Square> moves = piece.getPossibleMoves(board);
+            ArrayList<Move> moves = piece.getPossibleMoves(board);
             if(moves.size() > 0){
                 legalPieces.add(piece);
                 moveList.add(moves);
@@ -98,7 +108,7 @@ public class GameState {
         moveList.clear();
         ArrayList<Piece> allPieces = turnCounter % 2 == 0 ? board.getWhitePieces() : board.getBlackPieces();
         for(Piece piece : allPieces){
-            ArrayList<Square> moves = piece.getPossibleMoves(board);
+            ArrayList<Move> moves = piece.getPossibleMoves(board);
             if(moves.size() > 0){
                 legalPieces.add(piece);
                 moveList.add(moves);
@@ -107,7 +117,6 @@ public class GameState {
                 }
             }
         }
-        System.out.println(rolls);
         Random rand = new Random();
         this.diceRoll = rolls.get(rand.nextInt(rolls.size()));
         return this.diceRoll;
@@ -132,4 +141,5 @@ public class GameState {
     public int getWhiteScore(){return whiteScore;}
     public int getBlackScore(){return blackScore;}
     public int getTurnCount(){return turnCounter;}
+    public int getDiceRoll(){return diceRoll;}
 }

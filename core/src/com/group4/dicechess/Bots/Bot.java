@@ -1,7 +1,7 @@
 package com.group4.dicechess.Bots;
 
-import com.group4.dicechess.Representation.Square;
+import com.group4.dicechess.Representation.Move;
 
 public interface Bot {
-    public Square getMove();
+    public Move getMove();
 }

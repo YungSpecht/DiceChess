@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.Representation.Square;
 import com.group4.dicechess.GameState;
 
@@ -137,7 +138,6 @@ public class GameScreen implements Screen {
                     txtOtp.add("Please roll the dice..");
                     txtTracker++;
                 }
-                gameLoop.prepareTurn();
                 playerSwitch = false;
             }
     
@@ -180,7 +180,7 @@ public class GameScreen implements Screen {
                                 moveN = "Selected: " + helperNot[0] + helperNot[1];
                                 txtOtp.add(moveN);
                                 txtTracker++;
-                                possibleMoves = gameLoop.getLegalMoves(tempPoss[1], tempPoss[0]);
+                                possibleMoves = translateToSquareList(gameLoop.getLegalMoves(tempPoss[1], tempPoss[0]));
                                 justSelected = true;
                             }
                         } else if(gameLoop.isLegalPiece(tempPoss[1], tempPoss[0])){
@@ -258,7 +258,7 @@ public class GameScreen implements Screen {
                                 moveN = "Selected: " + helperNot[0] + helperNot[1];
                                 txtOtp.add(moveN);
                                 txtTracker++;
-                                possibleMoves = gameLoop.getLegalMoves(tempPoss[1], tempPoss[0]);
+                                possibleMoves = translateToSquareList(gameLoop.getLegalMoves(tempPoss[1], tempPoss[0]));
                                 justSelected = true;
                             }
                         }
@@ -311,6 +311,15 @@ public class GameScreen implements Screen {
             game.setScreen(new GameOverScreen(game, winner));
         }
     }
+
+    private ArrayList<Square> translateToSquareList(ArrayList<Move> moves){
+        ArrayList<Square> result = new ArrayList<Square>();
+        for(Move m : moves){
+            result.add(m.getDestination());
+        }
+        return result;
+    }
+
 
     public int[] translateToArrayPos(int x, int y){
         int [] tempPos  = new int[2];

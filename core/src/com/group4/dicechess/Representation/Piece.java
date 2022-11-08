@@ -121,6 +121,6 @@ public abstract class Piece {
      * @param currentSquare represents the Square the piece is currently positioned on
      * @return ArrayList containing all the Squares the piece can legally move to
      */
-    public abstract ArrayList<Square> getPossibleMoves(Board board);
+    public abstract ArrayList<Move> getPossibleMoves(Board board);
 
 }

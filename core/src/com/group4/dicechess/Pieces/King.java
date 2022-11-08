@@ -3,8 +3,8 @@ package com.group4.dicechess.Pieces;
 import java.util.ArrayList;
 
 import com.group4.dicechess.Representation.Board;
+import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.Representation.Piece;
-import com.group4.dicechess.Representation.Square;
 
 public class King extends Piece{
 
@@ -14,23 +14,23 @@ public class King extends Piece{
     }
 
     @Override
-    public ArrayList<Square> getPossibleMoves(Board board) {
-        ArrayList<Square> result = new ArrayList<Square>();
+    public ArrayList<Move> getPossibleMoves(Board board) {
+        ArrayList<Move> result = new ArrayList<Move>();
 
         for(int i = this.getRow() -  1; i <= this.getRow() + 1; i++){
             for(int j = this.getCol() - 1; j <= this.getCol() + 1; j++){
                 if(canCapture(board, i, j, this.getWhiteStatus()) || SquareFree(board, i, j)){
-                    result.add(board.getSquare(i, j));
+                    result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(i, j), this));
                 }
             }
         }
 
         if(this.getMoveCounter() == 0){
             if(queenside(board)){
-                result.add(board.getSquare(this.getRow(), this.getCol()-2));
+                result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(this.getRow(), this.getCol()-2), this));
             }
             if(kingside(board)){
-                result.add(board.getSquare(this.getRow(), this.getCol()+2));
+                result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(this.getRow(), this.getCol()+2), this));
             }
         }
         return result;

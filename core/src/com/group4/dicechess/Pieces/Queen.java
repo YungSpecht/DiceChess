@@ -3,8 +3,8 @@ package com.group4.dicechess.Pieces;
 import java.util.ArrayList;
 
 import com.group4.dicechess.Representation.Board;
+import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.Representation.Piece;
-import com.group4.dicechess.Representation.Square;
 
 public class Queen extends Piece{
 
@@ -13,8 +13,8 @@ public class Queen extends Piece{
     }
 
     @Override
-    public ArrayList<Square> getPossibleMoves(Board board) {
-        ArrayList<Square> result = new ArrayList<Square>();
+    public ArrayList<Move> getPossibleMoves(Board board) {
+        ArrayList<Move> result = new ArrayList<Move>();
         int row = this.getRow();
         int col = this.getCol();
         int i = 1;
@@ -22,7 +22,7 @@ public class Queen extends Piece{
         while(downLeft || downRight || upRight || upLeft || down || up || left || right){
             if(left){
                 if(canCapture(board, row, col - i, this.getWhiteStatus()) || SquareFree(board, row, col - i)){
-                    result.add(board.getSquare(row, col - i));
+                    result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row, col - i), this));
                     if(canCapture(board, row, col - i, this.getWhiteStatus())){
                         left = false;
                     }
@@ -33,7 +33,7 @@ public class Queen extends Piece{
             }
             if(right){
                 if(canCapture(board, row, col + i, this.getWhiteStatus()) || SquareFree(board, row, col + i)){
-                    result.add(board.getSquare(row, col + i));
+                    result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row, col + i), this));
                     if(canCapture(board, row, col + i, this.getWhiteStatus())){
                         right = false;
                     }
@@ -44,7 +44,7 @@ public class Queen extends Piece{
             }
             if(up){
                 if(canCapture(board, row - i, col, this.getWhiteStatus()) || SquareFree(board, row - i, col)){
-                    result.add(board.getSquare(row - i, col));
+                    result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row - i, col), this));
                     if(canCapture(board, row - i, col, this.getWhiteStatus())){
                         up = false;
                     }
@@ -55,7 +55,7 @@ public class Queen extends Piece{
             }
             if(down){
                 if(canCapture(board, row + i, col, this.getWhiteStatus()) || SquareFree(board, row + i, col)){
-                    result.add(board.getSquare(row + i, col));
+                    result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row + i, col), this));
                     if(canCapture(board, row + i, col, this.getWhiteStatus())){
                         down = false;
                     }
@@ -66,10 +66,8 @@ public class Queen extends Piece{
             }
             if(downLeft){
                 if(canCapture(board, row+i, col - i, this.getWhiteStatus()) || SquareFree(board, row+i, col - i)){
-                    result.add(board.getSquare(row+i, col - i));
-                    if(canCapture(board, row+i, col - i, this.getWhiteStatus())){
-                        downLeft = false;
-                    }
+                    result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row+i, col - i), this));
+                    if(canCapture(board, row+i, col - i, this.getWhiteStatus())) downLeft = false;
                 }
                 else{
                     downLeft = false;
@@ -77,10 +75,8 @@ public class Queen extends Piece{
             }
             if(downRight){
                 if(canCapture(board, row+i, col + i, this.getWhiteStatus()) || SquareFree(board, row+i, col + i)){
-                    result.add(board.getSquare(row+i, col + i));
-                    if(canCapture(board, row+i, col + i, this.getWhiteStatus())){
-                        downRight = false;
-                    }
+                    result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row+i, col + i), this));
+                    if(canCapture(board, row+i, col + i, this.getWhiteStatus())) downRight = false;
                 }
                 else{
                     downRight = false;
@@ -88,10 +84,8 @@ public class Queen extends Piece{
             }
             if(upRight){
                 if(canCapture(board, row - i, col+i, this.getWhiteStatus()) || SquareFree(board, row - i, col+i)){
-                    result.add(board.getSquare(row - i, col+i));
-                    if(canCapture(board, row - i, col +i, this.getWhiteStatus())){
-                        upRight = false;
-                    }
+                    result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row - i, col+i), this));
+                    if(canCapture(board, row - i, col +i, this.getWhiteStatus())) upRight = false;
                 }
                 else{
                     upRight = false;
@@ -99,10 +93,8 @@ public class Queen extends Piece{
             }
             if(upLeft){
                 if(canCapture(board, row - i, col-i, this.getWhiteStatus()) || SquareFree(board, row - i, col-i)){
-                    result.add(board.getSquare(row - i, col-i));
-                    if(canCapture(board, row - i, col-i, this.getWhiteStatus())){
-                        upLeft = false;
-                    }
+                    result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row - i, col-i), this));
+                    if(canCapture(board, row - i, col-i, this.getWhiteStatus())) upLeft = false;
                 }
                 else{
                     upLeft = false;

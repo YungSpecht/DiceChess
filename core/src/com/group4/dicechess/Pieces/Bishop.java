@@ -3,8 +3,8 @@ package com.group4.dicechess.Pieces;
 import java.util.ArrayList;
 
 import com.group4.dicechess.Representation.Board;
+import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.Representation.Piece;
-import com.group4.dicechess.Representation.Square;
 
 public class Bishop extends Piece{
 
@@ -13,8 +13,8 @@ public class Bishop extends Piece{
     }
 
     @Override
-    public ArrayList<Square> getPossibleMoves(Board board) {
-        ArrayList<Square> result = new ArrayList<Square>();
+    public ArrayList<Move> getPossibleMoves(Board board) {
+        ArrayList<Move> result = new ArrayList<Move>();
         int row = this.getRow();
         int col = this.getCol();
         int i = 1;
@@ -22,7 +22,7 @@ public class Bishop extends Piece{
         while(downLeft || downRight || upRight || upLeft){
             if(downLeft){
                 if(canCapture(board, row+i, col - i, this.getWhiteStatus()) || SquareFree(board, row+i, col - i)){
-                    result.add(board.getSquare(row+i, col - i));
+                    result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row+i, col - i), this));
                     if(canCapture(board, row+i, col - i, this.getWhiteStatus())) downLeft = false;
                 }
                 else{
@@ -31,7 +31,7 @@ public class Bishop extends Piece{
             }
             if(downRight){
                 if(canCapture(board, row+i, col + i, this.getWhiteStatus()) || SquareFree(board, row+i, col + i)){
-                    result.add(board.getSquare(row+i, col + i));
+                    result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row+i, col + i), this));
                     if(canCapture(board, row+i, col + i, this.getWhiteStatus())) downRight = false;
                 }
                 else{
@@ -40,7 +40,7 @@ public class Bishop extends Piece{
             }
             if(upRight){
                 if(canCapture(board, row - i, col+i, this.getWhiteStatus()) || SquareFree(board, row - i, col+i)){
-                    result.add(board.getSquare(row - i, col+i));
+                    result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row - i, col+i), this));
                     if(canCapture(board, row - i, col +i, this.getWhiteStatus())) upRight = false;
                 }
                 else{
@@ -49,7 +49,7 @@ public class Bishop extends Piece{
             }
             if(upLeft){
                 if(canCapture(board, row - i, col-i, this.getWhiteStatus()) || SquareFree(board, row - i, col-i)){
-                    result.add(board.getSquare(row - i, col-i));
+                    result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row - i, col-i), this));
                     if(canCapture(board, row - i, col-i, this.getWhiteStatus())) upLeft = false;
                 }
                 else{
