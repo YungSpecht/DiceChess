@@ -2,6 +2,8 @@ package com.group4.dicechess;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.function.Predicate;
+
 import com.group4.dicechess.Representation.Board;
 import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.Representation.Piece;
@@ -80,7 +82,7 @@ public class GameState {
     }
 
     public void movePiece(int startRow, int startCol, int row, int col){
-        boolean white = turnCounter % 2 == 0 ? true : false;
+        boolean white = turnCounter % 2 == 0;
         if(white){
             whiteScore = board.movePiece(board.getSquare(startRow, startCol), board.getSquare(row, col), this.diceRoll);
         }
@@ -100,6 +102,27 @@ public class GameState {
                 moveList.add(moves);
             }
         }
+    }
+
+    public ArrayList<ArrayList<Move>> getPieceMoves(boolean white, final int piece){
+        ArrayList<Piece> pieces = white? board.getWhitePieces() : board.getBlackPieces();
+        pieces.removeIf(n -> (n.getDiceChessId() != piece));
+        return getMovesPieces(pieces);
+    }
+
+    public ArrayList<ArrayList<Move>> getTeamMoves(boolean white){
+        ArrayList<Piece> pieces = white? board.getWhitePieces() : board.getBlackPieces();
+        return getMovesPieces(pieces);
+    }
+
+    private ArrayList<ArrayList<Move>> getMovesPieces(ArrayList<Piece> pieces){
+        ArrayList<ArrayList<Move>> out = new ArrayList<>();
+        for(Piece piece : pieces){
+            ArrayList<Move> moves = piece.getPossibleMoves(board);
+            if(moves.isEmpty()) continue;
+            out.add(moves);
+        }
+        return out;
     }
 
     public int diceRoll(){
@@ -137,6 +160,8 @@ public class GameState {
         }
         return false;
     }
+
+    public boolean isWhitesTurn(){ return turnCounter % 2 == 0;}
 
     public int getWhiteScore(){return whiteScore;}
     public int getBlackScore(){return blackScore;}

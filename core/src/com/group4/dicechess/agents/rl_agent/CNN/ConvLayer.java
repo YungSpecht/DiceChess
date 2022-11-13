@@ -106,7 +106,7 @@ public class ConvLayer {
     }
 
 
-    public ConvLayer clone(){
+    public ConvLayer clone()  {
         Filter[] filtersClone = new Filter[filters.length];
 
         for (int i = 0; i < filters.length; i++) {

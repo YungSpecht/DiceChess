@@ -180,7 +180,7 @@ public class Network {
         denseLayers[layer].loadLayer(weights, bias);
     }
 
-    public Network clone(){
+    public Network clone() {
 
         ConvLayer[] convClone = new ConvLayer[convLayers.length];
         DenseLayer[] denseClone = new DenseLayer[denseLayers.length];

@@ -3,9 +3,9 @@ package com.group4.dicechess.agents.rl_agent.FCN;
 public class DenseLayer {
 
     private Neuron[] neurons;
-    private int numOutputs, numNeurons;
+    private final int numOutputs, numNeurons;
     private double[] bias, inputs;
-    private double learningRate;
+    private final double learningRate;
 
     public DenseLayer(int numNeurons, int numOutputs, double learningRate){
         this.numOutputs = numOutputs;
