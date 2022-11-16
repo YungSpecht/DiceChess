@@ -315,7 +315,7 @@ public class GameScreen implements Screen {
     private ArrayList<Square> translateToSquareList(ArrayList<Move> moves){
         ArrayList<Square> result = new ArrayList<Square>();
         for(Move m : moves){
-            result.add(m.getDestination());
+            result.add(m.destination());
         }
         return result;
     }

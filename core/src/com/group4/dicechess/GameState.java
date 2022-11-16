@@ -2,7 +2,6 @@ package com.group4.dicechess;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.function.Predicate;
 
 import com.group4.dicechess.Representation.Board;
 import com.group4.dicechess.Representation.Move;
@@ -70,7 +69,7 @@ public class GameState {
     public boolean isLegalMove(int startRow, int startCol, int row, int col){
         ArrayList<Move> moves = getLegalMoves(startRow, startCol);
         for(Move m : moves){
-            if(m.getDestination().getRow() == row && m.getDestination().getCol() == col){
+            if(m.destination().getRow() == row && m.destination().getCol() == col){
                 return true;
             }
         }
@@ -104,7 +103,7 @@ public class GameState {
         }
     }
 
-    public ArrayList<ArrayList<Move>> getPieceMoves(boolean white, final int piece){
+    public ArrayList<ArrayList<Move>> getPieceMoves(boolean white, int piece){
         ArrayList<Piece> pieces = white? board.getWhitePieces() : board.getBlackPieces();
         pieces.removeIf(n -> (n.getDiceChessId() != piece));
         return getMovesPieces(pieces);
@@ -123,6 +122,16 @@ public class GameState {
             out.add(moves);
         }
         return out;
+    }
+
+    // TODO: Verify
+    public ArrayList<Piece> getMovablePieces(boolean white, int piece){
+        ArrayList<Piece> pieces = white? board.getWhitePieces() : board.getBlackPieces();
+
+        pieces.removeIf(n -> (n.getDiceChessId() != piece));
+        pieces.removeIf(n -> (n.getPossibleMoves(board).isEmpty()));
+
+        return pieces;
     }
 
     public int diceRoll(){

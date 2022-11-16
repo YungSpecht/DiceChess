@@ -21,9 +21,9 @@ public class GreedyBot implements Bot {
         ArrayList<Move> allPossibleCapturingMoves = new ArrayList<Move>();
         for(ArrayList<Move> list : allMoves){
             for(Move m : list){
-                if(m.getPiece().getDiceChessId() == state.getDiceRoll()){
+                if(m.piece().getDiceChessId() == state.getDiceRoll()){
                     allPossibleMoves.add(m);
-                    if(m.getDestination().getPiece() != null){
+                    if(m.destination().getPiece() != null){
                         allPossibleCapturingMoves.add(m);
                     }
                 }
@@ -33,7 +33,7 @@ public class GreedyBot implements Bot {
         if(allPossibleCapturingMoves.size() > 0){
             Move bestMove = allPossibleCapturingMoves.get(rand.nextInt(allPossibleCapturingMoves.size()));
             for(Move m : allPossibleCapturingMoves){
-                if(m.getDestination().getPiece().getValue() > bestMove.getDestination().getPiece().getValue()){
+                if(m.destination().getPiece().getValue() > bestMove.destination().getPiece().getValue()){
                     bestMove = m;
                 }
             }

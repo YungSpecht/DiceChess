@@ -21,7 +21,7 @@ public class RandomBot implements Bot {
         ArrayList<Move> possibleMoves = new ArrayList<Move>();
         for(ArrayList<Move> list : allMoves){
             for(Move m : list){
-                if(m.getPiece().getDiceChessId() == state.getDiceRoll()){
+                if(m.piece().getDiceChessId() == state.getDiceRoll()){
                     possibleMoves.add(m);
                 }
             }

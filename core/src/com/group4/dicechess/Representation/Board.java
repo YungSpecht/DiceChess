@@ -34,6 +34,15 @@ public class Board {
         return board[row][column];
     }
 
+    public Piece getPieceOnPosition(int row, int col) throws Exception {
+        Piece piece = board[row][col].getPiece();
+
+        if (piece == null)
+            throw new Exception("No piece on Position: " + row + " " + col);
+
+        return piece;
+    }
+
     public ArrayList<Piece> getWhiteCaptured(){
         return whiteCaptured;
     }

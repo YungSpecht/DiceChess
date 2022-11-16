@@ -15,6 +15,9 @@ import java.util.Arrays;
   | 5 | Queen  |
   | 6 | King   |*/
 
+
+
+
 public class Training {
 
     private final GameState gameState;
@@ -34,14 +37,21 @@ public class Training {
         printState();
     }
 
+    /*
+State consist of 15 channels:
+Channels 0-5: white pieces (e.g. [0][5][3] = 1 white pawn in position [5][3])
+Channels 6-11: black pieces
+Channels 12:
+     */
 
     private double[][][] getState(){
         Piece piece;
         int channel;
 
         Square[][] board = gameState.getBoard().getMBoard();
-        double[][][] state = new double[14][8][8];
+        double[][][] state = new double[15][8][8];
 
+        // TODO just loop over pieces rather than the board
         for (Square[] row : board) {
             for (Square square : row){
                 piece = square.getPiece();
@@ -61,6 +71,8 @@ public class Training {
             state[13] = getMovesBinary(false, gameState.getDiceRoll());
         }
 
+        state[14] = getPositionBinary(gameState.isWhitesTurn(), gameState.getDiceRoll());
+
         return state;
     }
 
@@ -72,30 +84,15 @@ public class Training {
     private int getChannelByPiece(Piece piece){
 
         char id = piece.getCharId();
-        int channel;
-
-        switch (id){
-            case 'P':
-                channel = 0;
-                break;
-            case 'N':
-                channel = 1;
-                break;
-            case 'B':
-                channel = 2;
-                break;
-            case 'R':
-                channel = 3;
-                break;
-            case 'Q':
-                channel = 4;
-                break;
-            case 'K':
-                channel = 5;
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + id);
-        }
+        int channel = switch (id) {
+            case 'P' -> 0;
+            case 'N' -> 1;
+            case 'B' -> 2;
+            case 'R' -> 3;
+            case 'Q' -> 4;
+            case 'K' -> 5;
+            default -> throw new IllegalStateException("Unexpected value: " + id);
+        };
 
         return piece.getWhiteStatus() ? channel : channel + 6;
     }
@@ -113,8 +110,18 @@ public class Training {
 
         for (ArrayList<Move> moveList : allMoves) {
             for (Move move : moveList)
-                out[move.getDestination().getRow()][move.getDestination().getCol()] = 1;
+                out[move.destination().getRow()][move.destination().getCol()] = 1;
         }
+
+        return out;
+    }
+
+    private double[][] getPositionBinary(boolean white, int piece){
+        ArrayList<Piece> movablePieces = gameState.getMovablePieces(white, piece);
+        double[][] out = new double[8][8];
+
+        for (Piece movablePiece : movablePieces)
+            out[movablePiece.getRow()][movablePiece.getCol()] = 1;
 
         return out;
     }
