@@ -3,7 +3,6 @@ package com.group4.dicechess.agents.rl_agent.network;
 import java.io.*;
 import java.util.ArrayList;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class NetworkWriter {
 
@@ -13,7 +12,7 @@ public class NetworkWriter {
 
     public static void writeNetwork(ArrayList<String[][]> convLayer, ArrayList<String[]> denseLayer, String network, int episodeNum){
 
-        File csvFile = new File(PATH + saveNum + "." + network + NetworkParams.version.valueStr + ".csv");
+        File csvFile = new File(PATH + saveNum + "." + network + NetworkParameters.version.valueStr + ".csv");
 
         try {
             FileWriter outputFile = new FileWriter(csvFile);
@@ -46,7 +45,7 @@ public class NetworkWriter {
         int convInd = 0, denseInd = 0;
         String line;
         try {
-            FileReader file = new FileReader(PATH + saveNum + "." +  networkNumber + NetworkParams.version.valueStr + ".csv");
+            FileReader file = new FileReader(PATH + saveNum + "." +  networkNumber + NetworkParameters.version.valueStr + ".csv");
             BufferedReader reader = new BufferedReader(file);
 
             while ((line = reader.readLine()) != null){

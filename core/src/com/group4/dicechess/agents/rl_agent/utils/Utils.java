@@ -1,4 +1,7 @@
-package com.group4.dicechess.agents.rl_agent;
+package com.group4.dicechess.agents.rl_agent.utils;
+
+import com.group4.dicechess.GameState;
+import com.group4.dicechess.Representation.Board;
 
 public class Utils {
 
@@ -64,6 +67,34 @@ public class Utils {
         }
 
         return out;
+    }
+
+    public static void printTurn(GameState gameState){
+        String team = gameState.isWhitesTurn() ? "White" : "Black";
+        int pieceId = gameState.getDiceRoll();
+        print(team + " " + nameFromId(pieceId));
+    }
+
+
+    public static String nameFromId(int id){
+        return switch (id){
+            case 1 -> "Pawn";
+            case 2 -> "Knight";
+            case 3 -> "Bishop";
+            case 4 -> "Rook";
+            case 5 -> "Queen";
+            case 6 -> "King";
+            default -> throw new IllegalStateException("Unexpected value: " + id);
+        };
+    }
+
+
+    public static void printBoardStatic(Board board){
+        board.printBoard();
+    }
+
+    public static void print(String string){
+        System.out.println(string);
     }
 
 }

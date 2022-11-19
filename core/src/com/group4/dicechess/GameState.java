@@ -27,6 +27,16 @@ public class GameState {
         diceRoll = 1;
     }
 
+    public void reset(){
+        board = new Board();
+        turnCounter = -1;
+        whiteScore = 0;
+        blackScore = 0;
+        moveList = new ArrayList<>();
+        legalPieces = new ArrayList<>();
+        diceRoll = 1;
+    }
+
     public Board getBoard(){
         return board;
     }
@@ -90,6 +100,16 @@ public class GameState {
         }
     }
 
+    public void movePiece(Move move){
+
+        if(isWhitesTurn()){
+            whiteScore = board.movePiece(move);
+        }
+        else {
+            blackScore = board.movePiece(move);
+        }
+    }
+
     public void prepareTurn(){
         legalPieces.clear();
         moveList.clear();
@@ -104,13 +124,25 @@ public class GameState {
     }
 
     public ArrayList<ArrayList<Move>> getPieceMoves(boolean white, int piece){
-        ArrayList<Piece> pieces = white? board.getWhitePieces() : board.getBlackPieces();
+        ArrayList<Piece> pieces;
+
+        if (white)
+            pieces = (ArrayList<Piece>) board.getWhitePieces().clone();
+        else
+            pieces = (ArrayList<Piece>) board.getBlackPieces().clone();
+
         pieces.removeIf(n -> (n.getDiceChessId() != piece));
         return getMovesPieces(pieces);
     }
 
     public ArrayList<ArrayList<Move>> getTeamMoves(boolean white){
-        ArrayList<Piece> pieces = white? board.getWhitePieces() : board.getBlackPieces();
+        ArrayList<Piece> pieces;
+
+        if (white)
+            pieces = (ArrayList<Piece>) board.getWhitePieces().clone();
+        else
+            pieces = (ArrayList<Piece>) board.getBlackPieces().clone();
+
         return getMovesPieces(pieces);
     }
 
@@ -125,10 +157,15 @@ public class GameState {
     }
 
     // TODO: Verify
-    public ArrayList<Piece> getMovablePieces(boolean white, int piece){
-        ArrayList<Piece> pieces = white? board.getWhitePieces() : board.getBlackPieces();
+    public ArrayList<Piece> getMovablePieces(boolean white, int pieceId){
+        ArrayList<Piece> pieces;
 
-        pieces.removeIf(n -> (n.getDiceChessId() != piece));
+        if (white)
+            pieces = (ArrayList<Piece>) board.getWhitePieces().clone();
+        else
+            pieces = (ArrayList<Piece>) board.getBlackPieces().clone();
+
+        pieces.removeIf(n -> (n.getDiceChessId() != pieceId));
         pieces.removeIf(n -> (n.getPossibleMoves(board).isEmpty()));
 
         return pieces;

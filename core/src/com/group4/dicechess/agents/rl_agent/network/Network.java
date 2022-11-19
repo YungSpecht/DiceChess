@@ -5,6 +5,7 @@ import com.group4.dicechess.agents.rl_agent.FCN.DenseLayer;
 
 import java.util.ArrayList;
 
+import static com.group4.dicechess.agents.rl_agent.network.NetworkParameters.*;
 import static com.group4.dicechess.agents.rl_agent.network.NetworkWriter.readNetwork;
 import static com.group4.dicechess.agents.rl_agent.network.NetworkWriter.writeNetwork;
 
@@ -14,24 +15,24 @@ public class Network {
     private ConvLayer[] convLayers;
     private DenseLayer[] denseLayers;
     private ActivationLayer activationLayer;
-    private final double learningRate = NetworkParams.learningRate.valueDbl;
-    private final int       c1Filters = NetworkParams.c1Filters.valueInt,
-                            c2Filters = NetworkParams.c2Filters.valueInt,
-                            c3Filters = NetworkParams.c3Filters.valueInt;
+    private final double learningRate = NetworkParameters.learningRate.valueDbl;
+    private final int       c1Filters = NetworkParameters.c1Filters.valueInt,
+                            c2Filters = NetworkParameters.c2Filters.valueInt,
+                            c3Filters = NetworkParameters.c3Filters.valueInt;
     private int conv3Length;
 
-    private double[] networkOutput;
+    public Network(){
+        initLayers();
+    }
 
-    public Network(){}
 
+    private void initLayers(){
 
-    public void initLayers(int channels, int inputLength){
-
-        int input2Length = outDim(inputLength);
+        int input2Length = outDim(inputLength.valueInt);
         int input3Length = outDim(input2Length);
 
         convLayers = new ConvLayer[]{
-                new ConvLayer(channels, inputLength, c1Filters, 7, learningRate),
+                new ConvLayer(inputChannels.valueInt, inputLength.valueInt, c1Filters, 7, learningRate),
                 new ConvLayer(c1Filters, input2Length, c2Filters, 6, learningRate),
                 new ConvLayer(c2Filters, input3Length, c3Filters, 6, learningRate)
         };
@@ -41,8 +42,8 @@ public class Network {
 
 
         denseLayers = new DenseLayer[]{
-            new DenseLayer(numNeurons, (numNeurons /= 4), learningRate),
-            new DenseLayer(numNeurons, NetworkParams.outputLength.valueInt, learningRate)
+            new DenseLayer(numNeurons, numNeurons, learningRate),
+            new DenseLayer(numNeurons, outputLength.valueInt, learningRate)
         };
 
         activationLayer = new ActivationLayer(numNeurons);
@@ -61,7 +62,7 @@ public class Network {
         for (ConvLayer conv : convLayers)
             convOut = conv.forward(convOut);
 
-        networkOutput = flatten3D(convOut);
+        double[] networkOutput = flatten3D(convOut);
 
         networkOutput = denseLayers[0].forward(networkOutput);
         networkOutput = activationLayer.forward(networkOutput);
@@ -91,7 +92,7 @@ public class Network {
 
     private double[] dEdY(double target, double predicted, int prediction){
 
-        double[] dEdY = new double[NetworkParams.outputLength.valueInt];
+        double[] dEdY = new double[NetworkParameters.outputLength.valueInt];
 
         dEdY[prediction] = predicted - target;
 
@@ -195,7 +196,7 @@ public class Network {
     }
 
     private int outDim(int length){
-        return length - NetworkParams.kernelSize.valueInt + 1;
+        return length - NetworkParameters.kernelSize.valueInt + 1;
     }
 
     public DenseLayer[] getDenseLayers() {

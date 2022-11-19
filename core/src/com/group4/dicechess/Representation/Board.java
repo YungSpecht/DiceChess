@@ -150,6 +150,12 @@ public class Board {
         }
     }
 
+
+    public int movePiece(Move move){
+        return movePiece(move.start(), move.destination(), move.piece().getDiceChessId());
+    }
+
+
     /**
      * Moves a piece from one square to another and updates all the relevant variables accordingly.
      * 

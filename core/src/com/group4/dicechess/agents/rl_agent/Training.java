@@ -4,9 +4,13 @@ import com.group4.dicechess.GameState;
 import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.Representation.Piece;
 import com.group4.dicechess.Representation.Square;
+import com.group4.dicechess.agents.rl_agent.utils.Experience;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import static com.group4.dicechess.agents.rl_agent.network.NetworkParameters.inputChannels;
+import static com.group4.dicechess.agents.rl_agent.utils.Utils.*;
 
 /*| 1 | Pawn   |
   | 2 | Knight |
@@ -16,25 +20,104 @@ import java.util.Arrays;
   | 6 | King   |*/
 
 
-
-
 public class Training {
 
     private final GameState gameState;
-    private double[][][] state;
 
-    public Training(int numGames){
+    private final RL_Agent whiteAgent, blackAgent;
+
+    private final ArrayList<Experience> whiteExperiences, blackExperiences;
+    private final double LIVING_COST = -0.1;
+    private final int MOVE_LIMIT = 50;
+
+    public Training(int numGames) throws Exception {
         gameState = new GameState();
 
+        whiteAgent = new RL_Agent(true, gameState);
+        blackAgent = new RL_Agent(false, gameState);
 
-        GameLoop();
+        whiteExperiences = new ArrayList<>();
+        blackExperiences = new ArrayList<>();
+
+        TrainingLoop(numGames);
     }
 
 
-    private void GameLoop(){
-        Square[][] board = gameState.getBoard().getMBoard();
-        state = getState();
-        printState();
+    private void TrainingLoop(int numEpisodes) throws Exception {
+
+        int episode = 0;
+
+        while (episode++ < numEpisodes) {
+            gameLoop();
+        }
+    }
+
+    // TODO: Add backpropagation - Batch, Optimiser (Adam)?
+    // TODO: Handle promotion - pick queen when possible
+    // TODO: Link GUI
+    private void gameLoop() throws Exception {
+
+        Experience whiteExp, blackExp;
+        int pieceId;
+
+        gameState.getBoard().printBoard();
+        gameState.turnCounter++;
+        pieceId = gameState.diceRoll();
+        printTurn(gameState);
+        whiteExp = whiteAgent.predictMove(getState(), pieceId);
+        gameState.movePiece(whiteExp.action().move());
+
+        gameState.turnCounter++;
+        pieceId = gameState.diceRoll();
+        printTurn(gameState);
+        blackExp = blackAgent.predictMove(getState(), pieceId);
+        gameState.movePiece(blackExp.action().move());
+
+        while (gameState.turnCounter < MOVE_LIMIT){
+
+            whiteExperiences.add(calculateReward(whiteExp, blackExp, true));
+
+            gameState.turnCounter++;
+            pieceId = gameState.diceRoll();
+            printTurn(gameState);
+            whiteExp = whiteAgent.predictMove(getState(), pieceId);
+            gameState.movePiece(whiteExp.action().move());
+
+            if (gameState.gameOver()){
+                whiteExperiences.add(whiteExp.setReward(100));
+                return;
+            }
+
+            blackExperiences.add(calculateReward(whiteExp, blackExp, false));
+
+            gameState.turnCounter++;
+            pieceId = gameState.diceRoll();
+            printTurn(gameState);
+            blackExp = blackAgent.predictMove(getState(), pieceId);
+            gameState.movePiece(blackExp.action().move());
+
+            if (gameState.gameOver()){
+                blackExperiences.add(blackExp.setReward(100));
+                return;
+            }
+        }
+    }
+
+    private Experience calculateReward(Experience whiteExp, Experience blackExp, boolean white){
+
+        Piece whiteCapture = whiteExp.action().capture(),
+              blackCapture = blackExp.action().capture();
+
+        if (whiteCapture == null && blackCapture == null) return whiteExp.setReward(LIVING_COST);
+
+        if (white){
+            if (whiteCapture == null) return whiteExp.setReward(LIVING_COST - blackCapture.getValue());
+            if (blackCapture == null) return whiteExp.setReward(LIVING_COST + whiteCapture.getValue() );
+            return whiteExp.setReward(LIVING_COST + whiteCapture.getValue() - blackCapture.getValue());
+        }
+        if (whiteCapture == null) return whiteExp.setReward(LIVING_COST + blackCapture.getValue());
+        if (blackCapture == null) return whiteExp.setReward(LIVING_COST - whiteCapture.getValue() );
+        return whiteExp.setReward(LIVING_COST + blackCapture.getValue() - whiteCapture.getValue());
     }
 
     /*
@@ -49,7 +132,7 @@ Channels 12:
         int channel;
 
         Square[][] board = gameState.getBoard().getMBoard();
-        double[][][] state = new double[15][8][8];
+        double[][][] state = new double[inputChannels.valueInt][8][8];
 
         // TODO just loop over pieces rather than the board
         for (Square[] row : board) {
@@ -127,7 +210,7 @@ Channels 12:
     }
 
     private void printState(){
-        for (double[][] channel : state) {
+        for (double[][] channel : getState()) {
             for (double[] row : channel) {
                 System.out.println(Arrays.toString(row));
             }
@@ -136,7 +219,7 @@ Channels 12:
     }
 
 
-    public static void main(String[] args) {
-        new Training(1);
+    public static void main(String[] args) throws Exception {
+        new Training(50);
     }
 }

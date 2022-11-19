@@ -1,29 +1,29 @@
 package com.group4.dicechess.agents.rl_agent.network;
 
-public enum NetworkParams {
+public enum NetworkParameters {
     inputLength(8),
-    inputChannels(6),
+    inputChannels(15),
     targetUpdate(10),
     gamma(0.69),
     learningRate(0.001),
     kernelSize(3),
-    outputLength(4),
-    c1Filters(8),
-    c2Filters(16),
-    c3Filters(8),
+    outputLength(64),
+    c1Filters(32),
+    c2Filters(128),
+    c3Filters(32),
     version("V1.0"),
     maxMoves(2000),
     batchSize(256);
 
-    NetworkParams(int valueInt) {
+    NetworkParameters(int valueInt) {
         this.valueInt = valueInt;
     }
 
-    NetworkParams(double valueDbl) {
+    NetworkParameters(double valueDbl) {
         this.valueDbl = valueDbl;
     }
 
-    NetworkParams(String valueStr) { this.valueStr = valueStr; }
+    NetworkParameters(String valueStr) { this.valueStr = valueStr; }
 
     public int valueInt;
     public double valueDbl;
