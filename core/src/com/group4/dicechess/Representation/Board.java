@@ -149,7 +149,9 @@ public class Board {
      * @param //legalMoves ArrayList containing all the squares the piece can be moved to
      * @return integer that represents the value of the captured piece
      */
-    public int movePiece(Square start, Square destination, int diceRoll){
+    public int movePiece(Move move, int diceRoll){
+        Square start = move.getStart();
+        Square destination = move.getDestination();
         int captureValue =0;
         Piece piece = start.getPiece();
         if(piece.getWhiteStatus()){

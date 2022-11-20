@@ -13,6 +13,7 @@ public class GameState {
     private int whiteScore;
     private int blackScore;
     private int diceRoll;
+    private ArrayList<Move> moveHistory;
     private ArrayList<ArrayList<Move>> moveList;
     private ArrayList<Piece> legalPieces;
 
@@ -21,6 +22,7 @@ public class GameState {
         turnCounter = -1;
         whiteScore = 0;
         blackScore = 0;
+        moveHistory = new ArrayList<Move>();
         moveList = new ArrayList<ArrayList<Move>>();
         legalPieces = new ArrayList<Piece>();
         diceRoll = 1;
@@ -80,13 +82,15 @@ public class GameState {
     }
 
     public void movePiece(int startRow, int startCol, int row, int col){
+        Move move = getMove(startRow, startCol, row, col);
         boolean white = turnCounter % 2 == 0 ? true : false;
         if(white){
-            whiteScore = board.movePiece(board.getSquare(startRow, startCol), board.getSquare(row, col), this.diceRoll);
+            whiteScore = board.movePiece(move, this.diceRoll);
         }
         else{
-            blackScore = board.movePiece(board.getSquare(startRow, startCol), board.getSquare(row, col), this.diceRoll);
+            blackScore = board.movePiece(move, this.diceRoll);
         }
+        moveHistory.add(move);
     }
 
     public void prepareTurn(){
@@ -136,6 +140,17 @@ public class GameState {
             }
         }
         return false;
+    }
+
+    private Move getMove(int startRow, int startCol, int endRow, int endCol){
+        for(ArrayList<Move> l : moveList){
+            for(Move m : l){
+                if(m.getStart() == board.getSquare(startRow, startCol)){
+                    return m;
+                }
+            }
+        }
+        return null;
     }
 
     public int getWhiteScore(){return whiteScore;}
