@@ -72,6 +72,7 @@ public class Utils {
     public static void printTurn(GameState gameState){
         String team = gameState.isWhitesTurn() ? "White" : "Black";
         int pieceId = gameState.getDiceRoll();
+        print("Turn Number: " + gameState.turnCounter);
         print(team + " " + nameFromId(pieceId));
     }
 
@@ -88,6 +89,17 @@ public class Utils {
         };
     }
 
+    public static boolean isZeroMatrix(double[][] input){
+
+        for (double[] row : input) {
+            for (double entry : row) {
+                if (entry != 0)
+                    return false;
+            }
+        }
+
+        return true;
+    }
 
     public static void printBoardStatic(Board board){
         board.printBoard();

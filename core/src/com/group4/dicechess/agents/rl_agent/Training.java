@@ -28,7 +28,7 @@ public class Training {
 
     private final ArrayList<Experience> whiteExperiences, blackExperiences;
     private final double LIVING_COST = -0.1;
-    private final int MOVE_LIMIT = 50;
+    private final int MOVE_LIMIT = 100;
 
     public Training(int numGames) throws Exception {
         gameState = new GameState();
@@ -49,6 +49,7 @@ public class Training {
 
         while (episode++ < numEpisodes) {
             gameLoop();
+            gameState.reset();
         }
     }
 
@@ -58,45 +59,39 @@ public class Training {
     private void gameLoop() throws Exception {
 
         Experience whiteExp, blackExp;
-        int pieceId;
 
         gameState.getBoard().printBoard();
-        gameState.turnCounter++;
-        pieceId = gameState.diceRoll();
-        printTurn(gameState);
-        whiteExp = whiteAgent.predictMove(getState(), pieceId);
+
+        whiteExp = decide(true);
         gameState.movePiece(whiteExp.action().move());
 
-        gameState.turnCounter++;
-        pieceId = gameState.diceRoll();
-        printTurn(gameState);
-        blackExp = blackAgent.predictMove(getState(), pieceId);
+        blackExp = decide(false);
         gameState.movePiece(blackExp.action().move());
 
         while (gameState.turnCounter < MOVE_LIMIT){
 
             whiteExperiences.add(calculateReward(whiteExp, blackExp, true));
 
-            gameState.turnCounter++;
-            pieceId = gameState.diceRoll();
-            printTurn(gameState);
-            whiteExp = whiteAgent.predictMove(getState(), pieceId);
+            whiteExp = decide(true);
             gameState.movePiece(whiteExp.action().move());
+            print("End Turn: White");
 
-            if (gameState.gameOver()){
+            if (gameState.isGameOver()){
+                print("Game Over");
+                gameState.getBoard().printBoard();
                 whiteExperiences.add(whiteExp.setReward(100));
                 return;
             }
 
             blackExperiences.add(calculateReward(whiteExp, blackExp, false));
 
-            gameState.turnCounter++;
-            pieceId = gameState.diceRoll();
-            printTurn(gameState);
-            blackExp = blackAgent.predictMove(getState(), pieceId);
+            blackExp = decide(false);
             gameState.movePiece(blackExp.action().move());
+            print("End Turn: Black");
 
-            if (gameState.gameOver()){
+            if (gameState.isGameOver()){
+                print("Game Over");
+                gameState.getBoard().printBoard();
                 blackExperiences.add(blackExp.setReward(100));
                 return;
             }
@@ -120,29 +115,32 @@ public class Training {
         return whiteExp.setReward(LIVING_COST + blackCapture.getValue() - whiteCapture.getValue());
     }
 
+
+
+    private Experience decide(boolean white) throws Exception {
+        gameState.turnCounter++;
+        int diceRoll = gameState.diceRoll();
+        printTurn(gameState);
+
+        if (white) return whiteAgent.predictMove(getState(), diceRoll);
+
+        return blackAgent.predictMove(getState(), diceRoll);
+    }
+
     /*
 State consist of 15 channels:
 Channels 0-5: white pieces (e.g. [0][5][3] = 1 white pawn in position [5][3])
 Channels 6-11: black pieces
 Channels 12:
      */
-
-    private double[][][] getState(){
-        Piece piece;
+    private double[][][] getState() throws Exception {
         int channel;
-
-        Square[][] board = gameState.getBoard().getMBoard();
         double[][][] state = new double[inputChannels.valueInt][8][8];
 
-        // TODO just loop over pieces rather than the board
-        for (Square[] row : board) {
-            for (Square square : row){
-                piece = square.getPiece();
-                if (piece == null) continue;
-
-                channel = getChannelByPiece(piece);
+        for (Piece piece : gameState.getBoard().getAllPieces()) {
+                channel = piece.getDiceChessId() - 1;
+                channel = piece.getWhiteStatus() ? channel : channel + 6;
                 state[channel][piece.getRow()][piece.getCol()] = 1;
-            }
         }
 
         // TODO: verify dice roll is consistent
@@ -155,6 +153,9 @@ Channels 12:
         }
 
         state[14] = getPositionBinary(gameState.isWhitesTurn(), gameState.getDiceRoll());
+
+        if (isZeroMatrix(state[14]))
+            throw new Exception("No legal Pieces");
 
         return state;
     }
@@ -210,11 +211,15 @@ Channels 12:
     }
 
     private void printState(){
-        for (double[][] channel : getState()) {
-            for (double[] row : channel) {
-                System.out.println(Arrays.toString(row));
+        try {
+            for (double[][] channel : getState()) {
+                for (double[] row : channel) {
+                    System.out.println(Arrays.toString(row));
+                }
+                System.out.println("----------------------------------------");
             }
-            System.out.println("----------------------------------------");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

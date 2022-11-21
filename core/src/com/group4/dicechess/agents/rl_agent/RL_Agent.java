@@ -83,6 +83,9 @@ public class RL_Agent {
             }
         }
 
+        if (bestMove == null)
+            throw new Exception("No best move");
+
         return new Action(maxActionValue, bestMove, capture);
     }
 
@@ -98,6 +101,9 @@ public class RL_Agent {
                 legalPieces.add(gameState.getBoard().getPieceOnPosition(i, j));
             }
         }
+
+        if (legalPieces.isEmpty())
+            throw new Exception("No legal pieces");
 
         return legalPieces;
     }

@@ -10,12 +10,14 @@ import com.group4.dicechess.Pieces.Pawn;
 import com.group4.dicechess.Pieces.Queen;
 import com.group4.dicechess.Pieces.Rook;
 
+import static com.group4.dicechess.GameState.kingCaptured;
+
 public class Board {
-    private Square[][] board;
-    private ArrayList<Piece> whitePieces;
-    private ArrayList<Piece> blackPieces;
-    private ArrayList<Piece> whiteCaptured;
-    private ArrayList<Piece> blackCaptured;
+    private final Square[][] board;
+    private final ArrayList<Piece> whitePieces;
+    private final ArrayList<Piece> blackPieces;
+    private final ArrayList<Piece> whiteCaptured;
+    private final ArrayList<Piece> blackCaptured;
     private Piece lastMovedPieceBlack;
     private Piece lastMovedPieceWhite;
     private static Scanner in;
@@ -57,6 +59,12 @@ public class Board {
 
     public ArrayList<Piece> getBlackPieces(){
         return blackPieces;
+    }
+
+    public ArrayList<Piece> getAllPieces(){
+        ArrayList<Piece> out = (ArrayList<Piece>) whitePieces.clone();
+        out.addAll(blackPieces);
+        return out;
     }
     
     public Piece getLastMovedPieceWhite(){
@@ -152,7 +160,112 @@ public class Board {
 
 
     public int movePiece(Move move){
-        return movePiece(move.start(), move.destination(), move.piece().getDiceChessId());
+
+        Square start = move.start(),
+               destination = move.destination();
+
+        int captureValue = 0;
+        Piece piece = start.getPiece();
+        if(piece.getWhiteStatus()){
+            lastMovedPieceWhite = piece;
+        } else {
+            lastMovedPieceBlack = piece;
+        }
+        if(enPassant(start, destination)){
+            captureValue = 1;
+            if(piece.getWhiteStatus()){
+                blackPieces.remove(board[start.getRow()][destination.getCol()].getPiece());
+                blackCaptured.add(board[start.getRow()][destination.getCol()].getPiece());
+            }
+            else{
+                whitePieces.remove(board[start.getRow()][destination.getCol()].getPiece());
+                whiteCaptured.add(board[start.getRow()][destination.getCol()].getPiece());
+            }
+            board[start.getRow()][destination.getCol()].setPiece(null);
+        }
+        else if(castling(start, destination)){
+            int white = start.getPiece().getWhiteStatus() ? 1 : 0;
+            if(destination.getCol() < start.getCol()){
+                Piece rook = this.board[(white * 7)][0].getPiece();
+                this.board[(white * 7)][3].setPiece(rook);
+                this.board[(white * 7)][0].setPiece(null);
+                rook.increaseMoveCounter();
+                rook.setCol(3);
+            }
+            else{
+                Piece rook = this.board[(white * 7)][7].getPiece();
+                this.board[(white * 7)][5].setPiece(rook);
+                this.board[(white * 7)][7].setPiece(null);
+                rook.increaseMoveCounter();
+                rook.setCol(5);
+            }
+        }
+        else if(pawnPromotion(start, destination)){
+            if(destination.getPiece() != null){
+                Piece capturedPiece = destination.getPiece();
+
+                if (capturedPiece instanceof King)
+                    kingCaptured();
+
+                captureValue = capturedPiece.getValue();
+                if(destination.getPiece().getWhiteStatus()){
+                    whitePieces.remove(capturedPiece);
+                    whiteCaptured.add(capturedPiece);
+                }
+                else{
+                    blackPieces.remove(capturedPiece);
+                    blackCaptured.add(capturedPiece);
+                }
+            }
+            if(move.piece().getDiceChessId() != 1){
+                piece = pieceFactory(move.piece().getDiceChessId(), start.getPiece().getWhiteStatus(), destination);
+                if(piece.getWhiteStatus()){
+                    whitePieces.add(piece);
+                    whitePieces.remove(start.getPiece());
+                }
+                else{
+                    blackPieces.add(piece);
+                }
+            }
+            else{
+                // Always choose queen
+                piece = pieceFactory(5, start.getPiece().getWhiteStatus(), destination);
+                if(piece.getWhiteStatus()){
+                    whitePieces.add(piece);
+                    whitePieces.remove(start.getPiece());
+                }
+                else{
+                    blackPieces.add(piece);
+                    blackPieces.remove(start.getPiece());
+                }
+            }
+        }
+        else if(destination.getPiece() == null){
+            captureValue = 0;
+        }
+        else{
+            Piece capturedPiece = destination.getPiece();
+
+            if (capturedPiece instanceof King)
+                kingCaptured();
+
+            captureValue = capturedPiece.getValue();
+            if(destination.getPiece().getWhiteStatus()){
+                whitePieces.remove(capturedPiece);
+                whiteCaptured.add(capturedPiece);
+            }
+            else{
+                blackPieces.remove(capturedPiece);
+                blackCaptured.add(capturedPiece);
+            }
+        }
+        start.setPiece(null);
+        destination.setPiece(piece);
+        piece.setRow(destination.getRow());
+        piece.setCol(destination.getCol());
+        piece.increaseMoveCounter();
+        this.printBoard();
+        return captureValue;
     }
 
 
@@ -187,16 +300,16 @@ public class Board {
         else if(castling(start, destination)){
             int white = start.getPiece().getWhiteStatus() ? 1 : 0;
             if(destination.getCol() < start.getCol()){
-                Piece rook = this.board[0 + (white * 7)][0].getPiece();
-                this.board[0 + (white * 7)][3].setPiece(rook);
-                this.board[0 + (white * 7)][0].setPiece(null);
+                Piece rook = this.board[(white * 7)][0].getPiece();
+                this.board[(white * 7)][3].setPiece(rook);
+                this.board[(white * 7)][0].setPiece(null);
                 rook.increaseMoveCounter();
                 rook.setCol(3);
             }
             else{
-                Piece rook = this.board[0 + (white * 7)][7].getPiece();
-                this.board[0 + (white * 7)][5].setPiece(rook);
-                this.board[0 + (white * 7)][7].setPiece(null);
+                Piece rook = this.board[(white * 7)][7].getPiece();
+                this.board[(white * 7)][5].setPiece(rook);
+                this.board[(white * 7)][7].setPiece(null);
                 rook.increaseMoveCounter();
                 rook.setCol(5);
             }
@@ -277,27 +390,18 @@ public class Board {
         if(piece.getWhiteStatus() && piece.getId().equals("P") && start.getRow() == 3 && board[destination.getRow()][destination.getCol()].getPiece() == null){
             return true;
         }
-        else if(!piece.getWhiteStatus() && piece.getId().equals("P") && start.getRow() == 4 && board[destination.getRow()][destination.getCol()].getPiece() == null){
-            return true;
-        }
-        return false;
+        else return !piece.getWhiteStatus() && piece.getId().equals("P") && start.getRow() == 4 && board[destination.getRow()][destination.getCol()].getPiece() == null;
     }
 
     private boolean castling(Square start, Square destination){
         Piece piece = start.getPiece();
 
-        if(piece.getId().equals("K") && piece.getMoveCounter() == 0 && (destination.getCol() == start.getCol()-2 || destination.getCol() == start.getCol()+2)){
-            return true;
-        }
-        return false;
+        return piece.getId().equals("K") && piece.getMoveCounter() == 0 && (destination.getCol() == start.getCol() - 2 || destination.getCol() == start.getCol() + 2);
     }
 
     private boolean pawnPromotion(Square start, Square destination){
         Piece piece = start.getPiece();
-        if(piece.getId().equals("P") && (destination.getRow() == 0 || destination.getRow() == 7)){
-            return true;
-        }
-        return false;
+        return piece.getId().equals("P") && (destination.getRow() == 0 || destination.getRow() == 7);
     }
 
     private Piece pieceFactory(int id, boolean white, Square sq){

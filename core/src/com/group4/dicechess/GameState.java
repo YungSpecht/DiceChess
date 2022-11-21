@@ -16,6 +16,7 @@ public class GameState {
     private int diceRoll;
     private ArrayList<ArrayList<Move>> moveList;
     private ArrayList<Piece> legalPieces;
+    private static boolean isOver;
 
     public GameState(){
         board = new Board();
@@ -25,6 +26,7 @@ public class GameState {
         moveList = new ArrayList<ArrayList<Move>>();
         legalPieces = new ArrayList<Piece>();
         diceRoll = 1;
+        isOver = false;
     }
 
     public void reset(){
@@ -35,6 +37,7 @@ public class GameState {
         moveList = new ArrayList<>();
         legalPieces = new ArrayList<>();
         diceRoll = 1;
+        isOver = false;
     }
 
     public Board getBoard(){
@@ -158,15 +161,23 @@ public class GameState {
 
     // TODO: Verify
     public ArrayList<Piece> getMovablePieces(boolean white, int pieceId){
-        ArrayList<Piece> pieces;
-
-        if (white)
+        ArrayList<Piece> pieces = new ArrayList<>();
+/*        if (white)
             pieces = (ArrayList<Piece>) board.getWhitePieces().clone();
         else
             pieces = (ArrayList<Piece>) board.getBlackPieces().clone();
 
         pieces.removeIf(n -> (n.getDiceChessId() != pieceId));
-        pieces.removeIf(n -> (n.getPossibleMoves(board).isEmpty()));
+        pieces.removeIf(n -> (n.getPossibleMoves(board).isEmpty()));*/
+
+        for (Piece piece : legalPieces){
+            if (piece.getDiceChessId() == pieceId){
+                pieces.add(piece);
+            }
+        }
+
+        if (pieces.isEmpty())
+            return null;
 
         return pieces;
     }
@@ -205,6 +216,14 @@ public class GameState {
             }
         }
         return false;
+    }
+
+    public boolean isGameOver(){
+        return isOver;
+    }
+
+    public static void kingCaptured(){
+        isOver = true;
     }
 
     public boolean isWhitesTurn(){ return turnCounter % 2 == 0;}
