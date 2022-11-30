@@ -11,12 +11,17 @@ public class HelpScreen implements Screen {
 
     Texture backArrow;
     Sprite spriteArrow;
+    Texture helpInfo;
+    Sprite sHelpInfo;
     TextureUtils textureUtils;
     DiceChessGame game;
 
     public HelpScreen(DiceChessGame currentGame){
         this.game = currentGame;
         this.textureUtils = new TextureUtils();
+        helpInfo = new Texture("FinalAssets/helpinfo.png");
+        sHelpInfo = new Sprite(helpInfo);
+        sHelpInfo.setSize(930, 290);
     }
 
     @Override
@@ -41,6 +46,7 @@ public class HelpScreen implements Screen {
         });
         ScreenUtils.clear(1, 1, 1, 1);
         game.batch.begin();
+        game.batch.draw(sHelpInfo, 1, 160, sHelpInfo.getWidth(), sHelpInfo.getHeight());
         game.batch.draw(spriteArrow, spriteArrow.getX(), spriteArrow.getY(), spriteArrow.getWidth(), spriteArrow.getHeight());
         game.batch.end();
     }
