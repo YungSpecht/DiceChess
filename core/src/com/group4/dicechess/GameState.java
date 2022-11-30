@@ -83,6 +83,7 @@ public class GameState {
 
     public void movePiece(int startRow, int startCol, int row, int col){
         Move move = getMove(startRow, startCol, row, col);
+
         boolean white = turnCounter % 2 == 0 ? true : false;
         if(white){
             whiteScore = board.movePiece(move, this.diceRoll);
@@ -142,10 +143,11 @@ public class GameState {
         return false;
     }
 
+
     private Move getMove(int startRow, int startCol, int endRow, int endCol){
         for(ArrayList<Move> l : moveList){
             for(Move m : l){
-                if(m.getStart() == board.getSquare(startRow, startCol)){
+                if(m.getStart() == board.getSquare(startRow, startCol) && m.getDestination().getCol() == endCol && m.getDestination().getRow() == endRow){
                     return m;
                 }
             }

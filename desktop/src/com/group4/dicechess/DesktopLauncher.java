@@ -14,4 +14,5 @@ public class DesktopLauncher {
 		config.setTitle("Dice Chess");
 		new Lwjgl3Application(new DiceChessGame(), config);
 	}
+
 }
