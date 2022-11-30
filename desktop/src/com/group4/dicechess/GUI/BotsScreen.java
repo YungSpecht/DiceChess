@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class HelpScreen implements Screen {
+public class BotsScreen implements Screen {
 
     Texture backArrow;
     Sprite spriteArrow;
@@ -16,12 +16,12 @@ public class HelpScreen implements Screen {
     TextureUtils textureUtils;
     DiceChessGame game;
 
-    public HelpScreen(DiceChessGame currentGame){
+    public BotsScreen(DiceChessGame currentGame){
         this.game = currentGame;
         this.textureUtils = new TextureUtils();
-        helpInfo = new Texture("FinalAssets/helpinfo.png");
-        sHelpInfo = new Sprite(helpInfo);
-        sHelpInfo.setSize(sHelpInfo.getWidth()/3, sHelpInfo.getHeight()/3);
+        //helpInfo = new Texture("FinalAssets/helpinfo.png");
+        //sHelpInfo = new Sprite(helpInfo);
+        //sHelpInfo.setSize(930, 290);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class HelpScreen implements Screen {
         });
         ScreenUtils.clear(1, 1, 1, 1);
         game.batch.begin();
-        game.batch.draw(sHelpInfo, 40, 190, sHelpInfo.getWidth(), sHelpInfo.getHeight());
+        //game.batch.draw(sHelpInfo, 1, 160, sHelpInfo.getWidth(), sHelpInfo.getHeight());
         game.batch.draw(spriteArrow, spriteArrow.getX(), spriteArrow.getY(), spriteArrow.getWidth(), spriteArrow.getHeight());
         game.batch.end();
     }

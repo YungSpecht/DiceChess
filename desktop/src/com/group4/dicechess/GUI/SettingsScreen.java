@@ -37,7 +37,6 @@ public class SettingsScreen implements Screen {
                     Gdx.input.setInputProcessor(null);
                 }
                 if(screenX >= 350 && screenX <= 550 && screenY >= 310 && screenY <= 360){
-                    System.out.println("Working on Help...");
                     game.setScreen(new HelpScreen(game));
                     Gdx.input.setInputProcessor(null);
                 }
@@ -46,6 +45,8 @@ public class SettingsScreen implements Screen {
                 }
                 if(screenX >= 350 && screenX <= 550 && screenY >= 220 && screenY <= 270){
                     System.out.println("Working on bots...");
+                    game.setScreen(new BotsScreen(game));
+                    Gdx.input.setInputProcessor(null);
                 }
                 return true;
             }
