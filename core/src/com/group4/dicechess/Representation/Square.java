@@ -26,4 +26,8 @@ public class Square {
     public Piece getPiece(){
         return piece;
     }
+
+    public Square copy(){
+        return new Square(this.getRow(), this.getCol(), this.getPiece().copy());
+    }
 }

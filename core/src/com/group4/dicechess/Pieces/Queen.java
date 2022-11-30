@@ -105,5 +105,12 @@ public class Queen extends Piece{
         return result;
     }
 
+    @Override
+    public Piece copy() {
+        Piece copy = new Queen(this.getWhiteStatus(), this.getRow(), this.getCol());
+        copy.setMoveCounter(this.getMoveCounter());
+        return copy;
+    }
+
     
 }

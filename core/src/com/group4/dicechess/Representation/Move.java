@@ -22,4 +22,8 @@ public class Move {
     public Piece getPiece(){
         return piece;
     }
+
+    public Move copy(){
+        return new Move(this.getStart().copy(), this.getDestination().copy(), this.getPiece().copy());
+    }
 }

@@ -61,5 +61,12 @@ public class Bishop extends Piece{
         return result;
     }
 
+    @Override
+    public Piece copy() {
+        Piece copy = new Bishop(this.getWhiteStatus(), this.getRow(), this.getCol());
+        copy.setMoveCounter(this.getMoveCounter());
+        return copy;
+    }
+
     
 }

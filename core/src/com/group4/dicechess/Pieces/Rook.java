@@ -68,5 +68,12 @@ public class Rook extends Piece{
         }
         return result;
     }
+
+    @Override
+    public Piece copy() {
+        Piece copy = new Rook(this.getWhiteStatus(), this.getRow(), this.getCol());
+        copy.setMoveCounter(this.getMoveCounter());
+        return copy;
+    }
     
 }

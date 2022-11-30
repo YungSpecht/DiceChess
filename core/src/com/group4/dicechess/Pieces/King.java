@@ -59,6 +59,13 @@ public class King extends Piece{
         }
         return false;
     }
+
+    @Override
+    public Piece copy() {
+        Piece copy = new King(this.getWhiteStatus(), this.getRow(), this.getCol());
+        copy.setMoveCounter(this.getMoveCounter());
+        return null;
+    }
     
     
 }

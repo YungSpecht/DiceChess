@@ -128,7 +128,6 @@ public class GameScreen implements Screen {
         if(!gameLoop.gameOver()){
             if(playerSwitch && !turnActive){
                 cnt++;
-                gameLoop.turnCounter++;
                 if(cnt % 2 == 0){
                     txtOtp.add("------------White's turn------------");
                     txtTracker++;
@@ -228,91 +227,6 @@ public class GameScreen implements Screen {
         }
     }
 
-    private void chess(){
-        if(!gameLoop.gameOver()){
-            if(playerSwitch && !turnActive){
-                cnt++;
-                gameLoop.turnCounter++;
-                if(cnt % 2 == 0){
-                    txtOtp.add("------------White's turn------------");
-                    txtTracker++;
-                } else {
-                    txtOtp.add("------------Black's turn------------");
-                    txtTracker++;
-                }
-                gameLoop.prepareTurn();
-                playerSwitch = false;
-                turnActive = true;
-            }
-            Gdx.input.setInputProcessor(new InputAdapter() {
-                @Override
-                public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
-                    if (screenX >= 15 && screenX <= 45 && screenY >= 10 && screenY <= 40) {
-                        game.setScreen(new MenuScreen(game));
-                        Gdx.input.setInputProcessor(null);
-                    }
-                    if(screenX >= 105 && screenX <= 529 && screenY <= 523 && screenY >= 99 && turnActive){
-                        if(tempPoss[0] == -1){
-                            tempPoss = translateToArrayPos(screenX, screenY);
-                            if(gameLoop.isLegalPieceChess(tempPoss[1], tempPoss[0])){
-                                helperNot = textureUtils.intoCoorNotation(tempPoss[0], tempPoss[1]);
-                                moveN = "Selected: " + helperNot[0] + helperNot[1];
-                                txtOtp.add(moveN);
-                                txtTracker++;
-                                possibleMoves = translateToSquareList(gameLoop.getLegalMoves(tempPoss[1], tempPoss[0]));
-                                justSelected = true;
-                            }
-                        }
-                        else if(gameLoop.isLegalPieceChess(tempPoss[1], tempPoss[0])){
-                            tempPoss2 = translateToArrayPos(screenX, screenY);
-                            justSelected = false;
-                            if(gameLoop.isLegalMove(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0])){
-                                helperNot = textureUtils.intoCoorNotation(tempPoss[0], tempPoss[1]);
-                                String [] helperNot2 = textureUtils.intoCoorNotation(tempPoss2[0], tempPoss2[1]);
-                                moveN = helperNot[0] + helperNot[1] + " -> " + helperNot2[0] + helperNot2[1];
-                                txtOtp.add(moveN);
-                                txtTracker++;
-                                gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]);
-                                System.out.println("okay");
-
-                                textureUtils.updateBoard(gameLoop.getBoard());
-                                System.out.println("!!!");
-                                tempPoss[0] = -1;
-                                tempPoss[1] = -1;
-                                System.out.println("Valid!");
-                                turnActive = false;
-                                playerSwitch = true;
-                                diceN = 0;
-                            }
-                            else {
-                                if(gameLoop.isLegalPieceChess(tempPoss2[1], tempPoss2[0])){
-                                    tempPoss[0] = -1;
-                                    tempPoss[1] = -1;
-                                } else {
-                                    txtOtp.add("Please try another cell!");
-                                    txtTracker++;
-                                    justSelected = true;
-                                }
-                            }
-                        }
-                        else{
-                            txtOtp.add("Try a new initial piece!");
-                            txtTracker++;
-                            tempPoss[0] = -1;
-                            tempPoss[1] = -1;
-                        }
-                    }
-                    return true;
-
-                }
-            });
-        }
-        else{
-            String winner = cnt%2==0 ? "Black" : "White";
-            game.setScreen(new GameOverScreen(game, winner));
-        }
-    }
 
     private ArrayList<Square> translateToSquareList(ArrayList<Move> moves){
         ArrayList<Square> result = new ArrayList<Square>();

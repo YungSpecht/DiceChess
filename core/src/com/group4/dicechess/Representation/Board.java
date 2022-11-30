@@ -34,28 +34,57 @@ public class Board {
         return board[row][column];
     }
 
+    public void setSquare(Square sq, int row, int column){
+        board[row][column] = sq;
+    }
+
     public ArrayList<Piece> getWhiteCaptured(){
         return whiteCaptured;
+    }
+
+    public void setWhiteCaptured(ArrayList<Piece> whiteCaputured){
+        this.whiteCaptured = whiteCaputured;
     }
 
     public ArrayList<Piece> getBlackCaptured(){
         return blackCaptured;
     }
 
+    
+    public void setBlackCaptured(ArrayList<Piece> blackCaputured){
+        this.blackCaptured = blackCaputured;
+    }
+
     public ArrayList<Piece> getWhitePieces(){
         return whitePieces;
+    }
+    
+    public void setWhitePieces(ArrayList<Piece> whitePieces){
+        this.whitePieces = whitePieces;
     }
 
     public ArrayList<Piece> getBlackPieces(){
         return blackPieces;
     }
     
+    public void setBlackPieces(ArrayList<Piece> blackPieces){
+        this.blackPieces = blackPieces;
+    }
+    
     public Piece getLastMovedPieceWhite(){
         return lastMovedPieceWhite;
     }
 
+    public void setLastMovedPieceWhite(Piece lastMovedPieceWhite){
+        this.lastMovedPieceWhite = lastMovedPieceWhite;
+    }
+
     public Piece getLastMovePieceBlack() {
         return lastMovedPieceBlack;
+    }
+
+    public void setLastMovedPieceBlack(Piece lastMovedPieceBlack){
+        this.lastMovedPieceBlack = lastMovedPieceBlack;
     }
 
     /**
@@ -295,6 +324,38 @@ public class Board {
             case 5 : return new Queen(white, sq.getRow(), sq.getCol());
             default : return null;
         }
+    }
+
+    public Board copy(){
+        Board copy = new Board();
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[0].length; j++){
+                copy.setSquare(this.getSquare(i, j).copy(), i, j);
+            }
+        }
+        ArrayList<Piece> wpc = new ArrayList<Piece>();
+        for(Piece p : this.getWhitePieces()){
+            wpc.add(p.copy());
+        }
+        copy.setWhitePieces(wpc);
+        ArrayList<Piece> bpc = new ArrayList<Piece>();
+        for(Piece p : this.getBlackPieces()){
+            bpc.add(p.copy());
+        }
+        copy.setBlackPieces(bpc);
+        ArrayList<Piece> wc = new ArrayList<Piece>();
+        for(Piece p : this.getWhiteCaptured()){
+            wc.add(p.copy());
+        }
+        copy.setWhiteCaptured(wc);
+        ArrayList<Piece> bc = new ArrayList<Piece>();
+        for(Piece p : this.getBlackCaptured()){
+            bc.add(p.copy());
+        }
+        copy.setBlackCaptured(bc);
+        copy.setLastMovedPieceWhite(this.getLastMovedPieceWhite().copy());
+        copy.setLastMovedPieceBlack(this.getLastMovePieceBlack().copy());
+        return copy;
     }
 
 }

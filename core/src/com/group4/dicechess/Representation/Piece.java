@@ -24,6 +24,7 @@ public abstract class Piece {
         moveCounter = 0;
     }
 
+
     public void setNotation(String nt){
         this.notation = nt;
     }
@@ -42,6 +43,10 @@ public abstract class Piece {
 
     public int getMoveCounter(){
         return moveCounter;
+    }
+
+    public void setMoveCounter(int moveCounter){
+        this.moveCounter = moveCounter;
     }
 
     public void increaseMoveCounter(){
@@ -122,5 +127,7 @@ public abstract class Piece {
      * @return ArrayList containing all the Squares the piece can legally move to
      */
     public abstract ArrayList<Move> getPossibleMoves(Board board);
+
+    public abstract Piece copy();
 
 }

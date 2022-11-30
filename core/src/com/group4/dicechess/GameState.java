@@ -13,6 +13,7 @@ public class GameState {
     private int whiteScore;
     private int blackScore;
     private int diceRoll;
+    private ArrayList<Integer> rolls;
     private ArrayList<Move> moveHistory;
     private ArrayList<ArrayList<Move>> moveList;
     private ArrayList<Piece> legalPieces;
@@ -22,18 +23,11 @@ public class GameState {
         turnCounter = -1;
         whiteScore = 0;
         blackScore = 0;
+        rolls = new ArrayList<Integer>();
         moveHistory = new ArrayList<Move>();
         moveList = new ArrayList<ArrayList<Move>>();
         legalPieces = new ArrayList<Piece>();
-        diceRoll = 1;
-    }
-
-    public Board getBoard(){
-        return board;
-    }
-
-    public ArrayList<ArrayList<Move>> getMoveList(){
-        return moveList;
+        prepareNextTurn();
     }
 
     public boolean isLegalPiece(int row, int col){
@@ -59,13 +53,18 @@ public class GameState {
         }
     }
 
-    public boolean isLegalPieceChess(int row, int col){
-        Piece piece = board.getSquare(row, col).getPiece();
-        if(piece == null || piece.getWhiteStatus() != (turnCounter % 2 == 0)){
-            return false;
+    public ArrayList<Move> getPossibleMoves(){
+        ArrayList<Move> result = new ArrayList<Move>();
+        for(ArrayList<Move> list : moveList){
+            for(Move m : list){
+                if(m.getPiece().getDiceChessId() == diceRoll){
+                    result.add(m);
+                }
+            }
         }
-        return legalPieces.contains(piece);
+        return result;
     }
+
 
     public boolean isLegalMove(int startRow, int startCol, int row, int col){
         ArrayList<Move> moves = getLegalMoves(startRow, startCol);
@@ -83,7 +82,6 @@ public class GameState {
 
     public void movePiece(int startRow, int startCol, int row, int col){
         Move move = getMove(startRow, startCol, row, col);
-
         boolean white = turnCounter % 2 == 0 ? true : false;
         if(white){
             whiteScore = board.movePiece(move, this.diceRoll);
@@ -92,23 +90,18 @@ public class GameState {
             blackScore = board.movePiece(move, this.diceRoll);
         }
         moveHistory.add(move);
-    }
-
-    public void prepareTurn(){
-        legalPieces.clear();
-        moveList.clear();
-        ArrayList<Piece> allPieces = turnCounter % 2 == 0 ? board.getWhitePieces() : board.getBlackPieces();
-        for(Piece piece : allPieces){
-            ArrayList<Move> moves = piece.getPossibleMoves(board);
-            if(moves.size() > 0){
-                legalPieces.add(piece);
-                moveList.add(moves);
-            }
-        }
+        prepareNextTurn();
     }
 
     public int diceRoll(){
-        ArrayList<Integer> rolls = new ArrayList<Integer>();
+        Random rand = new Random();
+        this.diceRoll = rolls.get(rand.nextInt(rolls.size()));
+        return this.diceRoll;
+    }
+
+    private void prepareNextTurn(){
+        turnCounter++;
+        rolls.clear();
         legalPieces.clear();
         moveList.clear();
         ArrayList<Piece> allPieces = turnCounter % 2 == 0 ? board.getWhitePieces() : board.getBlackPieces();
@@ -122,9 +115,7 @@ public class GameState {
                 }
             }
         }
-        Random rand = new Random();
-        this.diceRoll = rolls.get(rand.nextInt(rolls.size()));
-        return this.diceRoll;
+        diceRoll = 0;
     }
 
     public boolean gameOver(){
@@ -143,7 +134,6 @@ public class GameState {
         return false;
     }
 
-
     private Move getMove(int startRow, int startCol, int endRow, int endCol){
         for(ArrayList<Move> l : moveList){
             for(Move m : l){
@@ -155,8 +145,94 @@ public class GameState {
         return null;
     }
 
+    public GameState copy(){
+        GameState copy = new GameState();
+        copy.setBoard(this.getBoard().copy());
+        copy.setTurnCounter(turnCounter);
+        copy.setWhiteScore(whiteScore);
+        copy.setBlackScore(blackScore);
+        copy.setDiceRoll(diceRoll);
+        ArrayList<Integer> r = new ArrayList<Integer>();
+        for(int i : rolls){
+            r.add(i);
+        }
+        copy.setRollsList(r);
+        ArrayList<Move> mH = new ArrayList<Move>();
+        for(Move m : moveHistory){
+            mH.add(m.copy());
+        }
+        copy.setMoveHistory(mH);
+        ArrayList<ArrayList<Move>> mL = new ArrayList<ArrayList<Move>>();
+        for(ArrayList<Move> list : moveList){
+            ArrayList<Move> ml = new ArrayList<Move>();
+            for(Move m : list){
+                ml.add(m.copy());
+            }
+            mL.add(ml);
+        }
+        copy.setMoveList(mL);
+        ArrayList<Piece> lP = new ArrayList<Piece>();
+        for(Piece p : legalPieces){
+            lP.add(p.copy());
+        }
+        copy.setLegalPieces(lP);
+        return copy;
+    }
+
+    public Board getBoard(){
+        return board;
+    }
+
+    public void setBoard(Board board){
+        this.board = board;
+    }
+
+    public int getTurnCounter(){
+        return turnCounter;
+    }
+
+    public void setTurnCounter(int turnCounter){
+        this.turnCounter = turnCounter;
+    }
+
     public int getWhiteScore(){return whiteScore;}
+    public void setWhiteScore(int whiteScore){this.whiteScore = whiteScore;}
     public int getBlackScore(){return blackScore;}
-    public int getTurnCount(){return turnCounter;}
+    public void setBlackScore(int blackScore){this.blackScore = blackScore;}
     public int getDiceRoll(){return diceRoll;}
+    public void setDiceRoll(int diceRoll){
+        this.diceRoll = diceRoll;
+    }
+
+    public ArrayList<Integer> getRollsList(){
+        return rolls;
+    }
+
+    public void setRollsList(ArrayList<Integer> rolls){
+        this.rolls = rolls;
+    }
+
+    public ArrayList<Move> getMoveHistory(){
+        return moveHistory;
+    }
+
+    public void setMoveHistory(ArrayList<Move> moveHistory){
+        this.moveHistory = moveHistory;
+    }
+
+    public ArrayList<ArrayList<Move>> getMoveList(){
+        return moveList;
+    }
+
+    public void setMoveList(ArrayList<ArrayList<Move>> moveList){
+        this.moveList = moveList;
+    }
+
+    public ArrayList<Piece> getLegalPieces(){
+        return legalPieces;
+    }
+
+    public void setLegalPieces(ArrayList<Piece> legalPieces){
+        this.legalPieces = legalPieces;
+    }
 }
