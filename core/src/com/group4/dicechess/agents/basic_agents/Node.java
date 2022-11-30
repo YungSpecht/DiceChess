@@ -10,10 +10,14 @@ public class Node{
     private Node parent;
     private List<Node> children;
     private double value;
+    private Node bestNextState;
 
     public Node(GameState state){
         this.state = state;
         children = new ArrayList<Node>();
+        value = 0;
+        parent = null;
+        bestNextState = null;
     }
     
     public GameState getGameState(){
@@ -22,10 +26,6 @@ public class Node{
 
     public double getValue(){
         return value;
-    }
-
-    public void setValue(double value){
-        this.value = value;
     }
 
     public void setParent(Node parent){
@@ -42,5 +42,49 @@ public class Node{
 
     public boolean isChanceNode(){
         return state.getDiceRoll() != 0;
+    }
+
+    public List<Node> getChildren(){
+        return children;
+    }
+
+    public boolean isMin(){
+        return false;
+    }
+
+    public Node getBestNextState(){
+        return bestNextState;
+    }
+
+    public void computeValue(){
+        if(this.isChanceNode()){
+            for(Node n : children){
+                value += n.getValue();
+            }
+            value /= children.size();
+        }
+        else{
+            if(state.getTurnCounter() % 2 == 0){
+                for(Node n : children){
+                    if(n.getValue() > value){
+                        value = n.getValue();
+                        bestNextState = n;
+                    }
+                }
+            }
+            else{
+                value = Double.MAX_VALUE;
+                for(Node n : children){
+                    if(n.getValue() < value){
+                        value = n.getValue();
+                        bestNextState = n;
+                    }
+                }
+            }
+        }
+    }
+
+    public void evaluateNode(){
+        return;
     }
 }

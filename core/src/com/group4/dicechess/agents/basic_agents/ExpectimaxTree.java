@@ -10,14 +10,9 @@ public class ExpectimaxTree {
 
     public ExpectimaxTree(GameState currentState){
         root = new Node(currentState);
-        root.setParent(null);
     }
 
     public void buildTree(int depth){
-        if(!root.isChanceNode()){
-            System.out.println("Not the correct starting point for game building");
-            return;
-        }
         buildLevel(root, depth);
     }
 
@@ -34,6 +29,7 @@ public class ExpectimaxTree {
                 if(depth > 0){
                     buildLevel(childNode, --depth);
                 }
+                pointer.computeValue();;
             }
         }
         else{
@@ -47,11 +43,13 @@ public class ExpectimaxTree {
                 if(depth > 0){
                     buildLevel(childNode, --depth);
                 }
+                pointer.computeValue();
             }
         }
     }
 
-    private double evaluateNode(Node node){
-        return 0;
+    public Move getBestMove(){
+        ArrayList <Move> moveHistory = root.getBestNextState().getGameState().getMoveHistory();
+        return moveHistory.get(moveHistory.size());
     }
 }
