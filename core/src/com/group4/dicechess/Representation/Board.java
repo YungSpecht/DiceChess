@@ -19,6 +19,7 @@ public class Board {
     private Piece lastMovedPieceBlack;
     private Piece lastMovedPieceWhite;
     private static Scanner in;
+    public int promotionKey;
 
     public Board(){
         board = new Square[8][8];
@@ -243,12 +244,15 @@ public class Board {
             else{
                 int choice = 0;
                 do{
+                    /*
                     System.out.println("Please enter the Piece you want to promote to: ");
                     System.out.println("2 - Knight");
                     System.out.println("3 - Bishop");
                     System.out.println("4 - Rook");
                     System.out.println("5 - Queen");
                     choice = in.nextInt();
+                    */
+                    choice = promotionKey;
                 }while(choice < 2 || choice > 5);
                 piece = pieceFactory(choice, start.getPiece().getWhiteStatus(), destination);
                 if(piece.getWhiteStatus()){

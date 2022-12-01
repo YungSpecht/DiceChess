@@ -8,7 +8,7 @@ import com.group4.dicechess.Representation.Piece;
 
 public class GameState {
 
-    private Board board;
+    public Board board;
     public int turnCounter;
     private int whiteScore;
     private int blackScore;
@@ -38,7 +38,7 @@ public class GameState {
         return legalPieces.contains(piece);
     }
 
-    private boolean isPromotingPawn(Piece piece){
+    public boolean isPromotingPawn(Piece piece){
         if(diceRoll == 6){
             return false;
         }

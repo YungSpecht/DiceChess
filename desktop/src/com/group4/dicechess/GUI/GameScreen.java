@@ -9,6 +9,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.group4.dicechess.Representation.Move;
+import com.group4.dicechess.Representation.Piece;
 import com.group4.dicechess.Representation.Square;
 import com.group4.dicechess.GameState;
 
@@ -168,6 +169,36 @@ public class GameScreen implements Screen {
                         game.setScreen(new MenuScreen(game));
                         Gdx.input.setInputProcessor(null);
                     }
+                    if(screenX >= 641 && screenX <= 858 && screenY >= 500 && screenY <= 530) {
+                        System.out.println("X: " + screenX);
+                        System.out.println("Y: " + screenY);
+
+                        if (promoting) {
+                            if (screenX >= 717 && screenX <= 742) {
+                                gameLoop.board.promotionKey = 2; // Knight
+                            }
+                            if (screenX >= 822 && screenX <= 842) {
+                                gameLoop.board.promotionKey = 3; // Bishop
+                            }
+                            if (screenX >= 670 && screenX <= 690) {
+                                gameLoop.board.promotionKey = 4; // Rook
+                            }
+                            if (screenX >= 768 && screenX <= 798) {
+                                gameLoop.board.promotionKey = 5; // Queen
+                            }
+                            gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]);
+                            textureUtils.updateBoard(gameLoop.getBoard());
+                            tempPoss[0] = -1;
+                            tempPoss[1] = -1;
+                            turnActive = false;
+                            playerSwitch = true;
+                            diceN = 0;
+                            txtOtp.add("Valid!");
+                            txtTracker++;
+                            promoting = false;
+                            promotingPrev = true;
+                        }
+                    }
                     if (screenX >= 710 && screenX <= 785 && screenY >= 75 && screenY <= 147 && !turnActive) {
                         diceN = gameLoop.diceRoll();
                         rolled = true;
@@ -211,14 +242,27 @@ public class GameScreen implements Screen {
                                 moveN = helperNot[0] + helperNot[1] + " -> " + helperNot2[0] + helperNot2[1];
                                 txtOtp.add(moveN);
                                 txtTracker++;
-                                gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]);
-                                textureUtils.updateBoard(gameLoop.getBoard());
-                                tempPoss[0] = -1;
-                                tempPoss[1] = -1;
-                                System.out.println("Valid!");
-                                turnActive = false;
-                                playerSwitch = true;
-                                diceN = 0;
+
+                                if(promotingPrev){
+                                    promotingPrev = false;
+                                }
+                                Piece piece = gameLoop.board.getSquare(tempPoss[1], tempPoss[0]).getPiece();
+                                if(gameLoop.isLegalMove(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]) && gameLoop.isPromotingPawn(piece) && !promotingPrev){
+                                    moveN = "Please select piece promotion!";
+                                    txtOtp.add(moveN);
+                                    txtTracker++;
+                                    promoting = true;
+                                }
+                                if(!promoting){
+                                    gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]);
+                                    textureUtils.updateBoard(gameLoop.getBoard());
+                                    tempPoss[0] = -1;
+                                    tempPoss[1] = -1;
+                                    System.out.println("Valid!");
+                                    turnActive = false;
+                                    playerSwitch = true;
+                                    diceN = 0;
+                                }
                             }
                             else {
                                 txtOtp.add("Please try another cell as destination!");
