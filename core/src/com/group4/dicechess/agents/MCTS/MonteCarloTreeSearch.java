@@ -6,11 +6,17 @@ import com.group4.dicechess.agents.Bot;
 
 public class MonteCarloTreeSearch implements Bot {
 
-    private double tunable_c;
     private GameState state;
+    private double tunable_c;
+    public int diceRollResult;
 
     public MonteCarloTreeSearch(GameState state){
         this.state = state;
+        this.diceRollResult = 0;
+    }
+
+    public void createMCTSTree(){
+
     }
 
     /*  Algorithm - Monte-Carlo Tree Search
@@ -32,6 +38,11 @@ public class MonteCarloTreeSearch implements Bot {
         Note, however, that it may be beneficial to add more than one child node per iteration depending on the application
      */
 
+    // UCB - Upper confidence bounds formula - Exploration / Exploitation
+    public double uct_formula(double mean_node_val, double small_n, double big_n){
+        return mean_node_val + tunable_c*(Math.sqrt((Math.log(big_n))/(small_n)));
+    }
+
     @Override
     public Move getMove() {
         return null;
@@ -39,11 +50,6 @@ public class MonteCarloTreeSearch implements Bot {
 
     @Override
     public int getRoll() {
-        return 0;
-    }
-
-    // UCB - Upper confidence bounds formula - Exploration / Exploitation
-    public double uct_formula(double mean_node_val, double small_n, double big_n){
-        return mean_node_val + tunable_c*(Math.sqrt((Math.log(big_n))/(small_n)));
+        return this.diceRollResult;
     }
 }
