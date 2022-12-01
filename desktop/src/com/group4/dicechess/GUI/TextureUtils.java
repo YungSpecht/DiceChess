@@ -116,6 +116,11 @@ public class TextureUtils {
     Sprite bpromotedR9;
     Sprite bpromotedR10;
 
+
+    Sprite[] promotionStorageBlack;
+    Sprite[] promotionStorageWhite;
+
+
     Sprite promotedK1;
     Sprite promotedK2;
     Sprite promotedK3;
@@ -267,6 +272,34 @@ public class TextureUtils {
         spriteDice6 = new Sprite(dice6);
         spriteArrow = new Sprite(backArrow);
         spriteBoard = new Sprite(board);
+
+        // Promotion of pawns
+        Sprite rookDisplayBlack = new Sprite(rookBlack);
+        rookDisplayBlack.setSize(32, 52);
+        Sprite knightDisplayBlack = new Sprite(knightBlack);
+        knightDisplayBlack.setSize(32, 51);
+        Sprite queenDisplayBlack = new Sprite(queenBlack);
+        queenDisplayBlack.setSize(32, 52);
+        Sprite bishopDisplayBlack = new Sprite(bishopBlack);
+        bishopDisplayBlack.setSize(32, 48);
+        Sprite rookDisplayWhite = new Sprite(rook);
+        rookDisplayWhite.setSize(29, 43);
+        Sprite knightDisplayWhite = new Sprite(knight);
+        knightDisplayWhite.setSize(27, 49);
+        Sprite queenDisplayWhite = new Sprite(queen);
+        queenDisplayWhite.setSize(28, 48);
+        Sprite bishopDisplayWhite = new Sprite(bishop);
+        bishopDisplayWhite.setSize(30, 49);
+        promotionStorageBlack = new Sprite[4];
+        promotionStorageBlack[0] = rookDisplayBlack;
+        promotionStorageBlack[1] = knightDisplayBlack;
+        promotionStorageBlack[2] = queenDisplayBlack;
+        promotionStorageBlack[3] = bishopDisplayBlack;
+        promotionStorageWhite = new Sprite[4];
+        promotionStorageWhite[0] = rookDisplayWhite;
+        promotionStorageWhite[1] = knightDisplayWhite;
+        promotionStorageWhite[2] = queenDisplayWhite;
+        promotionStorageWhite[3] = bishopDisplayWhite;
 
         promotedB1 = new Sprite(bishop);
         promotedB1.setSize(32, 52);

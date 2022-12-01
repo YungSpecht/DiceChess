@@ -32,6 +32,8 @@ public class GameScreen implements Screen {
     boolean turnActive = false;
     boolean isPlayable = false;
     boolean justSelected = false;
+    boolean promoting = false;
+    boolean promotingPrev = false;
     ArrayList<Square> possibleMoves;
     ArrayList<String>  txtOtp;
     BitmapFont font = new BitmapFont();
@@ -90,6 +92,22 @@ public class GameScreen implements Screen {
                 }
             }
         }
+        // Piece promotion
+        if(promoting) {
+            int temp = 0;
+            if(cnt % 2 == 0){
+                for (int i = 0; i < textureUtils.promotionStorageWhite.length; i++) {
+                    game.batch.draw(textureUtils.promotionStorageWhite[i],667+temp, 60, textureUtils.promotionStorageWhite[i].getWidth(), textureUtils.promotionStorageWhite[i].getHeight());
+                    temp = temp+50;
+                }
+            } else{
+                for (int i = 0; i < textureUtils.promotionStorageBlack.length; i++) {
+                    game.batch.draw(textureUtils.promotionStorageBlack[i],660+temp, 60, textureUtils.promotionStorageBlack[i].getWidth(), textureUtils.promotionStorageBlack[i].getHeight());
+                    temp = temp+50;
+                }
+            }
+        }
+
         if(justSelected){
             for (int i = 0; i < possibleMoves.size(); i++) {
                 if(possibleMoves.get(i).getRow() == 0 && possibleMoves.get(i).getCol() == 0){
