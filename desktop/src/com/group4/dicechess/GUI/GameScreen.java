@@ -12,6 +12,9 @@ import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.Representation.Piece;
 import com.group4.dicechess.Representation.Square;
 import com.group4.dicechess.GameState;
+import com.group4.dicechess.agents.Bot;
+import com.group4.dicechess.agents.basic_agents.GreedyBot;
+import com.group4.dicechess.agents.basic_agents.RandomBot;
 
 public class GameScreen implements Screen {
 
@@ -39,11 +42,16 @@ public class GameScreen implements Screen {
     ArrayList<String>  txtOtp;
     BitmapFont font = new BitmapFont();
     String moveN;
+    boolean botPlaying = false;
+    int playStyle;
+    Bot bot;
+    Move tempMove;
 
 
     public GameScreen(DiceChessGame currentGame, int a){
         this.game = currentGame;
         this.textureUtils = new TextureUtils();
+        this.playStyle = a;
         gameLoop = new GameState();
         enableTxt();
         textureUtils.setUpBoard(gameLoop.getBoard());
@@ -56,7 +64,11 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        diceChess();
+        if(playStyle == 0){
+            diceChess();
+        } else{
+            botDiceChess(playStyle);
+        }
         ScreenUtils.clear(1, 1, 1, 1);
         game.batch.begin();
         game.batch.draw(textureUtils.notation, textureUtils.spriteNotation.getX(), textureUtils.spriteNotation.getY(), textureUtils.spriteNotation.getWidth(), textureUtils.spriteNotation.getHeight());
@@ -285,6 +297,177 @@ public class GameScreen implements Screen {
         }
         else{
             String winner = cnt%2==0 ? "Black" : "White";
+            game.setScreen(new GameOverScreen(game, winner));
+        }
+    }
+
+    private void botDiceChess(int n){
+
+        if(!gameLoop.gameOver()){
+            switch (n){
+                case 1:
+                    bot = new RandomBot(gameLoop);
+                    break;
+                case 2:
+                    bot = new GreedyBot(gameLoop);
+                    break;
+            }
+            botPlaying = false;
+            if(playerSwitch && !turnActive){
+                cnt++;
+                if(cnt % 2 == 0){
+                    txtOtp.add("------------White's turn------------");
+                    txtTracker++;
+                    txtOtp.add("Please roll the dice..");
+                    txtTracker++;
+                    playerSwitch = false;
+                } else {
+                    txtOtp.add("-------------Bot's turn-------------");
+                    txtTracker++;
+                    tempMove = bot.getMove();
+                    diceN = bot.getRoll();
+                    txtOtp.add("Dice rolled. Result is " + diceN);
+                    txtTracker++;
+                    gameLoop.movePiece(tempMove.getStart().getRow(), tempMove.getStart().getCol(), tempMove.getDestination().getRow(), tempMove.getDestination().getCol());
+                    textureUtils.updateBoard(gameLoop.getBoard());
+                    helperNot = textureUtils.intoCoorNotation(tempMove.getStart().getRow(), tempMove.getStart().getCol());
+                    String [] helperNot2 = textureUtils.intoCoorNotation(tempMove.getDestination().getRow(), tempMove.getDestination().getCol());
+                    moveN = helperNot[0] + helperNot[1] + " -> " + helperNot2[0] + helperNot2[1];
+                    txtOtp.add(moveN);
+                    txtTracker++;
+
+                    tempPoss[0] = -1;
+                    tempPoss[1] = -1;
+                    turnActive = false;
+                    playerSwitch = true;
+                    diceN = 0;
+                }
+            }
+
+            Gdx.input.setInputProcessor(new InputAdapter() {
+                @Override
+                public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+                    if (screenX >= 15 && screenX <= 45 && screenY >= 10 && screenY <= 40) {
+                        game.setScreen(new GameChoiceScreen(game));
+                        Gdx.input.setInputProcessor(null);
+                    }
+                    if(screenX >= 641 && screenX <= 858 && screenY >= 500 && screenY <= 530) {
+                        System.out.println("X: " + screenX);
+                        System.out.println("Y: " + screenY);
+
+                        if (promoting) {
+                            if (screenX >= 717 && screenX <= 742) {
+                                gameLoop.board.promotionKey = 2; // Knight
+                            }
+                            if (screenX >= 822 && screenX <= 842) {
+                                gameLoop.board.promotionKey = 3; // Bishop
+                            }
+                            if (screenX >= 670 && screenX <= 690) {
+                                gameLoop.board.promotionKey = 4; // Rook
+                            }
+                            if (screenX >= 768 && screenX <= 798) {
+                                gameLoop.board.promotionKey = 5; // Queen
+                            }
+                            gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]);
+                            textureUtils.updateBoard(gameLoop.getBoard());
+                            tempPoss[0] = -1;
+                            tempPoss[1] = -1;
+                            turnActive = false;
+                            playerSwitch = true;
+                            diceN = 0;
+                            txtOtp.add("Valid!");
+                            txtTracker++;
+                            promoting = false;
+                            promotingPrev = true;
+                        }
+                    }
+                    if (screenX >= 710 && screenX <= 785 && screenY >= 75 && screenY <= 147 && !turnActive && !botPlaying) {
+                        diceN = gameLoop.diceRoll();
+                        rolled = true;
+                        txtOtp.add("Dice rolled. Result is " + diceN);
+                        txtTracker++;
+                        String txt1 = "";
+                        if(diceN == 1){
+                            txt1 = "Pawn";
+                        } else if (diceN == 2) {
+                            txt1 = "Knight";
+                        }else if (diceN == 3) {
+                            txt1 = "Bishop";
+                        }else if (diceN == 4) {
+                            txt1 = "Rook";
+                        }else if (diceN == 5) {
+                            txt1 = "Queen";
+                        }else if (diceN == 6) {
+                            txt1 = "King";
+                        }
+                        txtOtp.add("Please select your " + txt1 + "..");
+                        txtTracker++;
+                        turnActive = true;
+                    }
+                    if(screenX >= 105 && screenX <= 529 && screenY <= 523 && screenY >= 99 && turnActive){
+                        if(tempPoss[0] == -1){
+                            tempPoss = translateToArrayPos(screenX, screenY);
+                            if(gameLoop.isLegalPiece(tempPoss[1], tempPoss[0])){
+                                helperNot = textureUtils.intoCoorNotation(tempPoss[0], tempPoss[1]);
+                                moveN = "Selected: " + helperNot[0] + helperNot[1];
+                                txtOtp.add(moveN);
+                                txtTracker++;
+                                possibleMoves = translateToSquareList(gameLoop.getLegalMoves(tempPoss[1], tempPoss[0]));
+                                justSelected = true;
+                            }
+                        } else if(gameLoop.isLegalPiece(tempPoss[1], tempPoss[0])){
+                            tempPoss2 = translateToArrayPos(screenX, screenY);
+                            justSelected = false;
+                            if(gameLoop.isLegalMove(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0])){
+                                helperNot = textureUtils.intoCoorNotation(tempPoss[0], tempPoss[1]);
+                                String [] helperNot2 = textureUtils.intoCoorNotation(tempPoss2[0], tempPoss2[1]);
+                                moveN = helperNot[0] + helperNot[1] + " -> " + helperNot2[0] + helperNot2[1];
+                                txtOtp.add(moveN);
+                                txtTracker++;
+
+                                if(promotingPrev){
+                                    promotingPrev = false;
+                                }
+                                Piece piece = gameLoop.board.getSquare(tempPoss[1], tempPoss[0]).getPiece();
+                                if(gameLoop.isLegalMove(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]) && gameLoop.isPromotingPawn(piece) && !promotingPrev){
+                                    moveN = "Please select piece promotion!";
+                                    txtOtp.add(moveN);
+                                    txtTracker++;
+                                    promoting = true;
+                                }
+                                if(!promoting){
+                                    gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]);
+                                    textureUtils.updateBoard(gameLoop.getBoard());
+                                    tempPoss[0] = -1;
+                                    tempPoss[1] = -1;
+                                    System.out.println("Valid!");
+                                    turnActive = false;
+                                    playerSwitch = true;
+                                    diceN = 0;
+                                }
+                            }
+                            else {
+                                txtOtp.add("Please try another cell as destination!");
+                                txtTracker++;
+                                tempPoss[0] = -1;
+                                tempPoss[1] = -1;
+                                justSelected = true;
+                            }
+                        }
+                        else{
+                            txtOtp.add("Try a new initial piece!");
+                            txtTracker++;
+                            tempPoss[0] = -1;
+                            tempPoss[1] = -1;
+                        }
+                    }
+                    return true;
+                }
+            });
+        }
+        else{
+            String winner = cnt%2==0 ? "Bot" : "White";
             game.setScreen(new GameOverScreen(game, winner));
         }
     }

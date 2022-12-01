@@ -21,9 +21,9 @@ public class GameChoiceScreen implements  Screen{
     public GameChoiceScreen(DiceChessGame currentGame){
         this.game = currentGame;
         this.textureUtils = new TextureUtils();
-        v1human = new Texture("FinalAssets/a.png");
+        v1human = new Texture("FinalAssets/1v1human.png");
         backArrow = new Texture("FinalAssets/backArrow.png");
-        v1bot = new Texture("FinalAssets/1bo.png");
+        v1bot = new Texture("FinalAssets/1v1bot.png");
         sv1human = new Sprite(v1human);
         sv1bot = new Sprite(v1bot);
         sv1bot.setSize(200, 43);

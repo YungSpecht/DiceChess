@@ -9,13 +9,17 @@ import com.group4.dicechess.agents.Bot;
 
 public class GreedyBot implements Bot {
     private GameState state;
+    public int diceRollResult;
 
     public GreedyBot(GameState state){
         this.state = state;
+        this.diceRollResult = 0;
     }
 
     @Override
     public Move getMove() {
+        state.diceRoll();
+        this.diceRollResult = state.getDiceRoll();
         ArrayList<ArrayList<Move>> allMoves = state.getMoveList();
         ArrayList<Move> allPossibleMoves = new ArrayList<Move>();
         ArrayList<Move> allPossibleCapturingMoves = new ArrayList<Move>();
@@ -40,5 +44,10 @@ public class GreedyBot implements Bot {
             return bestMove;
         }
         return allPossibleMoves.get(rand.nextInt(allPossibleMoves.size()));
+    }
+
+    @Override
+    public int getRoll() {
+        return this.diceRollResult;
     }
 }

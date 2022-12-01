@@ -37,6 +37,11 @@ public class MonteCarloTreeSearch implements Bot {
         return null;
     }
 
+    @Override
+    public int getRoll() {
+        return 0;
+    }
+
     // UCB - Upper confidence bounds formula - Exploration / Exploitation
     public double uct_formula(double mean_node_val, double small_n, double big_n){
         return mean_node_val + tunable_c*(Math.sqrt((Math.log(big_n))/(small_n)));

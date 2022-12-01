@@ -31,7 +31,7 @@ public class BotsScreen implements Screen {
         randomb = new Texture("FinalAssets/ran.png");
         mctsb = new Texture("FinalAssets/mc.png");
         expectimaxb = new Texture("FinalAssets/ex.png");
-        nnb = new Texture("FinalAssets/nnn.png");
+        nnb = new Texture("FinalAssets/nn.png");
         sgreedyb = new Sprite(greedyb);
         srandomb = new Sprite(randomb);
         smctsb = new Sprite(mctsb);
@@ -62,40 +62,37 @@ public class BotsScreen implements Screen {
         Gdx.input.setInputProcessor(new InputAdapter(){
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                System.out.println("X: " + screenX + "Y: " + screenY);
                 if(screenX >= 15 && screenX <= 45 && screenY >= 10 && screenY <= 40){
                     game.setScreen(new GameChoiceScreen(game));
                     Gdx.input.setInputProcessor(null);
                 }
                 // Random
                 if(screenX >= 360 && screenX <= 539 && screenY >= 138 && screenY <= 180){
-                    //game.setScreen(new GameChoiceScreen(game));
-                    //Gdx.input.setInputProcessor(null);
-                    System.out.println("random bot");
+                    game.setScreen(new GameScreen(game, 1));
+                    Gdx.input.setInputProcessor(null);
                 }
                 // Greedy
                 if(screenX >= 365 && screenX <= 535 && screenY >= 216 && screenY <= 260){
-                    //game.setScreen(new GameChoiceScreen(game));
-                    //Gdx.input.setInputProcessor(null);
-                    System.out.println("greedy bot");
+                    game.setScreen(new GameScreen(game, 2));
+                    Gdx.input.setInputProcessor(null);
                 }
                 // MCTS
                 if(screenX >= 375 && screenX <= 523 && screenY >= 295 && screenY <= 339){
                     //game.setScreen(new GameChoiceScreen(game));
                     //Gdx.input.setInputProcessor(null);
-                    System.out.println("mcts bot");
+                    System.out.println("Working on mcts bot");
                 }
                 // Expectimax
                 if(screenX >= 353 && screenX <= 553 && screenY >= 375 && screenY <= 420){
                     //game.setScreen(new GameChoiceScreen(game));
                     //Gdx.input.setInputProcessor(null);
-                    System.out.println("Expectimax");
+                    System.out.println("Working on Expectimax");
                 }
                 // Neural network
                 if(screenX >= 327 && screenX <= 572 && screenY >= 453 && screenY <= 500){
                     //game.setScreen(new GameChoiceScreen(game));
                     //Gdx.input.setInputProcessor(null);
-                    System.out.println("Neural network");
+                    System.out.println("Working on Neural network");
                 }
                 return true;
             }
