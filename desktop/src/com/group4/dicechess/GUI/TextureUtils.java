@@ -568,12 +568,10 @@ public class TextureUtils {
         spriteDice5.setSize(80, 80);
         spriteDice6.setPosition(710, 450);
         spriteDice6.setSize(80, 80);
-        spriteHelp.setPosition(350, 240);
+        spriteHelp.setPosition(350, 320);
         spriteHelp.setSize(200, 50);
-        spriteSound.setPosition(350, 150);
+        spriteSound.setPosition(350, 230);
         spriteSound.setSize(200, 50);
-        spriteBots.setPosition(350, 330);
-        spriteBots.setSize(200, 50);
 
         pieceStorage[0][0] = srookBlack2;
         pieceStorage[0][1] = sknightBlack2;

@@ -68,7 +68,7 @@ public class MenuScreen implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if(screenX >= 350 && screenX <= 550 && screenY >= 270 && screenY <= 320){
-            game.setScreen(new GameScreen(game));
+            game.setScreen(new GameChoiceScreen(game));
             Gdx.input.setInputProcessor(null);
         }
         if(screenX >= 350 && screenX <= 550 && screenY >= 345 && screenY <= 400){

@@ -41,7 +41,7 @@ public class GameScreen implements Screen {
     String moveN;
 
 
-    public GameScreen(DiceChessGame currentGame){
+    public GameScreen(DiceChessGame currentGame, int a){
         this.game = currentGame;
         this.textureUtils = new TextureUtils();
         gameLoop = new GameState();
@@ -166,7 +166,7 @@ public class GameScreen implements Screen {
                 public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
                     if (screenX >= 15 && screenX <= 45 && screenY >= 10 && screenY <= 40) {
-                        game.setScreen(new MenuScreen(game));
+                        game.setScreen(new GameChoiceScreen(game));
                         Gdx.input.setInputProcessor(null);
                     }
                     if(screenX >= 641 && screenX <= 858 && screenY >= 500 && screenY <= 530) {
