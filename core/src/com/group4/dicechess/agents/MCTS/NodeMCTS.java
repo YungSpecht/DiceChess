@@ -1,5 +1,6 @@
 package com.group4.dicechess.agents.MCTS;
 
+import com.group4.dicechess.GameState;
 import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.agents.basic_agents.Node;
 import java.util.ArrayList;
@@ -12,19 +13,25 @@ public class NodeMCTS {
     public List<NodeMCTS> children;
     public double mean_value;
     public int visited;
+    public GameState state;
 
 
-    public NodeMCTS(NodeMCTS parent, Move move){
+    public NodeMCTS(NodeMCTS parent, Move move, GameState state){
         this.parent = parent;
         this.children = new ArrayList<NodeMCTS>();
         this.previousMove = move;
         this.mean_value = 0.0;
         this.visited = 0;
+        this.state = state;
     }
 
     public void update(double result){
         this.visited++;
         this.mean_value = (this.mean_value + result)/this.visited;
+    }
+
+    public GameState getState() {
+        return state;
     }
 
     public boolean hasParent(){
