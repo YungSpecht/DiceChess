@@ -15,6 +15,7 @@ public class MonteCarloTreeSearch implements Bot {
     public double currentBestChild;
     public double temp;
     public double result;
+    public NodeMCTS currentNode;
 
 
     public MonteCarloTreeSearch(GameState state){
@@ -24,9 +25,10 @@ public class MonteCarloTreeSearch implements Bot {
 
     public void createMCTSTree(){
         NodeMCTS root = new NodeMCTS(null, null);
+        GameState currentState = state;
         while(maxIterations >= currentIteration){
-            NodeMCTS currentNode = root;
-            GameState currentState = state;
+            currentNode = root;
+            reset();
             while (currentNode.children.isEmpty()){
                 for(NodeMCTS child : currentNode.children){
                     temp = uct_formula(child.getMean_value(), child.getVisited(), child.parent.getVisited());
@@ -39,7 +41,8 @@ public class MonteCarloTreeSearch implements Bot {
             // expansion
             if(currentNode.getVisited() > 0){
             }
-            while (true){ // simulation
+            while (true){ // simulation (make it greedy + random)
+                // update result
                 break;
             }
             while(currentNode.hasParent()){
@@ -73,6 +76,9 @@ public class MonteCarloTreeSearch implements Bot {
         In its simplest and most memory efficient implementation, MCTS will add one child node per iteration.
         Note, however, that it may be beneficial to add more than one child node per iteration depending on the application
      */
+    public void reset(){
+        this.result = 0.0;
+    }
 
     @Override
     public Move getMove() {
