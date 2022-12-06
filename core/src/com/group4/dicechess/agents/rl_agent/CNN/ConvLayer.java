@@ -22,7 +22,6 @@ public class ConvLayer {
             filters[i] = new Filter(channels, inputLength, initWeight, learningRate);
         }
     }
-
     public ConvLayer(Filter[] filters, int channels, int inputLength, int numFilters){
         this.inputLength = inputLength;
         this.numFilters = numFilters;
@@ -30,7 +29,6 @@ public class ConvLayer {
         this.length = inputLength - kernelSize + 1;
         this.filters = filters;
     }
-
 
     public double[][][] forward(double[][][] input) {
 

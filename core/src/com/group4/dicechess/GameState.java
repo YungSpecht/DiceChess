@@ -6,6 +6,9 @@ import java.util.Random;
 import com.group4.dicechess.Representation.Board;
 import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.Representation.Piece;
+import com.group4.dicechess.agents.rl_agent.Training;
+
+import static com.group4.dicechess.agents.rl_agent.utils.Utils.isZeroMatrix;
 
 public class GameState {
 
@@ -17,6 +20,7 @@ public class GameState {
     private ArrayList<ArrayList<Move>> moveList;
     private ArrayList<Piece> legalPieces;
     private static boolean isOver;
+    private boolean isWhitesTurn;
 
     public GameState(){
         board = new Board();
@@ -27,6 +31,7 @@ public class GameState {
         legalPieces = new ArrayList<Piece>();
         diceRoll = 1;
         isOver = false;
+        isWhitesTurn = true;
     }
 
     public void reset(){
@@ -38,6 +43,7 @@ public class GameState {
         legalPieces = new ArrayList<>();
         diceRoll = 1;
         isOver = false;
+        isWhitesTurn = true;
     }
 
     public Board getBoard(){
@@ -94,6 +100,9 @@ public class GameState {
     }
 
     public void movePiece(int startRow, int startCol, int row, int col){
+
+
+
         boolean white = turnCounter % 2 == 0;
         if(white){
             whiteScore = board.movePiece(board.getSquare(startRow, startCol), board.getSquare(row, col), this.diceRoll);
@@ -105,12 +114,17 @@ public class GameState {
 
     public void movePiece(Move move){
 
-        if(isWhitesTurn()){
+        Training.totalMoves++;
+
+        if(isWhitesTurn){
             whiteScore = board.movePiece(move);
+            isWhitesTurn = false;
         }
         else {
             blackScore = board.movePiece(move);
+            isWhitesTurn = true;
         }
+        turnCounter++;
     }
 
     public void prepareTurn(){
@@ -159,31 +173,9 @@ public class GameState {
         return out;
     }
 
-    // TODO: Verify
-    public ArrayList<Piece> getMovablePieces(boolean white, int pieceId){
-        ArrayList<Piece> pieces = new ArrayList<>();
-/*        if (white)
-            pieces = (ArrayList<Piece>) board.getWhitePieces().clone();
-        else
-            pieces = (ArrayList<Piece>) board.getBlackPieces().clone();
-
-        pieces.removeIf(n -> (n.getDiceChessId() != pieceId));
-        pieces.removeIf(n -> (n.getPossibleMoves(board).isEmpty()));*/
-
-        for (Piece piece : legalPieces){
-            if (piece.getDiceChessId() == pieceId){
-                pieces.add(piece);
-            }
-        }
-
-        if (pieces.isEmpty())
-            return null;
-
-        return pieces;
-    }
 
     public int diceRoll(){
-        ArrayList<Integer> rolls = new ArrayList<Integer>();
+        ArrayList<Integer> rolls = new ArrayList<>();
         legalPieces.clear();
         moveList.clear();
         ArrayList<Piece> allPieces = turnCounter % 2 == 0 ? board.getWhitePieces() : board.getBlackPieces();
@@ -226,7 +218,7 @@ public class GameState {
         isOver = true;
     }
 
-    public boolean isWhitesTurn(){ return turnCounter % 2 == 0;}
+    public boolean isWhitesTurn(){ return this.isWhitesTurn;}
 
     public int getWhiteScore(){return whiteScore;}
     public int getBlackScore(){return blackScore;}

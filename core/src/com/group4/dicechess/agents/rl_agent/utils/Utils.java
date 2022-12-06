@@ -36,6 +36,19 @@ public class Utils {
         return out;
     }
 
+    public static double[] flatten(double[][] input){
+        double[] out = new double[input.length * input[0].length];
+        int ind = 0;
+
+        for (double[] row : input) {
+            for (double entry : row) {
+                out[ind++] = entry;
+            }
+        }
+
+        return out;
+    }
+
     public static double[][] unFlatten(double[] input){
         return unFlatten(input, 8);
     }

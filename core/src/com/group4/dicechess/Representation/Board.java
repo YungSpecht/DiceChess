@@ -1,6 +1,7 @@
 package com.group4.dicechess.Representation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Scanner;
 
 import com.group4.dicechess.Pieces.Bishop;
@@ -40,7 +41,7 @@ public class Board {
         Piece piece = board[row][col].getPiece();
 
         if (piece == null)
-            throw new Exception("No piece on Position: " + row + " " + col);
+            throw new Exception("No piece on Position: [" + row + "][" + col + "]");
 
         return piece;
     }
@@ -54,16 +55,16 @@ public class Board {
     }
 
     public ArrayList<Piece> getWhitePieces(){
-        return whitePieces;
+        return (ArrayList<Piece>) whitePieces.clone();
     }
 
     public ArrayList<Piece> getBlackPieces(){
-        return blackPieces;
+        return (ArrayList<Piece>) blackPieces.clone();
     }
 
     public ArrayList<Piece> getAllPieces(){
         ArrayList<Piece> out = (ArrayList<Piece>) whitePieces.clone();
-        out.addAll(blackPieces);
+        out.addAll((Collection<? extends Piece>) blackPieces.clone());
         return out;
     }
     
@@ -95,6 +96,17 @@ public class Board {
             System.out.println();
         }
         System.out.println("------------------------");
+    }
+
+    public int[][] getBoardMatrix() {
+        int[][] out = new int[8][8];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j].getPiece() != null)
+                    out[i][j] = board[i][j].getPiece().getDiceChessId();
+            }
+        }
+        return out;
     }
 
     public Square[][] getMBoard(){
@@ -163,14 +175,15 @@ public class Board {
 
         Square start = move.start(),
                destination = move.destination();
-
-        int captureValue = 0;
         Piece piece = start.getPiece();
+        int captureValue = 0;
+
         if(piece.getWhiteStatus()){
             lastMovedPieceWhite = piece;
         } else {
             lastMovedPieceBlack = piece;
         }
+
         if(enPassant(start, destination)){
             captureValue = 1;
             if(piece.getWhiteStatus()){

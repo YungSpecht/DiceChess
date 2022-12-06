@@ -73,11 +73,11 @@ public class Network {
     }
 
 
-    public void backwardPropagate(double target, double predicted, int prediction){
+    public void backwardPropagate(double[] target, double[] predicted){
 
         double[][][] inputGradient;
 
-        double[] dEdY = dEdY(target, predicted, prediction);
+        double[] dEdY = dEdY(target, predicted);
 
         dEdY = denseLayers[1].backward(dEdY);
         dEdY = activationLayer.backward(dEdY);
@@ -90,11 +90,13 @@ public class Network {
         convLayers[0].backward(inputGradient);
     }
 
-    private double[] dEdY(double target, double predicted, int prediction){
+    private double[] dEdY(double[] target, double[] predicted){
 
         double[] dEdY = new double[NetworkParameters.outputLength.valueInt];
 
-        dEdY[prediction] = predicted - target;
+        for (int i = 0; i < dEdY.length; i++) {
+            dEdY[i] = predicted[i] - target[i];
+        }
 
         return dEdY;
     }

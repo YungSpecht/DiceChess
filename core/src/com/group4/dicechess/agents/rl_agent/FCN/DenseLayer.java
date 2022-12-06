@@ -75,6 +75,9 @@ public class DenseLayer {
     private double[][] dEdW(double[] dEdY, double[] inputs){
         double[][] gradient = new double[numOutputs][numNeurons];
 
+        if (inputs == null)
+            System.out.println();
+
         for (int i = 0; i < numOutputs; i++) {
             for (int j = 0; j < numNeurons; j++) {
                 gradient[i][j] = dEdY[i] * inputs[j];

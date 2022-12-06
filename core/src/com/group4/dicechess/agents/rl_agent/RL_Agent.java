@@ -3,11 +3,12 @@ package com.group4.dicechess.agents.rl_agent;
 import com.group4.dicechess.GameState;
 import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.Representation.Piece;
+import com.group4.dicechess.Representation.Square;
 import com.group4.dicechess.agents.rl_agent.network.Network;
-import com.group4.dicechess.agents.rl_agent.utils.Action;
-import com.group4.dicechess.agents.rl_agent.utils.Experience;
+import com.group4.dicechess.agents.rl_agent.utils.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static com.group4.dicechess.agents.rl_agent.utils.Utils.*;
 
@@ -17,11 +18,8 @@ public class RL_Agent {
     private final Network[] moveNetwork;
     private final boolean white;
 
-    private final GameState gameState;
+    public RL_Agent(boolean isWhite){
 
-    public RL_Agent(boolean isWhite, GameState gameState){
-
-        this.gameState = gameState;
         this.white = isWhite;
 
         pieceNetwork = new Network();
@@ -32,36 +30,39 @@ public class RL_Agent {
         }
     }
 
-    public double[] predictMoveNetwork(double[][][] input, int pieceId){
-        return moveNetwork[pieceId-1].forwardPropagate(input);
+    public double[] predictMoveNetwork(double[][][] state, int pieceId){
+        return moveNetwork[pieceId-1].forwardPropagate(state);
     }
 
-    public Experience predictMove(double[][][] input, int pieceId) throws Exception {
+    public Experience predictMove(Input input) throws Exception {
 
-        double[][] piecePrediction = unFlatten(pieceNetwork.forwardPropagate(input));
-        double[][] movePrediction = unFlatten(predictMoveNetwork(input, pieceId));
+        double[][][] state = input.state();
 
-        // Dot product of the predicted piece to move matrix with the binary matrix of movable pieces.
-        double[][] validatedPieces = dotProduct(input[14], piecePrediction);
-        // Dot product of the predicted move positions with binary matrix of legal positions to move to.
-        double[][] validatedMoves = dotProduct((white ? input[12] : input[13]), movePrediction);
+        double[][] piecePrediction = unFlatten(pieceNetwork.forwardPropagate(state)),
+                   movePrediction = unFlatten(predictMoveNetwork(state, input.pieceId()));
 
-        ArrayList<Piece> legalPieces = findLegalPieces(validatedPieces);
+        double[][] validatedPieces = dotProduct(state[12], piecePrediction),
+                   validatedMoves = dotProduct(state[13], movePrediction);
 
-        Action bestAction = findBestAction(legalPieces, validatedPieces, validatedMoves);
+        Predictions predictions = new Predictions(piecePrediction, movePrediction, validatedPieces, validatedMoves);
 
-        return new Experience  (piecePrediction,
-                                movePrediction,
-                                validatedPieces,
-                                validatedMoves,
+        Action bestAction = findBestAction(input.legalPieces(), input.pieceMoveMap(), validatedPieces, validatedMoves);
+
+        return new Experience  (state,
+                                predictions,
                                 bestAction,
-                                pieceId,
+                                input.pieceId(),
                          0);
     }
 
-    private Action findBestAction(ArrayList<Piece> legalPieces, double[][] validatedPieces, double[][] validatedMoves) throws Exception {
+    private Action findBestAction(ArrayList<Piece> legalPieces, HashMap<Piece, ArrayList<Move>> pieceMoveMap, double[][] validatedPieces, double[][] validatedMoves) throws Exception {
 
-        double pieceValue, moveValue, actionValue, maxActionValue = Double.NEGATIVE_INFINITY;
+        double  pieceValue,
+                moveValue,
+                actionValue,
+                bestMoveValue = Double.NEGATIVE_INFINITY,
+                bestPieceValue = Double.NEGATIVE_INFINITY,
+                maxActionValue = Double.NEGATIVE_INFINITY;
         Move bestMove = null;
         Piece capture = null;
         ArrayList<Move> legalMoves;
@@ -69,7 +70,7 @@ public class RL_Agent {
         for (Piece piece : legalPieces) {
 
             pieceValue = validatedPieces[piece.getRow()][piece.getCol()];
-            legalMoves = piece.getPossibleMoves(gameState.getBoard());
+            legalMoves = pieceMoveMap.get(piece);
 
             for (Move move : legalMoves) {
                 moveValue = validatedMoves[move.destination().getRow()][move.destination().getCol()];
@@ -77,35 +78,19 @@ public class RL_Agent {
 
                 if (actionValue < maxActionValue) continue;
 
+                bestPieceValue = pieceValue;
+                bestMoveValue = moveValue;
                 maxActionValue = actionValue;
                 bestMove = move;
                 capture = move.destination().getPiece();
             }
         }
 
+        // TODO: Handle this better
         if (bestMove == null)
             throw new Exception("No best move");
 
-        return new Action(maxActionValue, bestMove, capture);
-    }
-
-    private ArrayList<Piece> findLegalPieces(double[][] validatedPieces) throws Exception {
-
-        ArrayList<Piece> legalPieces = new ArrayList<>();
-
-        for (int i = 0; i < validatedPieces.length; i++) {
-            for (int j = 0; j < validatedPieces[0].length; j++) {
-
-                if (validatedPieces[i][j] == 0) continue;
-
-                legalPieces.add(gameState.getBoard().getPieceOnPosition(i, j));
-            }
-        }
-
-        if (legalPieces.isEmpty())
-            throw new Exception("No legal pieces");
-
-        return legalPieces;
+        return new Action(maxActionValue, bestPieceValue, bestMoveValue, bestMove, capture);
     }
 
     private double calculateActionValue(double pieceValue, double moveValue) throws Exception {
@@ -125,6 +110,23 @@ public class RL_Agent {
             return pieceValue * moveValue * 1.5;
 
         throw new Exception("Invalid piece or move value");
+    }
+
+    public void backwardPropagation(QValues qValues, Experience experience){
+
+        double[][] piecePrediction = experience.predictions().piecePrediction(),
+                   validatedPieces = experience.predictions().validatedPieces(),
+                   movePrediction = experience.predictions().movePrediction(),
+                   validatedMoves = experience.predictions().validatedMoves();
+
+        Square  start = experience.action().move().start(),
+                destination = experience.action().move().destination();
+
+        validatedPieces[start.getRow()][start.getCol()] = qValues.piece();
+        validatedMoves[destination.getRow()][destination.getCol()] = qValues.move();
+
+        pieceNetwork.backwardPropagate(flatten(validatedPieces), flatten(piecePrediction));
+        moveNetwork[experience.pieceId() - 1].backwardPropagate(flatten(validatedMoves), flatten(movePrediction));
     }
 
 }
