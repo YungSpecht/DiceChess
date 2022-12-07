@@ -12,7 +12,7 @@ public class ExpectimaxTree {
 
     public static void main(String[] args) {
         GameState test = new GameState();
-        test.diceRoll();
+        test.setDiceRoll(2);
         ExpectimaxTree tree = new ExpectimaxTree(test);
         tree.buildTree(2);
         System.out.println(tree.getBestMove().getPiece().getId());
@@ -35,33 +35,39 @@ public class ExpectimaxTree {
 
     private void buildLevel(Node pointer, GameState game,  int depth){
         if(pointer.isChanceNode()){
-            ArrayList<Integer> rolls = game.getRollsList();
-            ArrayList<Integer> r = new ArrayList<Integer>();
-            r.addAll(rolls);
-            for(int roll : r){
-                game.setDiceRoll(roll);
-                Node childNode = new Node(game);
-                childNode.setParent(pointer);
-                pointer.addChild(childNode);
-                buildLevel(childNode, game, depth);
+            if(depth > 0 ){
+                ArrayList<Integer> rolls = game.getRollsList();
+                ArrayList<Integer> r = new ArrayList<Integer>();
+                r.addAll(rolls);
+                for(int roll : r){
+                    game.setDiceRoll(roll);
+                    Node childNode = new Node(game);
+                    childNode.setParent(pointer);
+                    pointer.addChild(childNode);
+                    buildLevel(childNode, game, --depth);
+                    depth++;
+                }
+                game.setDiceRoll(0);
             }
             pointer.computeValue(game);
         }
         else{
             if(depth > 0){
+                int diceRoll = game.getDiceRoll();
+                ArrayList<ArrayList<Move>> mL = game.getMoveList();
                 ArrayList<Move> possibleMoves = game.getPossibleMoves();
                 ArrayList<Move> pM = new ArrayList<Move>();
                 pM.addAll(possibleMoves);
                 for(Move m : pM){
-                    game.addMoves(pM);
-                    game.movePiece(m.getStart().getRow(), m.getStart().getCol(), m.getDestination().getRow(), m.getDestination().getCol());
-                    game.setDiceRoll(0);
+                    game.movePiece(m.getStart().getRow(), m.getStart().getCol(), m.getDestination().getRow(), m.getDestination().getCol(), true);
                     Node childNode = new Node(game);
                     childNode.setParent(pointer);
                     pointer.addChild(childNode);
                     buildLevel(childNode, game, --depth);
                     depth++;
                     game.reverseLastMove();
+                    game.setDiceRoll(diceRoll);
+                    game.setMoveList(mL);
                 }
             }
             pointer.computeValue(game);
