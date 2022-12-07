@@ -10,7 +10,7 @@ public class King extends Piece{
 
 
     public King(boolean whiteStatus, int currentSquareRow, int currentSquareCol){
-        super(whiteStatus, 1000, 6, "K", currentSquareRow, currentSquareCol);
+        super(whiteStatus, 200, 6, "K", currentSquareRow, currentSquareCol);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class King extends Piece{
     public Piece copy() {
         Piece copy = new King(this.getWhiteStatus(), this.getRow(), this.getCol());
         copy.setMoveCounter(this.getMoveCounter());
-        return null;
+        return copy;
     }
     
     
