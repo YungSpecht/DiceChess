@@ -11,9 +11,9 @@ import com.group4.dicechess.Representation.Piece;
 import com.group4.dicechess.Representation.Square;
 import com.group4.dicechess.GameState;
 import com.group4.dicechess.agents.Bot;
-import com.group4.dicechess.agents.MCTS.MonteCarloTreeSearch;
 import com.group4.dicechess.agents.basic_agents.GreedyBot;
 import com.group4.dicechess.agents.basic_agents.RandomBot;
+import com.group4.dicechess.agents.basic_agents.ExpectimaxBot;
 
 public class GameScreen implements Screen {
 
@@ -197,7 +197,7 @@ public class GameScreen implements Screen {
                             if (screenX >= 768 && screenX <= 798) {
                                 gameLoop.board.promotionKey = 5; // Queen
                             }
-                            gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]);
+                            gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0], false);
                             textureUtils.updateBoard(gameLoop.getBoard());
                             tempPoss[0] = -1;
                             tempPoss[1] = -1;
@@ -265,7 +265,7 @@ public class GameScreen implements Screen {
                                     promoting = true;
                                 }
                                 if(!promoting){
-                                    gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]);
+                                    gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0], false);
                                     textureUtils.updateBoard(gameLoop.getBoard());
                                     tempPoss[0] = -1;
                                     tempPoss[1] = -1;
@@ -310,8 +310,8 @@ public class GameScreen implements Screen {
                 case 2:
                     bot = new GreedyBot(gameLoop);
                     break;
-                case 3:
-                    bot = new MonteCarloTreeSearch(gameLoop);
+                case 3: 
+                    bot = new ExpectimaxBot(gameLoop);
                     break;
             }
             botPlaying = false;
@@ -330,8 +330,9 @@ public class GameScreen implements Screen {
                     diceN = bot.getRoll();
                     txtOtp.add("Dice rolled. Result is " + diceN);
                     txtTracker++;
-                    gameLoop.movePiece(tempMove.getStart().getRow(), tempMove.getStart().getCol(), tempMove.getDestination().getRow(), tempMove.getDestination().getCol());
+                    gameLoop.movePiece(tempMove.getStart().getRow(), tempMove.getStart().getCol(), tempMove.getDestination().getRow(), tempMove.getDestination().getCol(), true);
                     textureUtils.updateBoard(gameLoop.getBoard());
+                    gameLoop.getBoard().printBoard();
                     helperNot = textureUtils.intoCoorNotation(tempMove.getStart().getCol(), tempMove.getStart().getRow());
                     String [] helperNot2 = textureUtils.intoCoorNotation(tempMove.getDestination().getCol(), tempMove.getDestination().getRow());
                     moveN = helperNot[0] + helperNot[1] + " -> " + helperNot2[0] + helperNot2[1];
@@ -371,7 +372,7 @@ public class GameScreen implements Screen {
                             if (screenX >= 768 && screenX <= 798) {
                                 gameLoop.board.promotionKey = 5; // Queen
                             }
-                            gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]);
+                            gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0], true);
                             textureUtils.updateBoard(gameLoop.getBoard());
                             tempPoss[0] = -1;
                             tempPoss[1] = -1;
@@ -439,7 +440,7 @@ public class GameScreen implements Screen {
                                     promoting = true;
                                 }
                                 if(!promoting){
-                                    gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0]);
+                                    gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0], true);
                                     textureUtils.updateBoard(gameLoop.getBoard());
                                     tempPoss[0] = -1;
                                     tempPoss[1] = -1;

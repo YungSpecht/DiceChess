@@ -20,30 +20,21 @@ public class GreedyBot implements Bot {
     public Move getMove() {
         state.diceRoll();
         this.diceRollResult = state.getDiceRoll();
-        ArrayList<ArrayList<Move>> allMoves = state.getMoveList();
-        ArrayList<Move> allPossibleMoves = new ArrayList<Move>();
-        ArrayList<Move> allPossibleCapturingMoves = new ArrayList<Move>();
-        for(ArrayList<Move> list : allMoves){
-            for(Move m : list){
-                if(m.getPiece().getDiceChessId() == state.getDiceRoll()){
-                    allPossibleMoves.add(m);
-                    if(m.getDestination().getPiece() != null){
-                        allPossibleCapturingMoves.add(m);
-                    }
-                }
+        ArrayList<Move> possibleMoves = state.getPossibleMoves();
+        ArrayList<Move> bestMoves = new ArrayList<Move>();
+        int value = 0;
+        for(Move m : possibleMoves){
+            if(m.getCaptureValue() > value){
+                value = m.getCaptureValue();
+                bestMoves.clear();
+                bestMoves.add(m);
+            }
+            else if(m.getCaptureValue() == value){
+                bestMoves.add(m);
             }
         }
         Random rand = new Random();
-        if(allPossibleCapturingMoves.size() > 0){
-            Move bestMove = allPossibleCapturingMoves.get(rand.nextInt(allPossibleCapturingMoves.size()));
-            for(Move m : allPossibleCapturingMoves){
-                if(m.getDestination().getPiece().getValue() > bestMove.getDestination().getPiece().getValue()){
-                    bestMove = m;
-                }
-            }
-            return bestMove;
-        }
-        return allPossibleMoves.get(rand.nextInt(allPossibleMoves.size()));
+        return bestMoves.get(rand.nextInt(bestMoves.size()));
     }
 
     @Override
