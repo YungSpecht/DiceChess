@@ -43,7 +43,7 @@ public class Pawn extends Piece{
             if(sq.getPiece() != null && sq.getPiece().getId().equals("P") && (sq.getPiece().getRow() == board.getLastMovePieceBlack().getRow() && sq.getPiece().getCol() == board.getLastMovePieceBlack().getCol()) && sq.getPiece().getMoveCounter() == 1){
                 return true;
             }
-        } else if (!this.getWhiteStatus() && currentSquare.getRow() == 4) {
+        } else if (!currentSquare.getPiece().getWhiteStatus() && currentSquare.getRow() == 4) {
             Square sq = board.getSquare(destination.getRow()-1, destination.getCol());
             if(sq.getPiece() != null && sq.getPiece().getId().equals("P") && (sq.getPiece().getRow() == board.getLastMovedPieceWhite().getRow() && sq.getPiece().getCol() == board.getLastMovedPieceWhite().getCol()) && sq.getPiece().getMoveCounter() == 1) {
                 return true;
