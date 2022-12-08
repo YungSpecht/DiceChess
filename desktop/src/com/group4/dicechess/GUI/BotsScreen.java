@@ -78,9 +78,8 @@ public class BotsScreen implements Screen {
                 }
                 // MCTS
                 if(screenX >= 375 && screenX <= 523 && screenY >= 295 && screenY <= 339){
-                    //game.setScreen(new GameChoiceScreen(game));
-                    //Gdx.input.setInputProcessor(null);
-                    System.out.println("Working on mcts bot");
+                    game.setScreen(new GameScreen(game, 4));
+                    Gdx.input.setInputProcessor(null);
                 }
                 // Expectimax
                 if(screenX >= 353 && screenX <= 553 && screenY >= 375 && screenY <= 420){

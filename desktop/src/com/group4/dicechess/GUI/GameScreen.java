@@ -11,6 +11,7 @@ import com.group4.dicechess.Representation.Piece;
 import com.group4.dicechess.Representation.Square;
 import com.group4.dicechess.GameState;
 import com.group4.dicechess.agents.Bot;
+import com.group4.dicechess.agents.MCTS.MonteCarloTreeSearch;
 import com.group4.dicechess.agents.basic_agents.GreedyBot;
 import com.group4.dicechess.agents.basic_agents.RandomBot;
 import com.group4.dicechess.agents.basic_agents.ExpectimaxBot;
@@ -312,6 +313,9 @@ public class GameScreen implements Screen {
                     break;
                 case 3: 
                     bot = new ExpectimaxBot(gameLoop);
+                    break;
+                case 4:
+                    bot = new MonteCarloTreeSearch(gameLoop);
                     break;
             }
             botPlaying = false;

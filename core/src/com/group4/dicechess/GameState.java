@@ -112,6 +112,16 @@ public class GameState {
         diceRoll = lastMove.getPiece().getDiceChessId();
     }
 
+    public int boardEvaluationFunc(){
+        int blackEval = 0;
+
+        for(int i = 0; i < board.getBlackPieces().size(); i++) {
+            blackEval -= board.getBlackPieces().get(i).getValue();
+        }
+        return blackEval;
+
+    }
+
     public int diceRoll(){
         if(diceRoll == 0){
             Random rand = new Random();
