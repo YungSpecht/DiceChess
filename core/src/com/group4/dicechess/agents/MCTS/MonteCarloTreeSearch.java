@@ -20,10 +20,10 @@ public class MonteCarloTreeSearch implements Bot {
     public Move createMCTSTree(){
         this.state.diceRoll();
         NodeMCTS root = new NodeMCTS(null, null, this.state);
-
+        System.out.println(this.state.getDiceRoll());
 
         while(maxIterations >= currentIteration) {
-            System.out.println("Start of iteration: " + currentIteration);
+            //System.out.println("Start of iteration: " + currentIteration);
             currentNode = root;
             currentDepth = 0;
             flag = false;
@@ -81,13 +81,11 @@ public class MonteCarloTreeSearch implements Bot {
                     currentNode.getState().diceRoll();
                     int a = currentNode.getState().getPossibleMoves().size();
                     simulatedMove = currentNode.getState().getPossibleMoves().get(rand.nextInt(a));
-                    // check if move is game over. break and make result 10000000.
                     currentNode.getState().movePiece(simulatedMove.getStart().getRow(), simulatedMove.getStart().getCol(), simulatedMove.getDestination().getRow(), simulatedMove.getDestination().getCol(), true);
                     simulatedMoves.add(simulatedMove);
                     currentDepth++;
                 }
                 result = currentNode.getState().boardEvaluationFunc();
-
                 for (int i = 0; i < simulatedMoves.size(); i++) {
                     currentNode.getState().reverseLastMove();
                 }
