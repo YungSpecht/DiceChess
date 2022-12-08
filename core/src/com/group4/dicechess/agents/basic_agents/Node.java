@@ -4,27 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.group4.dicechess.GameState;
-import com.group4.dicechess.Representation.Board;
 
 public class Node{
+    private GameState state;
     private Node parent;
     private List<Node> children;
-    private int value;
-    private Node bestNextNode;
-    private boolean chanceNode;
-    private int turnCount;
+    private double value;
+    private Node bestNextState;
 
     public Node(GameState state){
+        this.state = state;
         children = new ArrayList<Node>();
         value = 0;
-        chanceNode = state.getDiceRoll() == 0;
-        turnCount = state.getTurnCounter();
         parent = null;
-        bestNextNode = null;
+        bestNextState = null;
     }
     
+    public GameState getGameState(){
+        return state;
+    }
 
-    public int getValue(){
+    public double getValue(){
         return value;
     }
 
@@ -41,7 +41,7 @@ public class Node{
     }
 
     public boolean isChanceNode(){
-        return chanceNode;
+        return state.getDiceRoll() != 0;
     }
 
     public List<Node> getChildren(){
@@ -52,51 +52,39 @@ public class Node{
         return false;
     }
 
-    public Node getbestNextNode(){
-        return bestNextNode;
+    public Node getBestNextState(){
+        return bestNextState;
     }
 
-    public void computeValue(GameState state){
-        if(this.getChildren().size() == 0){
-            evaluateNode(state);
+    public void computeValue(){
+        if(this.isChanceNode()){
+            for(Node n : children){
+                value += n.getValue();
+            }
+            value /= children.size();
         }
         else{
-            if(chanceNode){
+            if(state.getTurnCounter() % 2 == 0){
                 for(Node n : children){
-                    value += n.getValue();
-                }
-                value /= children.size();
-            }
-            else{
-                bestNextNode = children.get(0);
-                if(turnCount % 2 == 0){
-                    for(Node n : children){
-                        if(n.getValue() > bestNextNode.getValue()){
-                            value = n.getValue();
-                            bestNextNode = n;
-                        }
+                    if(n.getValue() > value){
+                        value = n.getValue();
+                        bestNextState = n;
                     }
                 }
-                else{
-                    for(Node n : children){
-                        if(n.getValue() < bestNextNode.getValue()){
-                            value = n.getValue();
-                            bestNextNode = n;
-                        }
+            }
+            else{
+                value = Double.MAX_VALUE;
+                for(Node n : children){
+                    if(n.getValue() < value){
+                        value = n.getValue();
+                        bestNextState = n;
                     }
                 }
             }
         }
     }
 
-    private void evaluateNode(GameState state){
-        Board b = state.getBoard();
-        value = 200*(b.count("K", true)-b.count("K", false))+9*(b.count("Q", true)-b.count("Q", false))+5*(b.count("R", true)-b.count("R", false))+3*(b.count("B", true)-b.count("B", false))+3*(b.count("N", true)-b.count("N", false))+1*(b.count("P", true)-b.count("P", false));
-
-       /*  int result = 0;
-        for(int i = 0; i < b.getWhitePieces().size(); i++) {
-            result += b.getWhitePieces().get(i).getValue();
-        }
-        value = result; */
+    public void evaluateNode(){
+        return;
     }
 }

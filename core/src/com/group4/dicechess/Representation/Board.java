@@ -183,31 +183,25 @@ public class Board {
         Square start = move.getStart();
         Square destination = move.getDestination();
         int captureValue =0;
-        move.setCaptureValue(0);
-        Piece piece = move.getStart().getPiece();
+        Piece piece = start.getPiece();
         if(piece.getWhiteStatus()){
             lastMovedPieceWhite = piece;
         } else {
             lastMovedPieceBlack = piece;
         }
         if(enPassant(start, destination)){
-            move.setEnPassant(true);
             captureValue = 1;
-            move.setCaptureValue(1);
             if(piece.getWhiteStatus()){
                 blackPieces.remove(board[start.getRow()][destination.getCol()].getPiece());
                 blackCaptured.add(board[start.getRow()][destination.getCol()].getPiece());
-                move.setCapturedPiece(board[start.getRow()][destination.getCol()].getPiece());
             }
             else{
                 whitePieces.remove(board[start.getRow()][destination.getCol()].getPiece());
                 whiteCaptured.add(board[start.getRow()][destination.getCol()].getPiece());
-                move.setCapturedPiece(board[start.getRow()][destination.getCol()].getPiece());
             }
             board[start.getRow()][destination.getCol()].setPiece(null);
         }
         else if(castling(start, destination)){
-            move.setCastling(true);
             int white = start.getPiece().getWhiteStatus() ? 1 : 0;
             if(destination.getCol() < start.getCol()){
                 Piece rook = this.board[0 + (white * 7)][0].getPiece();
@@ -225,12 +219,9 @@ public class Board {
             }
         }
         else if(pawnPromotion(start, destination)){
-            move.setPromotion(true);
             if(destination.getPiece() != null){
                 Piece capturedPiece = destination.getPiece();
-                move.setCapturedPiece(capturedPiece);
                 captureValue = capturedPiece.getValue();
-                move.setCaptureValue(captureValue);
                 if(destination.getPiece().getWhiteStatus()){
                     whitePieces.remove(capturedPiece);
                     whiteCaptured.add(capturedPiece);
@@ -241,17 +232,14 @@ public class Board {
                 }
             }
             if(diceRoll != 1){
-                Piece newPiece = pieceFactory(diceRoll, start.getPiece().getWhiteStatus(), destination);
-                move.setPromotedPiece(newPiece);
+                piece = pieceFactory(diceRoll, start.getPiece().getWhiteStatus(), destination);
                 if(piece.getWhiteStatus()){
-                    whitePieces.add(newPiece);
+                    whitePieces.add(piece);
                     whitePieces.remove(start.getPiece());
                 }
                 else{
-                    blackPieces.add(newPiece);
-                    blackPieces.remove(start.getPiece());
+                    blackPieces.add(piece);
                 }
-                piece = newPiece;
             }
             else{
                 int choice = 0;
@@ -266,28 +254,23 @@ public class Board {
                     */
                     choice = promotionKey;
                 }while(choice < 2 || choice > 5);
-                Piece newPiece = pieceFactory(choice, start.getPiece().getWhiteStatus(), destination);
-                move.setPromotedPiece(newPiece);
+                piece = pieceFactory(choice, start.getPiece().getWhiteStatus(), destination);
                 if(piece.getWhiteStatus()){
-                    whitePieces.add(newPiece);
+                    whitePieces.add(piece);
                     whitePieces.remove(start.getPiece());
                 }
                 else{
-                    blackPieces.add(newPiece);
+                    blackPieces.add(piece);
                     blackPieces.remove(start.getPiece());
                 }
-                piece = newPiece;
             }
         }
         else if(destination.getPiece() == null){
             captureValue = 0;
-            move.setCaptureValue(captureValue);
         }
         else{
             Piece capturedPiece = destination.getPiece();
-            move.setCapturedPiece(capturedPiece);
             captureValue = capturedPiece.getValue();
-            move.setCaptureValue(captureValue);
             if(destination.getPiece().getWhiteStatus()){
                 whitePieces.remove(capturedPiece);
                 whiteCaptured.add(capturedPiece);
@@ -302,81 +285,8 @@ public class Board {
         piece.setRow(destination.getRow());
         piece.setCol(destination.getCol());
         piece.increaseMoveCounter();
+        this.printBoard();
         return captureValue;
-    }
-
-    public void reverseMove(Move m, Piece previousMovedPiece){
-        if(m.getCastling()){
-            if(m.getPiece().getCol() == 2){
-                board[m.getPiece().getRow()][0].setPiece(board[0][3].getPiece());
-                board[m.getPiece().getRow()][3].setPiece(null);
-                board[m.getPiece().getRow()][0].getPiece().setCol(0);
-            }
-            else{
-                board[m.getPiece().getRow()][7].setPiece(board[0][5].getPiece());
-                board[m.getPiece().getRow()][7].setPiece(null);
-                board[m.getPiece().getRow()][7].getPiece().setCol(7);
-            }
-            m.getStart().setPiece(m.getPiece());
-            m.getPiece().setRow(m.getStart().getRow());
-            m.getPiece().setCol(m.getStart().getCol());
-            m.getPiece().setMoveCounter(m.getPiece().getMoveCounter()-1);
-        }
-        else if(m.getPromotion()){
-            m.getStart().setPiece(m.getPiece());
-            m.getPiece().setRow(m.getStart().getRow());
-            m.getPiece().setCol(m.getStart().getCol());
-            m.getPiece().setMoveCounter(m.getPiece().getMoveCounter()-1);
-            if(m.getCapturedPiece() != null){
-                m.getDestination().setPiece(m.getCapturedPiece());
-                if(m.getCapturedPiece().getWhiteStatus()){
-                    whitePieces.add(m.getCapturedPiece());
-                    whiteCaptured.remove(m.getCapturedPiece());
-                }
-                else{
-                    blackPieces.add(m.getCapturedPiece());
-                    blackCaptured.remove(m.getCapturedPiece());
-                }
-            }
-            else{
-                m.getDestination().setPiece(null);
-            }
-        }
-        else if(m.getEnPassant()){
-            board[m.getStart().getRow()][m.getDestination().getCol()].setPiece(m.getCapturedPiece());
-            m.getStart().setPiece(m.getPiece());
-            m.getPiece().setRow(m.getStart().getRow());
-            m.getPiece().setCol(m.getStart().getCol());
-            m.getPiece().setMoveCounter(m.getPiece().getMoveCounter()-1);
-        }
-        else{
-            m.getStart().setPiece(m.getPiece());
-            m.getPiece().setRow(m.getStart().getRow());
-            m.getPiece().setCol(m.getStart().getCol());
-            m.getPiece().setMoveCounter(m.getPiece().getMoveCounter()-1);
-            if(m.getCapturedPiece() != null){
-                m.getDestination().setPiece(m.getCapturedPiece());
-                if(m.getCapturedPiece().getWhiteStatus()){
-                    whitePieces.add(m.getCapturedPiece());
-                    whiteCaptured.remove(m.getCapturedPiece());
-                }
-                else{
-                    blackPieces.add(m.getCapturedPiece());
-                    blackCaptured.remove(m.getCapturedPiece());
-                }
-            }
-            else{
-                m.getDestination().setPiece(null);
-            }
-        }
-
-
-        if(m.getPiece().getWhiteStatus()){
-            lastMovedPieceWhite = previousMovedPiece;
-        }
-        else{
-            lastMovedPieceBlack = previousMovedPiece;
-        }
     }
 
     private boolean enPassant(Square start, Square destination){
@@ -420,17 +330,6 @@ public class Board {
         }
     }
 
-    public int count(String id, boolean white){
-        int result = 0;
-        ArrayList<Piece> list = white ? whitePieces : blackPieces;
-        for(Piece p : list){
-            if(p.getId().equals(id)){
-                result++;
-            }
-        }
-        return result;
-    }
-
     public Board copy(){
         Board copy = new Board();
         for(int i = 0; i < board.length; i++){
@@ -439,37 +338,27 @@ public class Board {
             }
         }
         ArrayList<Piece> wpc = new ArrayList<Piece>();
-        for(Piece p : whitePieces){
+        for(Piece p : this.getWhitePieces()){
             wpc.add(p.copy());
         }
         copy.setWhitePieces(wpc);
         ArrayList<Piece> bpc = new ArrayList<Piece>();
-        for(Piece p : blackPieces){
+        for(Piece p : this.getBlackPieces()){
             bpc.add(p.copy());
         }
         copy.setBlackPieces(bpc);
         ArrayList<Piece> wc = new ArrayList<Piece>();
-        for(Piece p : whiteCaptured){
+        for(Piece p : this.getWhiteCaptured()){
             wc.add(p.copy());
         }
         copy.setWhiteCaptured(wc);
         ArrayList<Piece> bc = new ArrayList<Piece>();
-        for(Piece p : blackCaptured){
+        for(Piece p : this.getBlackCaptured()){
             bc.add(p.copy());
         }
         copy.setBlackCaptured(bc);
-        if(lastMovedPieceWhite == null){
-            copy.setLastMovedPieceWhite(null);
-        }
-        else{
-            copy.setLastMovedPieceWhite(lastMovedPieceWhite.copy());
-        }
-        if(lastMovedPieceBlack == null){
-            copy.setLastMovedPieceBlack(null);
-        }
-        else{
-            copy.setLastMovedPieceBlack(lastMovedPieceBlack.copy());
-        }
+        copy.setLastMovedPieceWhite(this.getLastMovedPieceWhite().copy());
+        copy.setLastMovedPieceBlack(this.getLastMovePieceBlack().copy());
         return copy;
     }
 

@@ -28,11 +28,6 @@ public class Square {
     }
 
     public Square copy(){
-        if(piece == null){
-            return new Square(row, col, null);
-        }
-        else{
-            return new Square(row, col, piece.copy());
-        }
+        return new Square(this.getRow(), this.getCol(), this.getPiece().copy());
     }
 }

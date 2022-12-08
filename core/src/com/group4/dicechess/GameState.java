@@ -102,27 +102,9 @@ public class GameState {
         prepareNextTurn();
     }
 
-    public void reverseLastMove(){
-        Move lastMove = moveHistory.get(moveHistory.size()-1);
-        Piece previousMovedPiece = moveHistory.size() < 3 ? null : moveHistory.get(moveHistory.size()-3).getPiece();
-        board.reverseMove(lastMove, previousMovedPiece);
-        turnCounter--;
-        double capturedVal = moveHistory.get(moveHistory.size()-1).getCaptureValue();
-        if(moveHistory.get(moveHistory.size()-1).getPiece().getWhiteStatus()){
-            whiteScore -= capturedVal;
-        }
-        else{
-            blackScore -= capturedVal;
-        }
-        moveHistory.remove(moveHistory.size()-1);
-        prepareNextTurn();
-    }
-
     public int diceRoll(){
-        if(diceRoll == 0){
-            Random rand = new Random();
-            this.diceRoll = rolls.get(rand.nextInt(rolls.size()));
-        }
+        Random rand = new Random();
+        this.diceRoll = rolls.get(rand.nextInt(rolls.size()));
         return this.diceRoll;
     }
 
@@ -164,16 +146,12 @@ public class GameState {
     private Move getMove(int startRow, int startCol, int endRow, int endCol){
         for(ArrayList<Move> l : moveList){
             for(Move m : l){
-                if(m.getStart() == board.getSquare(startRow, startCol) && m.getDestination() == board.getSquare(endRow, endCol)){
+                if(m.getStart() == board.getSquare(startRow, startCol) && m.getDestination().getCol() == endCol && m.getDestination().getRow() == endRow){
                     return m;
                 }
             }
         }
         return null;
-    }
-
-    public void addMoves(ArrayList<Move> list){
-        this.moveList.add(list);
     }
 
     public GameState copy(){
