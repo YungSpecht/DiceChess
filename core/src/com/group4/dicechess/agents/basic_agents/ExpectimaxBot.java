@@ -16,9 +16,11 @@ public class ExpectimaxBot implements Bot{
 
     @Override
     public Move getMove() {
+        System.out.println("Searching new Move...");
         diceRollResult =  state.diceRoll();
         ExpectimaxTree tree = new ExpectimaxTree(state);
-        tree.buildTree(6);
+        tree.buildTree(4);
+        System.out.println("Found new Move...");
         return tree.getBestMove();
     }
 

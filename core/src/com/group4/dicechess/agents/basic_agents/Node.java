@@ -108,7 +108,7 @@ public class Node{
     private void evaluateNode(GameState state){
         Board b = state.getBoard();
         value = 200*(b.count("K", true)-b.count("K", false))+9*(b.count("Q", true)-b.count("Q", false))+5*(b.count("R", true)-b.count("R", false))+3*(b.count("B", true)-b.count("B", false))+3*(b.count("N", true)-b.count("N", false))+1*(b.count("P", true)-b.count("P", false));
-        /*  int result = 0;
+       /*  int result = 0;
         for(int i = 0; i < b.getWhitePieces().size(); i++) {
             result += b.getWhitePieces().get(i).getValue();
         }

@@ -118,7 +118,6 @@ public class Board {
      * Sets up the chess board in its initial starting position.
      */
     private void setUpBoard(){
-
         // Set up the pawns
         for(int i = 0; i < 8; i++){
             board[1][i] = new Square(1, i, new Pawn(false, 1, i));
@@ -163,7 +162,7 @@ public class Board {
             for(int j = 0; j < 8; j++){
                 blackPieces.add(board[i][j].getPiece());
             }
-        } 
+        }
 
         for(int i = 6; i < 8; i++){
             for(int j = 0; j < 8; j++){
