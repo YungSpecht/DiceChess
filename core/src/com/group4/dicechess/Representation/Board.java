@@ -321,6 +321,7 @@ public class Board {
             m.getPiece().setRow(m.getStart().getRow());
             m.getPiece().setCol(m.getStart().getCol());
             m.getPiece().setMoveCounter(0);
+            m.getDestination().setPiece(null);
             board[m.getPiece().getRow()][newRookCol].getPiece().setMoveCounter(0);
         }
         else if(m.getPromotion()){
