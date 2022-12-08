@@ -20,7 +20,7 @@ public class GameState {
 
     public GameState(){
         board = new Board();
-        turnCounter = -1;
+        turnCounter = 0;
         whiteScore = 0;
         blackScore = 0;
         rolls = new ArrayList<Integer>();
@@ -80,27 +80,47 @@ public class GameState {
         return moveList.get(legalPieces.indexOf(board.getSquare(row, col).getPiece()));
     }
 
-    public void movePiece(int startRow, int startCol, int row, int col){
+    public void movePiece(int startRow, int startCol, int row, int col, boolean botMove){
+        //TODO make sure this move is not null
         Move move = getMove(startRow, startCol, row, col);
         boolean white = turnCounter % 2 == 0 ? true : false;
         if(white){
-            whiteScore = board.movePiece(move, this.diceRoll);
+            whiteScore = board.movePiece(move, this.diceRoll, botMove);
         }
         else{
-            blackScore = board.movePiece(move, this.diceRoll);
+            blackScore = board.movePiece(move, this.diceRoll, botMove);
         }
         moveHistory.add(move);
+        turnCounter++;
         prepareNextTurn();
     }
 
+    public void reverseLastMove(){
+        Move lastMove = moveHistory.get(moveHistory.size()-1);
+        Piece previousMovedPiece = moveHistory.size() < 3 ? null : moveHistory.get(moveHistory.size()-3).getPiece();
+        board.reverseMove(lastMove, previousMovedPiece);
+        turnCounter--;
+        double capturedVal = moveHistory.get(moveHistory.size()-1).getCaptureValue();
+        if(moveHistory.get(moveHistory.size()-1).getPiece().getWhiteStatus()){
+            whiteScore -= capturedVal;
+        }
+        else{
+            blackScore -= capturedVal;
+        }
+        moveHistory.remove(moveHistory.size()-1);
+        prepareNextTurn();
+        diceRoll = lastMove.getPiece().getDiceChessId();
+    }
+
     public int diceRoll(){
-        Random rand = new Random();
-        this.diceRoll = rolls.get(rand.nextInt(rolls.size()));
+        if(diceRoll == 0){
+            Random rand = new Random();
+            this.diceRoll = rolls.get(rand.nextInt(rolls.size()));
+        }
         return this.diceRoll;
     }
 
     private void prepareNextTurn(){
-        turnCounter++;
         rolls.clear();
         legalPieces.clear();
         moveList.clear();
@@ -137,13 +157,14 @@ public class GameState {
     private Move getMove(int startRow, int startCol, int endRow, int endCol){
         for(ArrayList<Move> l : moveList){
             for(Move m : l){
-                if(m.getStart() == board.getSquare(startRow, startCol) && m.getDestination().getCol() == endCol && m.getDestination().getRow() == endRow){
+                if(m.getStart().getRow() ==  startRow && m.getStart().getCol() == startCol && m.getDestination().getRow() == endRow && m.getDestination().getCol() == endCol){
                     return m;
                 }
             }
         }
         return null;
     }
+ 
 
     public GameState copy(){
         GameState copy = new GameState();
