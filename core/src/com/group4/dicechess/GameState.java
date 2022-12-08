@@ -118,24 +118,6 @@ public class GameState {
         prepareNextTurn();
     }
 
-    public void reverseLastMoves(ArrayList<Move> movesHis){
-        while(!movesHis.isEmpty()){
-            Move lastMove = movesHis.get(movesHis.size()-1);
-            Piece previousMovedPiece = movesHis.size() < 3 ? null : movesHis.get(movesHis.size()-3).getPiece();
-            board.reverseMove(lastMove, previousMovedPiece);
-            turnCounter--;
-            double capturedVal = movesHis.get(movesHis.size()-1).getCaptureValue();
-            if(movesHis.get(movesHis.size()-1).getPiece().getWhiteStatus()){
-                whiteScore -= capturedVal;
-            }
-            else{
-                blackScore -= capturedVal;
-            }
-            movesHis.remove(movesHis.size()-1);
-            prepareNextTurn();
-        }
-    }
-
     public int diceRoll(){
         if(diceRoll == 0){
             Random rand = new Random();
@@ -192,11 +174,6 @@ public class GameState {
 
     public void addMoves(ArrayList<Move> list){
         this.moveList.add(list);
-    }
-
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
     }
 
     public GameState copy(){

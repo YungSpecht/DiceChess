@@ -15,78 +15,51 @@ public class MonteCarloTreeSearch implements Bot {
         this.diceRollResult = 0;
     }
 
-    public static void main(String[] args) {
-    }
-
-    public Move createMCTSTree() throws CloneNotSupportedException {
+    public Move createMCTSTree(){
         System.out.println("initial");
         this.state.diceRoll();
         NodeMCTS root = new NodeMCTS(null, null, this.state);
         GameState currentState = state;
-
         while(maxIterations >= currentIteration){
             System.out.println("r");
             currentNode = root;
             reset();
-            boolean flag = false;
             while (!currentNode.children.isEmpty()){                      // Selection
                 for(NodeMCTS child : currentNode.children){
                     temp = uct_formula(child.getMean_value(), child.getVisited(), child.parent.getVisited());
-                    System.out.println(temp);
-                    if(temp > currentBestChild || !flag){
+                    if(temp > currentBestChild){
                         currentBestChild = temp;
-                        currentNode.getState().movePiece(child.getMove().getStart().getRow(), child.getMove().getStart().getCol(),child.getMove().getDestination().getRow() , child.getMove().getDestination().getCol());
-                        currentNode.getState().getBoard().printBoard();
-                        currentNode.getState().setDiceRoll(0);
-                        child.state = currentNode.state;
-                        System.out.println(child.getMove());
                         currentNode = child;
-                        flag = true;
                     }
                 }
-                System.out.println("Im here");
+                System.out.println("seelcts");
+
             }
             System.out.println("gets here");
-
-            if(currentNode.getVisited() != 0 || currentNode == root){
-                ArrayList<Move> possibleMoves = currentNode.getState().getPossibleMoves();
-                ArrayList<Move> pM = new ArrayList<Move>();
-                pM.addAll(possibleMoves);
-
-                for(Move m : pM){
-                    currentNode.getState().addMoves(pM);
-                    currentNode.getState().movePiece(m.getStart().getRow(), m.getStart().getCol(), m.getDestination().getRow(), m.getDestination().getCol());
-                    currentNode.getState().setDiceRoll(0);
-                    currentNode.getState().getBoard().printBoard();
-                    childNode = new NodeMCTS(currentNode, m, nextState);
+            if(currentNode.getVisited() == 0){
+                for(Move possibleMove : currentNode.getState().getPossibleMoves()){
+                    nextState = state.copy();
+                    nextState.movePiece(possibleMove.getStart().getRow(), possibleMove.getStart().getCol(), possibleMove.getDestination().getRow(), possibleMove.getDestination().getCol());
+                    childNode = new NodeMCTS(currentNode, possibleMove, nextState);
                     currentNode.children.add(childNode);
-                    currentNode.getState().getBoard().printBoard();
-                    currentNode.getState().reverseLastMove();
-                    currentNode.getState().getBoard().printBoard();
+                    // inverse it
                 }
-                System.out.println(currentNode.children.size());
             } else {
-                System.out.println("a");
-                currentNode.getState().getBoard().printBoard();
-                ArrayList<Move> simulatedMoves = new ArrayList<>();
+                simulatedNode = currentNode;
                 while (currentDepth <= depth){                           // Simulation
-                    System.out.println("d");
-                    randBot = new RandomBot(currentNode.getState());
+                    nextState = simulatedNode.getState();
+                    randBot = new RandomBot(simulatedNode.getState());
                     simulatedMove = randBot.getMove();
-                    currentNode.getState().getBoard().printBoard();
-                    System.out.println("v");
-                    currentNode.getState().movePiece(simulatedMove.getStart().getRow(), simulatedMove.getStart().getCol(), simulatedMove.getDestination().getRow(), simulatedMove.getDestination().getCol());
-                    simulatedMoves.add(simulatedMove);
+                    nextState.movePiece(simulatedMove.getStart().getRow(), simulatedMove.getStart().getCol(), simulatedMove.getDestination().getRow(), simulatedMove.getDestination().getCol());
+                    simulatedNode = new NodeMCTS(null, null, nextState);
+                    System.out.println("simulation");
                     currentDepth++;
                 }
-                result = currentNode.getState().boardEvaluationFunc();
-                currentNode.getState().reverseLastMoves(simulatedMoves);
-
+                // update result missing 
                 while(currentNode.hasParent()){                         // Backpropagation
-                    currentNode.update(result);
-                    System.out.println("backpropagation");
+                    currentNode.update();
+                    System.out.println("backprop");
                     currentNode = currentNode.parent;
-                    // update state
                 }
                 currentIteration++;
             }
@@ -114,7 +87,7 @@ public class MonteCarloTreeSearch implements Bot {
     }
 
     @Override
-    public Move getMove() throws CloneNotSupportedException {
+    public Move getMove() {
         return this.createMCTSTree();
     }
 
