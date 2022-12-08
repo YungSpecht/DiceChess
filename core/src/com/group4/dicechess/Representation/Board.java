@@ -345,9 +345,11 @@ public class Board {
             }
             if(m.getPromotedPiece().getWhiteStatus()){
                 whitePieces.remove(m.getPromotedPiece());
+                whitePieces.add(m.getPiece());
             }
             else{
                 blackPieces.remove(m.getPromotedPiece());
+                blackPieces.add(m.getPiece());
             }
         }
         else if(m.getEnPassant()){
