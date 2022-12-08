@@ -37,9 +37,6 @@ public class Pawn extends Piece{
             }
             else if(i == col && destination.getPiece() == null){
                 result.add(new Move(board.getSquare(this.getRow(), this.getCol()), destination, this));
-                if((this.getWhiteStatus() && destination.getRow() == 0) || (!this.getWhiteStatus() && destination.getRow() == 7)){
-                    result.get(result.size()-1).setPromotion(true);
-                }
             }
         }
         if(this.getMoveCounter() == 0){
