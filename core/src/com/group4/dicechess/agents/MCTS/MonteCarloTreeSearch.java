@@ -44,6 +44,7 @@ public class MonteCarloTreeSearch implements Bot {
                         currentBestChild = temp;
                         currentNode = child;
                         flag = true;
+                        System.out.println(temp);
                     }
                 }
                 simulatedMovesSelection.add(currentNode.getMove());
@@ -68,6 +69,8 @@ public class MonteCarloTreeSearch implements Bot {
                     childNode = new NodeMCTS(currentNode, m, currentNode.state);
                     currentNode.children.add(childNode);
                 }
+                currentState.getBoard().printBoard();
+
 
                 if(currentNode != root){    // re get it up to root
                     for (int i = 0; i < simulatedMovesSelection.size(); i++) {
@@ -89,8 +92,8 @@ public class MonteCarloTreeSearch implements Bot {
                     currentNode.getState().diceRoll();
                     System.out.println(currentNode.state.getDiceRoll());
                     int a = currentNode.getState().getPossibleMoves().size();
+                    System.out.println(a);
                     simulatedMove = currentNode.getState().getPossibleMoves().get(rand.nextInt(a));
-                    System.out.println(simulatedMove.getStart().getRow() + ", "+ simulatedMove.getStart().getCol()+ " -> "+ simulatedMove.getDestination().getRow()+ ", "+ simulatedMove.getDestination().getCol());
                     currentNode.getState().movePiece(simulatedMove.getStart().getRow(), simulatedMove.getStart().getCol(), simulatedMove.getDestination().getRow(), simulatedMove.getDestination().getCol(), true);
                     simulatedMoves.add(simulatedMove);
                     currentDepth++;
