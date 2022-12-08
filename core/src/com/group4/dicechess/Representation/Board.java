@@ -203,7 +203,6 @@ public class Board {
             board[start.getRow()][destination.getCol()].setPiece(null);
         }
         else if(move.getPromotion()){
-            System.out.println("------PROMOTION------");
             if(diceRoll != 1){
                 move.setPromotedPiece(pieceFactory(diceRoll, move.getPiece().getWhiteStatus(), destination));
             }
