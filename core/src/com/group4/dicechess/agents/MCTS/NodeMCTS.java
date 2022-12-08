@@ -65,6 +65,6 @@ public class NodeMCTS implements Cloneable {
     }
 
     public int getVisited() {
-        return visited;
+        return this.visited;
     }
 }

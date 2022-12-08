@@ -31,9 +31,9 @@ public class MonteCarloTreeSearch implements Bot {
             ArrayList<Move> simulatedMovesSelection = new ArrayList<>();
             ArrayList<Integer> simulatedMovesSelectionDiceRolls = new ArrayList<>();
 
-            System.out.println("Selection");                                    // Selection
+            //System.out.println("Selection");                                    // Selection
             while (!currentNode.children.isEmpty()) {
-                System.out.println("Selection - depth + 1");
+                //System.out.println("Selection - depth + 1");
                 tempStorage = currentNode.children;
                 for (NodeMCTS child : tempStorage) {
                     temp = uct_formula(child.getMean_value(), child.getVisited(), child.parent.getVisited());
@@ -43,14 +43,13 @@ public class MonteCarloTreeSearch implements Bot {
                         flag = true;
                     }
                 }
-                System.out.println(currentBestChild);
                 simulatedMovesSelection.add(currentNode.getMove());
                 simulatedMovesSelectionDiceRolls.add(currentNode.diceRoll);
                 flag = false;
             }
 
             if(currentNode.getVisited() != 0 || currentNode == root){               // Expansion
-                System.out.println("Expansion");
+                //System.out.println("Expansion");
                 if(currentNode != root){
                     for (int i = 0; i < simulatedMovesSelection.size(); i++) {
                         currentNode.state.setDiceRoll(simulatedMovesSelectionDiceRolls.get(i));
@@ -73,7 +72,7 @@ public class MonteCarloTreeSearch implements Bot {
                 }
             } else {
                 Random rand = new Random();
-                System.out.println("Simulation");
+                //System.out.println("Simulation");
                 for (int i = 0; i < simulatedMovesSelection.size(); i++) {
                     currentNode.state.setDiceRoll(simulatedMovesSelectionDiceRolls.get(i));
                     currentNode.state.movePiece(simulatedMovesSelection.get(i).getStart().getRow(),simulatedMovesSelection.get(i).getStart().getCol(),simulatedMovesSelection.get(i).getDestination().getRow() ,simulatedMovesSelection.get(i).getDestination().getCol(), true);
@@ -95,18 +94,19 @@ public class MonteCarloTreeSearch implements Bot {
                 for (int i = 0; i < simulatedMovesSelection.size(); i++) {
                     currentNode.getState().reverseLastMove();
                 }
-
+                //System.out.println("backpropagation");
                 while(currentNode.hasParent()){                         // Backpropagation
                     currentNode.update(result);
-                    System.out.println("backpropagation");
                     currentNode = currentNode.parent;
                 }
+                currentNode.update(result);
             }
             currentIteration++;
         }
         currentNode = root;
         int mostVisits = 0;
         int j = 0;
+        System.out.println("Child node visits: ");
         for (int i = 0; i < root.children.size(); i++) {
             System.out.println(root.children.get(i).getVisited());
             if(root.children.get(i).getVisited() > mostVisits){
@@ -115,7 +115,6 @@ public class MonteCarloTreeSearch implements Bot {
             }
         }
         currentNode = currentNode.children.get(j);
-        System.out.println("finds it");
         return currentNode.getMove();
     }
 
@@ -139,7 +138,7 @@ public class MonteCarloTreeSearch implements Bot {
     public NodeMCTS currentNode;
     public NodeMCTS childNode;
     public List<NodeMCTS> tempStorage;
-    public double tunable_c = 50;
+    public double tunable_c = 2;
     public double currentBestChild;
     public double temp;
     public double result;
