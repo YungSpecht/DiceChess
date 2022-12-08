@@ -29,6 +29,7 @@ public class MonteCarloTreeSearch implements Bot {
         while(maxIterations >= currentIteration) {
             System.out.println("Start of iteration: " + currentIteration);
             currentNode = root;
+            currentDepth = 0;
             boolean flag = false;
             ArrayList<Move> simulatedMoves = new ArrayList<>();
             ArrayList<Move> simulatedMovesSelection = new ArrayList<>();
@@ -62,16 +63,18 @@ public class MonteCarloTreeSearch implements Bot {
                     currentNode.state.diceRoll();
                 }
                 ArrayList<Move> possibleMoves = currentNode.getState().getPossibleMoves();
-                System.out.println(currentNode.getState().getPossibleMoves().size());
                 ArrayList<Move> pM = new ArrayList<Move>();
                 pM.addAll(possibleMoves);
                 for(Move m : pM){
                     childNode = new NodeMCTS(currentNode, m, currentNode.state);
                     currentNode.children.add(childNode);
                 }
+                currentState.getBoard().printBoard();
+
 
                 if(currentNode != root){    // re get it up to root
                     for (int i = 0; i < simulatedMovesSelection.size(); i++) {
+                        System.out.println("s");
                         currentNode.getState().reverseLastMove();
                     }
                 }
@@ -79,17 +82,20 @@ public class MonteCarloTreeSearch implements Bot {
                 // get it up to date again
                 Random rand = new Random();
                 System.out.println("Simulation");
+                System.out.println(simulatedMovesSelection.size());
                 for (int i = 0; i < simulatedMovesSelection.size(); i++) {
                     currentNode.state.movePiece(simulatedMovesSelection.get(i).getStart().getRow(),simulatedMovesSelection.get(i).getStart().getCol(),simulatedMovesSelection.get(i).getDestination().getRow() ,simulatedMovesSelection.get(i).getDestination().getCol(), true);
                 }
-                currentNode.state.diceRoll();
                 currentNode.state.getBoard().printBoard();
+                ArrayList<Move> SimulatedM = new ArrayList<>();
                 while (currentDepth <= depth){                           // Simulation
                     currentNode.getState().diceRoll();
+                    System.out.println(currentNode.state.getDiceRoll());
                     int a = currentNode.getState().getPossibleMoves().size();
+                    System.out.println(a);
                     simulatedMove = currentNode.getState().getPossibleMoves().get(rand.nextInt(a));
-                    simulatedMoves.add(simulatedMove);
                     currentNode.getState().movePiece(simulatedMove.getStart().getRow(), simulatedMove.getStart().getCol(), simulatedMove.getDestination().getRow(), simulatedMove.getDestination().getCol(), true);
+                    simulatedMoves.add(simulatedMove);
                     currentDepth++;
                 }
                 currentNode.state.getBoard().printBoard();
@@ -98,6 +104,8 @@ public class MonteCarloTreeSearch implements Bot {
                 for (int i = 0; i < simulatedMoves.size(); i++) {
                     currentNode.getState().reverseLastMove();
                 }
+                currentNode.state.getBoard().printBoard();
+
                 for (int i = 0; i < simulatedMovesSelection.size(); i++) {
                     currentNode.getState().reverseLastMove();
                 }
@@ -114,7 +122,15 @@ public class MonteCarloTreeSearch implements Bot {
             currentIteration++;
         }
         currentNode = root;
-        currentNode = currentNode.children.get(0); // fix here + eval function
+        int mostVisits = 0;
+        int j = 0;
+        for (int i = 0; i < root.children.size(); i++) {
+            if(root.children.get(i).getVisited() > mostVisits){
+                mostVisits = root.children.get(i).getVisited();
+                j = 0;
+            }
+        }
+        currentNode = currentNode.children.get(j); // fix here + eval function
         System.out.println("finds it");
         return currentNode.getMove();
     }
@@ -138,8 +154,8 @@ public class MonteCarloTreeSearch implements Bot {
     public GameState state;
     public double tunable_c = Math.sqrt(2);
     public int diceRollResult;
-    public int maxIterations = 10;
-    public int depth = 40;
+    public int maxIterations = 20;
+    public int depth = 10;
     public int currentDepth;
     public int currentIteration;
     public double currentBestChild;
