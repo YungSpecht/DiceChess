@@ -1,8 +1,6 @@
 package com.group4.dicechess.Representation;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Scanner;
 
 import com.group4.dicechess.Pieces.Bishop;
 import com.group4.dicechess.Pieces.King;
@@ -21,7 +19,7 @@ public class Board {
     private final ArrayList<Piece> blackCaptured;
     private Piece lastMovedPieceBlack;
     private Piece lastMovedPieceWhite;
-    private static Scanner in;
+    public int promotionKey;
 
     public Board(){
         board = new Square[8][8];
@@ -29,7 +27,6 @@ public class Board {
         blackPieces = new ArrayList<Piece>();
         whiteCaptured = new ArrayList<Piece>();
         blackCaptured = new ArrayList<Piece>();
-        in = new Scanner(System.in);
         setUpBoard();
     }
 
@@ -37,25 +34,33 @@ public class Board {
         return board[row][column];
     }
 
-    public Piece getPieceOnPosition(int row, int col) throws Exception {
-        Piece piece = board[row][col].getPiece();
-
-        if (piece == null)
-            throw new Exception("No piece on Position: [" + row + "][" + col + "]");
-
-        return piece;
+    public void setSquare(Square sq, int row, int column){
+        board[row][column] = sq;
     }
 
     public ArrayList<Piece> getWhiteCaptured(){
         return whiteCaptured;
     }
 
+    public void setWhiteCaptured(ArrayList<Piece> whiteCaputured){
+        this.whiteCaptured = whiteCaputured;
+    }
+
     public ArrayList<Piece> getBlackCaptured(){
         return blackCaptured;
     }
 
+    
+    public void setBlackCaptured(ArrayList<Piece> blackCaputured){
+        this.blackCaptured = blackCaputured;
+    }
+
     public ArrayList<Piece> getWhitePieces(){
         return (ArrayList<Piece>) whitePieces.clone();
+    }
+    
+    public void setWhitePieces(ArrayList<Piece> whitePieces){
+        this.whitePieces = whitePieces;
     }
 
     public ArrayList<Piece> getBlackPieces(){
@@ -68,12 +73,24 @@ public class Board {
         return out;
     }
     
+    public void setBlackPieces(ArrayList<Piece> blackPieces){
+        this.blackPieces = blackPieces;
+    }
+    
     public Piece getLastMovedPieceWhite(){
         return lastMovedPieceWhite;
     }
 
+    public void setLastMovedPieceWhite(Piece lastMovedPieceWhite){
+        this.lastMovedPieceWhite = lastMovedPieceWhite;
+    }
+
     public Piece getLastMovePieceBlack() {
         return lastMovedPieceBlack;
+    }
+
+    public void setLastMovedPieceBlack(Piece lastMovedPieceBlack){
+        this.lastMovedPieceBlack = lastMovedPieceBlack;
     }
 
     /**
@@ -117,6 +134,7 @@ public class Board {
      * Sets up the chess board in its initial starting position.
      */
     private void setUpBoard(){
+
         // Set up the pawns
         for(int i = 0; i < 8; i++){
             board[1][i] = new Square(1, i, new Pawn(false, 1, i));
@@ -161,7 +179,7 @@ public class Board {
             for(int j = 0; j < 8; j++){
                 blackPieces.add(board[i][j].getPiece());
             }
-        }
+        } 
 
         for(int i = 6; i < 8; i++){
             for(int j = 0; j < 8; j++){
@@ -170,251 +188,126 @@ public class Board {
         }
     }
 
-
-    public int movePiece(Move move){
-
-        Square start = move.start(),
-               destination = move.destination();
-        Piece piece = start.getPiece();
+    public int movePiece(Move move, int diceRoll, boolean botMove){
+        Square start = move.getStart();
+        Square destination = move.getDestination();
         int captureValue = 0;
-
+        Piece piece = move.getStart().getPiece();
         if(piece.getWhiteStatus()){
             lastMovedPieceWhite = piece;
-        } else {
-            lastMovedPieceBlack = piece;
-        }
-
-        if(enPassant(start, destination)){
-            captureValue = 1;
-            if(piece.getWhiteStatus()){
-                blackPieces.remove(board[start.getRow()][destination.getCol()].getPiece());
-                blackCaptured.add(board[start.getRow()][destination.getCol()].getPiece());
-            }
-            else{
-                whitePieces.remove(board[start.getRow()][destination.getCol()].getPiece());
-                whiteCaptured.add(board[start.getRow()][destination.getCol()].getPiece());
-            }
-            board[start.getRow()][destination.getCol()].setPiece(null);
-        }
-        else if(castling(start, destination)){
-            int white = start.getPiece().getWhiteStatus() ? 1 : 0;
-            if(destination.getCol() < start.getCol()){
-                Piece rook = this.board[(white * 7)][0].getPiece();
-                this.board[(white * 7)][3].setPiece(rook);
-                this.board[(white * 7)][0].setPiece(null);
-                rook.increaseMoveCounter();
-                rook.setCol(3);
-            }
-            else{
-                Piece rook = this.board[(white * 7)][7].getPiece();
-                this.board[(white * 7)][5].setPiece(rook);
-                this.board[(white * 7)][7].setPiece(null);
-                rook.increaseMoveCounter();
-                rook.setCol(5);
-            }
-        }
-        else if(pawnPromotion(start, destination)){
-            if(destination.getPiece() != null){
-                Piece capturedPiece = destination.getPiece();
-
-                if (capturedPiece instanceof King)
-                    kingCaptured();
-
-                captureValue = capturedPiece.getValue();
-                if(destination.getPiece().getWhiteStatus()){
-                    whitePieces.remove(capturedPiece);
-                    whiteCaptured.add(capturedPiece);
-                }
-                else{
-                    blackPieces.remove(capturedPiece);
-                    blackCaptured.add(capturedPiece);
-                }
-            }
-            if(move.piece().getDiceChessId() != 1){
-                piece = pieceFactory(move.piece().getDiceChessId(), start.getPiece().getWhiteStatus(), destination);
-                if(piece.getWhiteStatus()){
-                    whitePieces.add(piece);
-                    whitePieces.remove(start.getPiece());
-                }
-                else{
-                    blackPieces.add(piece);
-                }
-            }
-            else{
-                // Always choose queen
-                piece = pieceFactory(5, start.getPiece().getWhiteStatus(), destination);
-                if(piece.getWhiteStatus()){
-                    whitePieces.add(piece);
-                    whitePieces.remove(start.getPiece());
-                }
-                else{
-                    blackPieces.add(piece);
-                    blackPieces.remove(start.getPiece());
-                }
-            }
-        }
-        else if(destination.getPiece() == null){
-            captureValue = 0;
         }
         else{
-            Piece capturedPiece = destination.getPiece();
-
-            if (capturedPiece instanceof King)
-                kingCaptured();
-
-            captureValue = capturedPiece.getValue();
-            if(destination.getPiece().getWhiteStatus()){
-                whitePieces.remove(capturedPiece);
-                whiteCaptured.add(capturedPiece);
-            }
-            else{
-                blackPieces.remove(capturedPiece);
-                blackCaptured.add(capturedPiece);
-            }
-        }
-        start.setPiece(null);
-        destination.setPiece(piece);
-        piece.setRow(destination.getRow());
-        piece.setCol(destination.getCol());
-        piece.increaseMoveCounter();
-        this.printBoard();
-        return captureValue;
-    }
-
-
-    /**
-     * Moves a piece from one square to another and updates all the relevant variables accordingly.
-     * 
-     * @param start the square on which the piece is currently on
-     * @param destination the square to which the piece is to be moved to
-     * @param //legalMoves ArrayList containing all the squares the piece can be moved to
-     * @return integer that represents the value of the captured piece
-     */
-    public int movePiece(Square start, Square destination, int diceRoll){
-        int captureValue =0;
-        Piece piece = start.getPiece();
-        if(piece.getWhiteStatus()){
-            lastMovedPieceWhite = piece;
-        } else {
             lastMovedPieceBlack = piece;
         }
-        if(enPassant(start, destination)){
-            captureValue = 1;
-            if(piece.getWhiteStatus()){
-                blackPieces.remove(board[start.getRow()][destination.getCol()].getPiece());
-                blackCaptured.add(board[start.getRow()][destination.getCol()].getPiece());
+
+        start.setPiece(null);
+        destination.setPiece(move.getPiece());
+        move.getPiece().setRow(destination.getRow());
+        move.getPiece().setCol(destination.getCol());
+        piece.increaseMoveCounter();
+
+        if(move.getCastling()){
+            int rookCol = 0, newRookCol = 0;
+            switch(destination.getCol()){
+                case 2 : rookCol = 0; newRookCol = 3; break;
+                case 6 : rookCol = 7; newRookCol = 5; break;
             }
-            else{
-                whitePieces.remove(board[start.getRow()][destination.getCol()].getPiece());
-                whiteCaptured.add(board[start.getRow()][destination.getCol()].getPiece());
-            }
+            Piece rook = this.board[piece.getRow()][rookCol].getPiece();
+            this.board[piece.getRow()][newRookCol].setPiece(rook);
+            this.board[piece.getRow()][rookCol].setPiece(null);
+            rook.increaseMoveCounter();
+            rook.setCol(newRookCol);
+        }
+        else if(move.getEnPassant()){
             board[start.getRow()][destination.getCol()].setPiece(null);
         }
-        else if(castling(start, destination)){
-            int white = start.getPiece().getWhiteStatus() ? 1 : 0;
-            if(destination.getCol() < start.getCol()){
-                Piece rook = this.board[(white * 7)][0].getPiece();
-                this.board[(white * 7)][3].setPiece(rook);
-                this.board[(white * 7)][0].setPiece(null);
-                rook.increaseMoveCounter();
-                rook.setCol(3);
-            }
-            else{
-                Piece rook = this.board[(white * 7)][7].getPiece();
-                this.board[(white * 7)][5].setPiece(rook);
-                this.board[(white * 7)][7].setPiece(null);
-                rook.increaseMoveCounter();
-                rook.setCol(5);
-            }
-        }
-        else if(pawnPromotion(start, destination)){
-            if(destination.getPiece() != null){
-                Piece capturedPiece = destination.getPiece();
-                captureValue = capturedPiece.getValue();
-                if(destination.getPiece().getWhiteStatus()){
-                    whitePieces.remove(capturedPiece);
-                    whiteCaptured.add(capturedPiece);
-                }
-                else{
-                    blackPieces.remove(capturedPiece);
-                    blackCaptured.add(capturedPiece);
-                }
-            }
+        else if(move.getPromotion()){
             if(diceRoll != 1){
-                piece = pieceFactory(diceRoll, start.getPiece().getWhiteStatus(), destination);
-                if(piece.getWhiteStatus()){
-                    whitePieces.add(piece);
-                    whitePieces.remove(start.getPiece());
-                }
-                else{
-                    blackPieces.add(piece);
-                }
+                move.setPromotedPiece(pieceFactory(diceRoll, move.getPiece().getWhiteStatus(), destination));
             }
             else{
-                int choice = 0;
-                do{
-                    System.out.println("Please enter the Piece you want to promote to: ");
-                    System.out.println("2 - Knight");
-                    System.out.println("3 - Bishop");
-                    System.out.println("4 - Rook");
-                    System.out.println("5 - Queen");
-                    choice = in.nextInt();
-                }while(choice < 2 || choice > 5);
-                piece = pieceFactory(choice, start.getPiece().getWhiteStatus(), destination);
-                if(piece.getWhiteStatus()){
-                    whitePieces.add(piece);
-                    whitePieces.remove(start.getPiece());
+                if(!botMove){
+                    move.setPromotedPiece(pieceFactory(promotionKey, move.getPiece().getWhiteStatus(), destination));
                 }
                 else{
-                    blackPieces.add(piece);
-                    blackPieces.remove(start.getPiece());
+                    move.setPromotedPiece(pieceFactory(5, move.getPiece().getWhiteStatus(), destination));
                 }
             }
-        }
-        else if(destination.getPiece() == null){
-            captureValue = 0;
-        }
-        else{
-            Piece capturedPiece = destination.getPiece();
-            captureValue = capturedPiece.getValue();
-            if(destination.getPiece().getWhiteStatus()){
-                whitePieces.remove(capturedPiece);
-                whiteCaptured.add(capturedPiece);
+            destination.setPiece(move.getPromotedPiece());
+            if(move.getPiece().getWhiteStatus()){
+                whitePieces.remove(move.getPiece());
+                whitePieces.add(move.getPromotedPiece());
             }
             else{
-                blackPieces.remove(capturedPiece);
-                blackCaptured.add(capturedPiece);
+                blackPieces.remove(move.getPiece());
+                blackPieces.add(move.getPromotedPiece());
             }
         }
-        start.setPiece(null);
-        destination.setPiece(piece);
-        piece.setRow(destination.getRow());
-        piece.setCol(destination.getCol());
-        piece.increaseMoveCounter();
-        this.printBoard();
+
+
+        if(move.getCapturedPiece() != null){
+            captureValue = move.getCaptureValue();
+            if(move.getCapturedPiece().getWhiteStatus()){
+                whitePieces.remove(move.getCapturedPiece());
+                whiteCaptured.add(move.getCapturedPiece());
+            }
+            else{
+                blackPieces.remove(move.getCapturedPiece());
+                blackCaptured.add(move.getCapturedPiece());
+
+            }
+        }
         return captureValue;
     }
 
-    private boolean enPassant(Square start, Square destination){
-        Piece piece = start.getPiece();
-        if(!piece.getId().equals("P")){
-            return false;
+    public void reverseMove(Move move, Piece previouslyMoved){
+        if(move.getPiece().getWhiteStatus()){
+            lastMovedPieceWhite = previouslyMoved;
         }
-        if(piece.getWhiteStatus() && piece.getId().equals("P") && start.getRow() == 3 && board[destination.getRow()][destination.getCol()].getPiece() == null){
-            return true;
+        else{
+            lastMovedPieceBlack = previouslyMoved;
         }
-        else return !piece.getWhiteStatus() && piece.getId().equals("P") && start.getRow() == 4 && board[destination.getRow()][destination.getCol()].getPiece() == null;
-    }
 
-    private boolean castling(Square start, Square destination){
-        Piece piece = start.getPiece();
+        move.getPiece().setMoveCounter(move.getPiece().getMoveCounter()-1);
+        move.getPiece().setRow(move.getStart().getRow());
+        move.getPiece().setCol(move.getStart().getCol());
+        move.getDestination().setPiece(null);
+        move.getStart().setPiece(move.getPiece());
 
-        return piece.getId().equals("K") && piece.getMoveCounter() == 0 && (destination.getCol() == start.getCol() - 2 || destination.getCol() == start.getCol() + 2);
-    }
+        if(move.getCapturedPiece() != null){
+            if(move.getCapturedPiece().getWhiteStatus()){
+                whitePieces.add(move.getCapturedPiece());
+                whiteCaptured.remove(move.getCapturedPiece());
+            }
+            else{
+                blackPieces.add(move.getCapturedPiece());
+                blackCaptured.remove(move.getCapturedPiece());
+            }
+            board[move.getCapturedPiece().getRow()][move.getCapturedPiece().getCol()].setPiece(move.getCapturedPiece());
+        }
 
-    private boolean pawnPromotion(Square start, Square destination){
-        Piece piece = start.getPiece();
-        return piece.getId().equals("P") && (destination.getRow() == 0 || destination.getRow() == 7);
+        if(move.getCastling()){
+            int rookCol = 0, newRookCol = 0;
+            switch(move.getDestination().getCol()){
+                case 2 : rookCol = 3; newRookCol = 0; break;
+                case 6 : rookCol = 5; newRookCol = 7; break;
+            }
+            Piece rook = board[move.getPiece().getRow()][rookCol].getPiece();
+            board[move.getPiece().getRow()][newRookCol].setPiece(rook);
+            board[move.getPiece().getRow()][rookCol].setPiece(null);
+            rook.setMoveCounter(rook.getMoveCounter()-1);
+            rook.setCol(newRookCol);
+        }
+        else if(move.getPromotion()){
+            if(move.getPiece().getWhiteStatus()){
+                whitePieces.add(move.getPiece());
+                whitePieces.remove(move.getPromotedPiece());
+            }
+            else{
+                blackPieces.add(move.getPiece());
+                blackPieces.remove(move.getPromotedPiece());
+            }
+        }
     }
 
     private Piece pieceFactory(int id, boolean white, Square sq){
@@ -425,6 +318,59 @@ public class Board {
             case 5 : return new Queen(white, sq.getRow(), sq.getCol());
             default : return null;
         }
+    }
+
+    public int count(String id, boolean white){
+        int result = 0;
+        ArrayList<Piece> list = white ? whitePieces : blackPieces;
+        for(Piece p : list){
+            if(p.getId().equals(id)){
+                result++;
+            }
+        }
+        return result;
+    }
+
+    public Board copy(){
+        Board copy = new Board();
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[0].length; j++){
+                copy.setSquare(this.getSquare(i, j).copy(), i, j);
+            }
+        }
+        ArrayList<Piece> wpc = new ArrayList<Piece>();
+        for(Piece p : whitePieces){
+            wpc.add(p.copy());
+        }
+        copy.setWhitePieces(wpc);
+        ArrayList<Piece> bpc = new ArrayList<Piece>();
+        for(Piece p : blackPieces){
+            bpc.add(p.copy());
+        }
+        copy.setBlackPieces(bpc);
+        ArrayList<Piece> wc = new ArrayList<Piece>();
+        for(Piece p : whiteCaptured){
+            wc.add(p.copy());
+        }
+        copy.setWhiteCaptured(wc);
+        ArrayList<Piece> bc = new ArrayList<Piece>();
+        for(Piece p : blackCaptured){
+            bc.add(p.copy());
+        }
+        copy.setBlackCaptured(bc);
+        if(lastMovedPieceWhite == null){
+            copy.setLastMovedPieceWhite(null);
+        }
+        else{
+            copy.setLastMovedPieceWhite(lastMovedPieceWhite.copy());
+        }
+        if(lastMovedPieceBlack == null){
+            copy.setLastMovedPieceBlack(null);
+        }
+        else{
+            copy.setLastMovedPieceBlack(lastMovedPieceBlack.copy());
+        }
+        return copy;
     }
 
 }

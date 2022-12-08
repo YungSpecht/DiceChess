@@ -26,4 +26,13 @@ public class Square {
     public Piece getPiece(){
         return piece;
     }
+
+    public Square copy(){
+        if(piece == null){
+            return new Square(row, col, null);
+        }
+        else{
+            return new Square(row, col, piece.copy());
+        }
+    }
 }

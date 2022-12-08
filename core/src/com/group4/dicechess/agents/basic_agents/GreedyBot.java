@@ -9,36 +9,36 @@ import com.group4.dicechess.agents.Bot;
 
 public class GreedyBot implements Bot {
     private GameState state;
+    public int diceRollResult;
 
     public GreedyBot(GameState state){
         this.state = state;
+        this.diceRollResult = 0;
     }
 
     @Override
     public Move getMove() {
-        ArrayList<ArrayList<Move>> allMoves = state.getMoveList();
-        ArrayList<Move> allPossibleMoves = new ArrayList<Move>();
-        ArrayList<Move> allPossibleCapturingMoves = new ArrayList<Move>();
-        for(ArrayList<Move> list : allMoves){
-            for(Move m : list){
-                if(m.piece().getDiceChessId() == state.getDiceRoll()){
-                    allPossibleMoves.add(m);
-                    if(m.destination().getPiece() != null){
-                        allPossibleCapturingMoves.add(m);
-                    }
-                }
+        state.diceRoll();
+        this.diceRollResult = state.getDiceRoll();
+        ArrayList<Move> possibleMoves = state.getPossibleMoves();
+        ArrayList<Move> bestMoves = new ArrayList<Move>();
+        int value = 0;
+        for(Move m : possibleMoves){
+            if(m.getCaptureValue() > value){
+                value = m.getCaptureValue();
+                bestMoves.clear();
+                bestMoves.add(m);
+            }
+            else if(m.getCaptureValue() == value){
+                bestMoves.add(m);
             }
         }
         Random rand = new Random();
-        if(allPossibleCapturingMoves.size() > 0){
-            Move bestMove = allPossibleCapturingMoves.get(rand.nextInt(allPossibleCapturingMoves.size()));
-            for(Move m : allPossibleCapturingMoves){
-                if(m.destination().getPiece().getValue() > bestMove.destination().getPiece().getValue()){
-                    bestMove = m;
-                }
-            }
-            return bestMove;
-        }
-        return allPossibleMoves.get(rand.nextInt(allPossibleMoves.size()));
+        return bestMoves.get(rand.nextInt(bestMoves.size()));
+    }
+
+    @Override
+    public int getRoll() {
+        return this.diceRollResult;
     }
 }

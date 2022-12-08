@@ -10,20 +10,26 @@ import com.group4.dicechess.agents.Bot;
 public class RandomBot implements Bot {
 
     private GameState state;
+    public int diceRollResult;
 
     public RandomBot(GameState state){
         this.state = state;
+        this.diceRollResult = 0;
+    }
+
+    @Override
+    public int getRoll(){
+        return this.diceRollResult;
     }
 
     @Override
     public Move getMove() {
-        ArrayList<ArrayList<Move>> allMoves = state.getMoveList();
-        ArrayList<Move> possibleMoves = new ArrayList<Move>();
-        for(ArrayList<Move> list : allMoves){
-            for(Move m : list){
-                if(m.piece().getDiceChessId() == state.getDiceRoll()){
-                    possibleMoves.add(m);
-                }
+        state.diceRoll();
+        this.diceRollResult = state.getDiceRoll();
+        ArrayList<Move> possibleMoves = state.getPossibleMoves();
+        for(Move m : possibleMoves){
+            if(m.getCapturedPiece() != null && m.getCapturedPiece().getId().equals("K")){
+                return m;
             }
         }
         Random rand = new Random();

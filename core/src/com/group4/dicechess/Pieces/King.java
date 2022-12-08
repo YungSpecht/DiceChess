@@ -10,7 +10,7 @@ public class King extends Piece{
 
 
     public King(boolean whiteStatus, int currentSquareRow, int currentSquareCol){
-        super(whiteStatus, 1000, 6, "K", currentSquareRow, currentSquareCol);
+        super(whiteStatus, 9000, 6, "K", currentSquareRow, currentSquareCol);
     }
 
     @Override
@@ -21,6 +21,9 @@ public class King extends Piece{
             for(int j = this.getCol() - 1; j <= this.getCol() + 1; j++){
                 if(canCapture(board, i, j, this.getWhiteStatus()) || SquareFree(board, i, j)){
                     result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(i, j), this));
+                    if(canCapture(board, i, j, this.getWhiteStatus())){
+                        result.get(result.size()-1).setCapturedPiece(board.getSquare(i, j).getPiece());
+                    }
                 }
             }
         }
@@ -28,9 +31,11 @@ public class King extends Piece{
         if(this.getMoveCounter() == 0){
             if(queenside(board)){
                 result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(this.getRow(), this.getCol()-2), this));
+                result.get(result.size()-1).setCastling(true);
             }
             if(kingside(board)){
                 result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(this.getRow(), this.getCol()+2), this));
+                result.get(result.size()-1).setCastling(true);
             }
         }
         return result;
@@ -58,6 +63,13 @@ public class King extends Piece{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Piece copy() {
+        Piece copy = new King(this.getWhiteStatus(), this.getRow(), this.getCol());
+        copy.setMoveCounter(this.getMoveCounter());
+        return copy;
     }
     
     

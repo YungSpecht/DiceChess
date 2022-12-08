@@ -9,7 +9,7 @@ import com.group4.dicechess.Representation.Piece;
 public class Rook extends Piece{
 
     public Rook(boolean whiteStatus, int currentSquareRow, int currentSquareCol){
-        super(whiteStatus, 5, 4, "R", currentSquareRow, currentSquareCol);
+        super(whiteStatus, 500, 4, "R", currentSquareRow, currentSquareCol);
     }
 
     @Override
@@ -24,6 +24,7 @@ public class Rook extends Piece{
                 if(canCapture(board, row, col - i, this.getWhiteStatus()) || SquareFree(board, row, col - i)){
                     result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row, col - i), this));
                     if(canCapture(board, row, col - i, this.getWhiteStatus())){
+                        result.get(result.size()-1).setCapturedPiece(board.getSquare(row, col-i).getPiece());
                         left = false;
                     }
                 }
@@ -35,6 +36,7 @@ public class Rook extends Piece{
                 if(canCapture(board, row, col + i, this.getWhiteStatus()) || SquareFree(board, row, col + i)){
                     result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row, col + i), this));
                     if(canCapture(board, row, col + i, this.getWhiteStatus())){
+                        result.get(result.size()-1).setCapturedPiece(board.getSquare(row, col+i).getPiece());
                         right = false;
                     }
                 }
@@ -46,6 +48,7 @@ public class Rook extends Piece{
                 if(canCapture(board, row - i, col, this.getWhiteStatus()) || SquareFree(board, row - i, col)){
                     result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row - i, col), this));
                     if(canCapture(board, row - i, col, this.getWhiteStatus())){
+                        result.get(result.size()-1).setCapturedPiece(board.getSquare(row-i, col).getPiece());
                         up = false;
                     }
                 }
@@ -57,6 +60,7 @@ public class Rook extends Piece{
                 if(canCapture(board, row + i, col, this.getWhiteStatus()) || SquareFree(board, row + i, col)){
                     result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row + i, col), this));
                     if(canCapture(board, row + i, col, this.getWhiteStatus())){
+                        result.get(result.size()-1).setCapturedPiece(board.getSquare(row+i, col).getPiece());
                         down = false;
                     }
                 }
@@ -67,6 +71,13 @@ public class Rook extends Piece{
             i++;
         }
         return result;
+    }
+
+    @Override
+    public Piece copy() {
+        Piece copy = new Rook(this.getWhiteStatus(), this.getRow(), this.getCol());
+        copy.setMoveCounter(this.getMoveCounter());
+        return copy;
     }
     
 }
