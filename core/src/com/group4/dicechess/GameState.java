@@ -65,15 +65,6 @@ public class GameState {
         return result;
     }
 
-    public int boardEvaluationFunc(){
-        int blackEval = 0;
-
-        for(int i = 0; i < board.getBlackPieces().size(); i++) {
-            blackEval += board.getBlackPieces().get(i).getValue();
-        }
-        return blackEval;
-    }
-
 
     public boolean isLegalMove(int startRow, int startCol, int row, int col){
         ArrayList<Move> moves = getLegalMoves(startRow, startCol);

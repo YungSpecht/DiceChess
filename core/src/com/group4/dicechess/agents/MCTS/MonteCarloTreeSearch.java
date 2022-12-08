@@ -6,8 +6,6 @@ import com.group4.dicechess.agents.Bot;
 import com.group4.dicechess.agents.basic_agents.Node;
 import com.group4.dicechess.agents.basic_agents.RandomBot;
 
-import java.util.ArrayList;
-
 public class MonteCarloTreeSearch implements Bot {
 
     public MonteCarloTreeSearch(GameState state){
@@ -15,16 +13,14 @@ public class MonteCarloTreeSearch implements Bot {
         this.diceRollResult = 0;
     }
 
-    public Move createMCTSTree(){
-        System.out.println("initial");
+    public void createMCTSTree(){
         this.state.diceRoll();
         NodeMCTS root = new NodeMCTS(null, null, this.state);
         GameState currentState = state;
         while(maxIterations >= currentIteration){
-            System.out.println("r");
             currentNode = root;
             reset();
-            while (!currentNode.children.isEmpty()){                      // Selection
+            while (currentNode.children.isEmpty()){                      // Selection
                 for(NodeMCTS child : currentNode.children){
                     temp = uct_formula(child.getMean_value(), child.getVisited(), child.parent.getVisited());
                     if(temp > currentBestChild){
@@ -32,49 +28,31 @@ public class MonteCarloTreeSearch implements Bot {
                         currentNode = child;
                     }
                 }
-                System.out.println("seelcts");
-
             }
-            System.out.println("gets here");
-            if(currentNode.getVisited() == 0){
+            if(currentNode.getVisited() > 0){                            // Expansion
                 for(Move possibleMove : currentNode.getState().getPossibleMoves()){
                     nextState = state.copy();
                     nextState.movePiece(possibleMove.getStart().getRow(), possibleMove.getStart().getCol(), possibleMove.getDestination().getRow(), possibleMove.getDestination().getCol());
                     childNode = new NodeMCTS(currentNode, possibleMove, nextState);
                     currentNode.children.add(childNode);
-                    // inverse it
                 }
             } else {
                 simulatedNode = currentNode;
                 while (currentDepth <= depth){                           // Simulation
-                    nextState = simulatedNode.getState();
+                    nextState = simulatedNode.getState().copy();
                     randBot = new RandomBot(simulatedNode.getState());
                     simulatedMove = randBot.getMove();
                     nextState.movePiece(simulatedMove.getStart().getRow(), simulatedMove.getStart().getCol(), simulatedMove.getDestination().getRow(), simulatedMove.getDestination().getCol());
                     simulatedNode = new NodeMCTS(null, null, nextState);
-                    System.out.println("simulation");
-                    currentDepth++;
                 }
                 // update result missing 
                 while(currentNode.hasParent()){                         // Backpropagation
-                    currentNode.update();
-                    System.out.println("backprop");
+                    currentNode.update(result);
                     currentNode = currentNode.parent;
                 }
                 currentIteration++;
             }
         }
-        currentBestChild = 0.0;
-        NodeMCTS tempNode;
-        for(NodeMCTS child : currentNode.children){
-            if(child.getMean_value() > currentBestChild){
-                currentBestChild = child.getMean_value();
-                tempNode = child;
-            }
-        }
-        System.out.println(root.children.size());
-        System.out.println("finds it");
-        return currentNode.getMove();
     }
 
     // UCB - Upper confidence bounds formula - Exploration / Exploitation
@@ -88,7 +66,7 @@ public class MonteCarloTreeSearch implements Bot {
 
     @Override
     public Move getMove() {
-        return this.createMCTSTree();
+        return null;
     }
 
     @Override
@@ -119,8 +97,8 @@ public class MonteCarloTreeSearch implements Bot {
     public GameState state;
     public double tunable_c = Math.sqrt(2);
     public int diceRollResult;
-    public int maxIterations = 10;
-    public int depth = 5;
+    public int maxIterations = 100;
+    public int depth = 20;
     public int currentDepth;
     public int currentIteration;
     public double currentBestChild;
