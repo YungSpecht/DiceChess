@@ -224,7 +224,6 @@ public class Board {
                 blackPieces.remove(move.getPiece());
                 blackPieces.add(move.getPromotedPiece());
             }
-            move.getDestination().setPiece(move.getPromotedPiece());
         }
 
 
