@@ -328,8 +328,8 @@ public class GameScreen implements Screen {
                     txtTracker++;
                     gameLoop.movePiece(tempMove.getStart().getRow(), tempMove.getStart().getCol(), tempMove.getDestination().getRow(), tempMove.getDestination().getCol());
                     textureUtils.updateBoard(gameLoop.getBoard());
-                    helperNot = textureUtils.intoCoorNotation(tempMove.getStart().getCol(), tempMove.getStart().getRow());
-                    String [] helperNot2 = textureUtils.intoCoorNotation(tempMove.getDestination().getCol(), tempMove.getDestination().getRow());
+                    helperNot = textureUtils.intoCoorNotation(tempMove.getStart().getRow(), tempMove.getStart().getCol());
+                    String [] helperNot2 = textureUtils.intoCoorNotation(tempMove.getDestination().getRow(), tempMove.getDestination().getCol());
                     moveN = helperNot[0] + helperNot[1] + " -> " + helperNot2[0] + helperNot2[1];
                     txtOtp.add(moveN);
                     txtTracker++;
