@@ -21,9 +21,6 @@ public class King extends Piece{
             for(int j = this.getCol() - 1; j <= this.getCol() + 1; j++){
                 if(canCapture(board, i, j, this.getWhiteStatus()) || SquareFree(board, i, j)){
                     result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(i, j), this));
-                    if(canCapture(board, i, j, this.getWhiteStatus())){
-                        result.get(result.size()-1).setCapturedPiece(board.getSquare(i, j).getPiece());
-                    }
                 }
             }
         }
@@ -31,11 +28,9 @@ public class King extends Piece{
         if(this.getMoveCounter() == 0){
             if(queenside(board)){
                 result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(this.getRow(), this.getCol()-2), this));
-                result.get(result.size()-1).setCastling(true);
             }
             if(kingside(board)){
                 result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(this.getRow(), this.getCol()+2), this));
-                result.get(result.size()-1).setCastling(true);
             }
         }
         return result;

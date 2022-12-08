@@ -22,9 +22,6 @@ public class Knight extends Piece{
             for(int j = row - 1; j <= row + 1; j += 2){
                 if(canCapture(board, j, i, this.getWhiteStatus()) || SquareFree(board, j, i)){
                     result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(j, i), this));
-                    if(canCapture(board, j, i, this.getWhiteStatus())){
-                        result.get(result.size()-1).setCapturedPiece(board.getSquare(j, i).getPiece());
-                    }
                 }
             }
         }
@@ -32,9 +29,6 @@ public class Knight extends Piece{
             for(int j = col - 1; j <= col + 1; j += 2){
                 if(canCapture(board, i, j, this.getWhiteStatus()) || SquareFree(board, i, j)){
                     result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(i, j), this));
-                    if(canCapture(board, i, j, this.getWhiteStatus())){
-                        result.get(result.size()-1).setCapturedPiece(board.getSquare(i, j).getPiece());
-                    }
                 }
             }
         }

@@ -60,7 +60,6 @@ public class Move {
 
     public void setCapturedPiece(Piece capturedPiece){
         this.capturedPiece = capturedPiece;
-        this.captureValue = capturedPiece.getValue();
     }
 
     public Piece getCapturedPiece(){

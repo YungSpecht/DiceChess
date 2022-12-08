@@ -24,12 +24,18 @@ public class RandomBot implements Bot {
 
     @Override
     public Move getMove() {
+        ArrayList<ArrayList<Move>> allMoves = state.getMoveList();
+        ArrayList<Move> possibleMoves = new ArrayList<Move>();
         state.diceRoll();
         this.diceRollResult = state.getDiceRoll();
-        ArrayList<Move> possibleMoves = state.getPossibleMoves();
-        for(Move m : possibleMoves){
-            if(m.getCapturedPiece() != null && m.getCapturedPiece().getId().equals("K")){
-                return m;
+        for(ArrayList<Move> list : allMoves){
+            for(Move m : list){
+                if(m.getPiece().getDiceChessId() == state.getDiceRoll()){
+                    possibleMoves.add(m);
+                }
+                if((m.getPiece().getDiceChessId() == state.getDiceRoll() )&& m.getCapturedPiece().getId().equals("K")){
+                    return m;
+                }
             }
         }
         Random rand = new Random();

@@ -23,10 +23,7 @@ public class Bishop extends Piece{
             if(downLeft){
                 if(canCapture(board, row+i, col - i, this.getWhiteStatus()) || SquareFree(board, row+i, col - i)){
                     result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row+i, col - i), this));
-                    if(canCapture(board, row+i, col - i, this.getWhiteStatus())){
-                        result.get(result.size()-1).setCapturedPiece(board.getSquare(row+i, col-i).getPiece());
-                        downLeft = false;
-                    }
+                    if(canCapture(board, row+i, col - i, this.getWhiteStatus())) downLeft = false;
                 }
                 else{
                     downLeft = false;
@@ -35,10 +32,7 @@ public class Bishop extends Piece{
             if(downRight){
                 if(canCapture(board, row+i, col + i, this.getWhiteStatus()) || SquareFree(board, row+i, col + i)){
                     result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row+i, col + i), this));
-                    if(canCapture(board, row+i, col + i, this.getWhiteStatus())){
-                        result.get(result.size()-1).setCapturedPiece(board.getSquare(row+i, col+i).getPiece());
-                        downRight = false;
-                    }
+                    if(canCapture(board, row+i, col + i, this.getWhiteStatus())) downRight = false;
                 }
                 else{
                     downRight = false;
@@ -47,10 +41,7 @@ public class Bishop extends Piece{
             if(upRight){
                 if(canCapture(board, row - i, col+i, this.getWhiteStatus()) || SquareFree(board, row - i, col+i)){
                     result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row - i, col+i), this));
-                    if(canCapture(board, row - i, col +i, this.getWhiteStatus())){
-                        result.get(result.size()-1).setCapturedPiece(board.getSquare(row-i, col+i).getPiece());
-                        upRight = false;
-                    }
+                    if(canCapture(board, row - i, col +i, this.getWhiteStatus())) upRight = false;
                 }
                 else{
                     upRight = false;
@@ -59,10 +50,7 @@ public class Bishop extends Piece{
             if(upLeft){
                 if(canCapture(board, row - i, col-i, this.getWhiteStatus()) || SquareFree(board, row - i, col-i)){
                     result.add(new Move(board.getSquare(this.getRow(), this.getCol()), board.getSquare(row - i, col-i), this));
-                    if(canCapture(board, row - i, col-i, this.getWhiteStatus())){
-                        result.get(result.size()-1).setCapturedPiece(board.getSquare(row-i, col-i).getPiece());
-                        upLeft = false;
-                    }
+                    if(canCapture(board, row - i, col-i, this.getWhiteStatus())) upLeft = false;
                 }
                 else{
                     upLeft = false;

@@ -1,6 +1,7 @@
 package com.group4.dicechess.Representation;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import com.group4.dicechess.Pieces.Bishop;
 import com.group4.dicechess.Pieces.King;
@@ -17,6 +18,7 @@ public class Board {
     private ArrayList<Piece> blackCaptured;
     private Piece lastMovedPieceBlack;
     private Piece lastMovedPieceWhite;
+    private static Scanner in;
     public int promotionKey;
 
     public Board(){
@@ -25,6 +27,7 @@ public class Board {
         blackPieces = new ArrayList<Piece>();
         whiteCaptured = new ArrayList<Piece>();
         blackCaptured = new ArrayList<Piece>();
+        in = new Scanner(System.in);
         setUpBoard();
     }
 
@@ -169,131 +172,6 @@ public class Board {
         }
     }
 
-    public int movePiece(Move move, int diceRoll, boolean botMove){
-        Square start = move.getStart();
-        Square destination = move.getDestination();
-        int captureValue = 0;
-        Piece piece = move.getStart().getPiece();
-        if(piece.getWhiteStatus()){
-            lastMovedPieceWhite = piece;
-        }
-        else{
-            lastMovedPieceBlack = piece;
-        }
-
-        start.setPiece(null);
-        destination.setPiece(move.getPiece());
-        move.getPiece().setRow(destination.getRow());
-        move.getPiece().setCol(destination.getCol());
-        piece.increaseMoveCounter();
-
-        if(move.getCastling()){
-            int rookCol = 0, newRookCol = 0;
-            switch(destination.getCol()){
-                case 2 : rookCol = 0; newRookCol = 3; break;
-                case 6 : rookCol = 7; newRookCol = 5; break;
-            }
-            Piece rook = this.board[piece.getRow()][rookCol].getPiece();
-            this.board[piece.getRow()][newRookCol].setPiece(rook);
-            this.board[piece.getRow()][rookCol].setPiece(null);
-            rook.increaseMoveCounter();
-            rook.setCol(newRookCol);
-        }
-        else if(move.getEnPassant()){
-            board[start.getRow()][destination.getCol()].setPiece(null);
-        }
-        else if(move.getPromotion()){
-            if(diceRoll != 1){
-                move.setPromotedPiece(pieceFactory(diceRoll, move.getPiece().getWhiteStatus(), destination));
-            }
-            else{
-                if(!botMove){
-                    move.setPromotedPiece(pieceFactory(promotionKey, move.getPiece().getWhiteStatus(), destination));
-                }
-                else{
-                    move.setPromotedPiece(pieceFactory(5, move.getPiece().getWhiteStatus(), destination));
-                }
-            }
-            destination.setPiece(move.getPromotedPiece());
-            if(move.getPiece().getWhiteStatus()){
-                whitePieces.remove(move.getPiece());
-                whitePieces.add(move.getPromotedPiece());
-            }
-            else{
-                blackPieces.remove(move.getPiece());
-                blackPieces.add(move.getPromotedPiece());
-            }
-        }
-
-
-        if(move.getCapturedPiece() != null){
-            captureValue = move.getCaptureValue();
-            if(move.getCapturedPiece().getWhiteStatus()){
-                whitePieces.remove(move.getCapturedPiece());
-                whiteCaptured.add(move.getCapturedPiece());
-            }
-            else{
-                blackPieces.remove(move.getCapturedPiece());
-                blackCaptured.add(move.getCapturedPiece());
-
-            }
-        }
-        return captureValue;
-    }
-
-    public void reverseMove(Move move, Piece previouslyMoved){
-        if(move.getPiece().getWhiteStatus()){
-            lastMovedPieceWhite = previouslyMoved;
-        }
-        else{
-            lastMovedPieceBlack = previouslyMoved;
-        }
-
-        move.getPiece().setMoveCounter(move.getPiece().getMoveCounter()-1);
-        move.getPiece().setRow(move.getStart().getRow());
-        move.getPiece().setCol(move.getStart().getCol());
-        move.getDestination().setPiece(null);
-        move.getStart().setPiece(move.getPiece());
-
-        if(move.getCapturedPiece() != null){
-            if(move.getCapturedPiece().getWhiteStatus()){
-                whitePieces.add(move.getCapturedPiece());
-                whiteCaptured.remove(move.getCapturedPiece());
-            }
-            else{
-                blackPieces.add(move.getCapturedPiece());
-                blackCaptured.remove(move.getCapturedPiece());
-            }
-            board[move.getCapturedPiece().getRow()][move.getCapturedPiece().getCol()].setPiece(move.getCapturedPiece());
-        }
-
-        if(move.getCastling()){
-            int rookCol = 0, newRookCol = 0;
-            switch(move.getDestination().getCol()){
-                case 2 : rookCol = 3; newRookCol = 0; break;
-                case 6 : rookCol = 5; newRookCol = 7; break;
-            }
-            Piece rook = board[move.getPiece().getRow()][rookCol].getPiece();
-            board[move.getPiece().getRow()][newRookCol].setPiece(rook);
-            board[move.getPiece().getRow()][rookCol].setPiece(null);
-            rook.setMoveCounter(rook.getMoveCounter()-1);
-            rook.setCol(newRookCol);
-        }
-        else if(move.getPromotion()){
-            if(move.getPiece().getWhiteStatus()){
-                whitePieces.add(move.getPiece());
-                whitePieces.remove(move.getPromotedPiece());
-            }
-            else{
-                blackPieces.add(move.getPiece());
-                blackPieces.remove(move.getPromotedPiece());
-            }
-        }
-
-
- 
-    }
-
     /**
      * Moves a piece from one square to another and updates all the relevant variables accordingly.
      * 
@@ -302,7 +180,7 @@ public class Board {
      * @param //legalMoves ArrayList containing all the squares the piece can be moved to
      * @return integer that represents the value of the captured piece
      */
-    public int moveePiece(Move move, int diceRoll, boolean botMove){
+    public int movePiece(Move move, int diceRoll, boolean botMove){
         Square start = move.getStart();
         Square destination = move.getDestination();
         int captureValue = 0;
@@ -375,6 +253,14 @@ public class Board {
                 if(!botMove){
                     int choice = 0;
                     do{
+                        /*
+                        System.out.println("Please enter the Piece you want to promote to: ");
+                        System.out.println("2 - Knight");
+                        System.out.println("3 - Bishop");
+                        System.out.println("4 - Rook");
+                        System.out.println("5 - Queen");
+                        choice = in.nextInt();
+                        */
                         choice = promotionKey;
                     }while(choice < 2 || choice > 5);
                     newPiece = pieceFactory(choice, start.getPiece().getWhiteStatus(), destination);
@@ -420,7 +306,7 @@ public class Board {
         return captureValue;
     }
 
-    public void reverseeMove(Move m, Piece previousMovedPiece){
+    public void reverseMove(Move m, Piece previousMovedPiece){
         if(m.getCastling()){
             int currentRookCol = 0, newRookCol = 0;
             switch(m.getPiece().getCol()){
