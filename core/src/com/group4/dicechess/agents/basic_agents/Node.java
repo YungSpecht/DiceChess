@@ -55,7 +55,6 @@ public class Node{
     public void computeValue(GameState state){
         if(children.size() == 0){
             value = state.evaluate();
-            System.out.println(value);
         }
         else{
             if(chanceNode){

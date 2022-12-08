@@ -82,7 +82,6 @@ public class GameState {
     }
 
     public void movePiece(int startRow, int startCol, int row, int col, boolean botMove){
-        //TODO make sure this move is not null
         Move move = getMove(startRow, startCol, row, col);
         boolean white = turnCounter % 2 == 0 ? true : false;
         if(white){
@@ -185,7 +184,7 @@ public class GameState {
                 case "B" : result += Tables.bishopWhite[p.getRow()][p.getCol()]; break;
                 case "R" : result += Tables.rookWhite[p.getRow()][p.getCol()]; break;
                 case "Q" : result += Tables.queenWhite[p.getRow()][p.getCol()]; break;
-                case "K" : result += Tables.queenWhite[p.getRow()][p.getCol()]; break;
+                case "K" : result += Tables.kingWhite[p.getRow()][p.getCol()]; break;
             }
         }
         for(Piece p : board.getBlackPieces()){
@@ -195,7 +194,7 @@ public class GameState {
                 case "B" : result -= Tables.bishopBlack[p.getRow()][p.getCol()]; break;
                 case "R" : result -= Tables.rookBlack[p.getRow()][p.getCol()]; break;
                 case "Q" : result -= Tables.queenBlack[p.getRow()][p.getCol()]; break;
-                case "K" : result -= Tables.queenBlack[p.getRow()][p.getCol()]; break;
+                case "K" : result -= Tables.kingBlack[p.getRow()][p.getCol()]; break;
             }
         }
         result += 9000*(board.count("K", true)-board.count("K", false))+900*(board.count("Q", true)-board.count("Q", false))+500*(board.count("R", true)-board.count("R", false))+300*(board.count("B", true)-board.count("B", false))+300*(board.count("N", true)-board.count("N", false))+100*(board.count("P", true)-board.count("P", false));
