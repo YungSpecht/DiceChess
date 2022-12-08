@@ -118,6 +118,7 @@ public class GameState {
         }
         moveHistory.remove(moveHistory.size()-1);
         prepareNextTurn();
+        diceRoll = lastMove.getPiece().getDiceChessId();
     }
 
 

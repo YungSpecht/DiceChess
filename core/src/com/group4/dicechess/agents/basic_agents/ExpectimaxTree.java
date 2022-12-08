@@ -12,9 +12,9 @@ public class ExpectimaxTree {
 
     public static void main(String[] args) {
         GameState test = new GameState();
-        test.setDiceRoll(2);
+        test.diceRoll();
         ExpectimaxTree tree = new ExpectimaxTree(test);
-        tree.buildTree(2);
+        tree.buildTree(12);
         System.out.println(tree.getBestMove().getPiece().getId());
     }
 
@@ -66,7 +66,6 @@ public class ExpectimaxTree {
                     buildLevel(childNode, game, --depth);
                     depth++;
                     game.reverseLastMove();
-                    game.setDiceRoll(diceRoll);
                     game.setMoveList(mL);
                 }
             }

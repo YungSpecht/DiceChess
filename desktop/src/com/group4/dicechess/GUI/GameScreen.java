@@ -330,7 +330,10 @@ public class GameScreen implements Screen {
                 } else {
                     txtOtp.add("-------------Bot's turn-------------");
                     txtTracker++;
+                    System.out.println("Getting the Bot Move.. (Turn: " + gameLoop.getTurnCounter() + ")");
                     tempMove = bot.getMove();
+                    System.out.println("Found it!");
+                    System.out.println("---------------------------");
                     diceN = bot.getRoll();
                     txtOtp.add("Dice rolled. Result is " + diceN);
                     txtTracker++;
