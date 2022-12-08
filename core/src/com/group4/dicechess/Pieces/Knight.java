@@ -9,7 +9,7 @@ import com.group4.dicechess.Representation.Piece;
 public class Knight extends Piece{
 
     public Knight(boolean whiteStatus, int currentSquareRow, int currentSquareCol){
-        super(whiteStatus, 3, 2, "N", currentSquareRow, currentSquareCol);
+        super(whiteStatus, 300, 2, "N", currentSquareRow, currentSquareCol);
     }
 
     @Override

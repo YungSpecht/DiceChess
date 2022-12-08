@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import com.group4.dicechess.GameState;
-import com.group4.dicechess.Representation.Board;
 
 public class Node{
     private Node parent;
@@ -49,17 +48,14 @@ public class Node{
         return children;
     }
 
-    public boolean isMin(){
-        return false;
-    }
-
     public Node getbestNextNode(){
         return bestNextNode;
     }
 
     public void computeValue(GameState state){
         if(children.size() == 0){
-            evaluateNode(state);
+            value = state.evaluate();
+            System.out.println(value);
         }
         else{
             if(chanceNode){
@@ -105,13 +101,4 @@ public class Node{
         }
     }
 
-    private void evaluateNode(GameState state){
-        Board b = state.getBoard();
-        value = 200*(b.count("K", true)-b.count("K", false))+9*(b.count("Q", true)-b.count("Q", false))+5*(b.count("R", true)-b.count("R", false))+3*(b.count("B", true)-b.count("B", false))+3*(b.count("N", true)-b.count("N", false))+1*(b.count("P", true)-b.count("P", false));
-        /*  int result = 0;
-        for(int i = 0; i < b.getWhitePieces().size(); i++) {
-            result += b.getWhitePieces().get(i).getValue();
-        }
-        value = result; */
-    }
 }

@@ -5,6 +5,7 @@ import java.util.Random;
 import com.group4.dicechess.Representation.Board;
 import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.Representation.Piece;
+import com.group4.dicechess.Representation.Tables;
 
 public class GameState {
 
@@ -173,6 +174,32 @@ public class GameState {
             }
         }
         return null;
+    }
+
+    public int evaluate(){
+        int result = 0;
+        for(Piece p : board.getWhitePieces()){
+            switch(p.getIdentifier()){
+                case "P" : result += Tables.pawnWhite[p.getRow()][p.getCol()]; break;
+                case "N" : result += Tables.knightWhite[p.getRow()][p.getCol()]; break;
+                case "B" : result += Tables.bishopWhite[p.getRow()][p.getCol()]; break;
+                case "R" : result += Tables.rookWhite[p.getRow()][p.getCol()]; break;
+                case "Q" : result += Tables.queenWhite[p.getRow()][p.getCol()]; break;
+                case "K" : result += Tables.queenWhite[p.getRow()][p.getCol()]; break;
+            }
+        }
+        for(Piece p : board.getBlackPieces()){
+            switch(p.getIdentifier()){
+                case "P" : result -= Tables.pawnBlack[p.getRow()][p.getCol()]; break;
+                case "N" : result -= Tables.knightBlack[p.getRow()][p.getCol()]; break;
+                case "B" : result -= Tables.bishopBlack[p.getRow()][p.getCol()]; break;
+                case "R" : result -= Tables.rookBlack[p.getRow()][p.getCol()]; break;
+                case "Q" : result -= Tables.queenBlack[p.getRow()][p.getCol()]; break;
+                case "K" : result -= Tables.queenBlack[p.getRow()][p.getCol()]; break;
+            }
+        }
+        result += 9000*(board.count("K", true)-board.count("K", false))+900*(board.count("Q", true)-board.count("Q", false))+500*(board.count("R", true)-board.count("R", false))+300*(board.count("B", true)-board.count("B", false))+300*(board.count("N", true)-board.count("N", false))+100*(board.count("P", true)-board.count("P", false));
+        return result;
     }
  
 

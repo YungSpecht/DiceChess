@@ -10,7 +10,7 @@ public class King extends Piece{
 
 
     public King(boolean whiteStatus, int currentSquareRow, int currentSquareCol){
-        super(whiteStatus, 200, 6, "K", currentSquareRow, currentSquareCol);
+        super(whiteStatus, 9000, 6, "K", currentSquareRow, currentSquareCol);
     }
 
     @Override

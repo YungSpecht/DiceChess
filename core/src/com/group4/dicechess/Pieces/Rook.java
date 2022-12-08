@@ -9,7 +9,7 @@ import com.group4.dicechess.Representation.Piece;
 public class Rook extends Piece{
 
     public Rook(boolean whiteStatus, int currentSquareRow, int currentSquareCol){
-        super(whiteStatus, 5, 4, "R", currentSquareRow, currentSquareCol);
+        super(whiteStatus, 500, 4, "R", currentSquareRow, currentSquareCol);
     }
 
     @Override

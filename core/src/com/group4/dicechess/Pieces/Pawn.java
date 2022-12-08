@@ -9,7 +9,7 @@ import com.group4.dicechess.Representation.Square;
 public class Pawn extends Piece{
     
     public Pawn(boolean whiteStatus, int currentSquareRow, int currentSquareCol){
-        super(whiteStatus, 1, 1, "P", currentSquareRow, currentSquareCol);
+        super(whiteStatus, 100, 1, "P", currentSquareRow, currentSquareCol);
     }
 
     @Override

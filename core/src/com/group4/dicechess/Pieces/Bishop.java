@@ -9,7 +9,7 @@ import com.group4.dicechess.Representation.Piece;
 public class Bishop extends Piece{
 
     public Bishop(boolean whiteStatus, int currentSquareRow, int currentSquareCol){
-        super(whiteStatus, 3, 3, "B", currentSquareRow, currentSquareCol);
+        super(whiteStatus, 300, 3, "B", currentSquareRow, currentSquareCol);
     }
 
     @Override
