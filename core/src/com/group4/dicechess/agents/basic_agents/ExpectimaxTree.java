@@ -53,6 +53,7 @@ public class ExpectimaxTree {
         }
         else{
             if(depth > 0){
+                int diceRoll = game.getDiceRoll();
                 ArrayList<ArrayList<Move>> mL = game.getMoveList();
                 ArrayList<Move> possibleMoves = game.getPossibleMoves();
                 ArrayList<Move> pM = new ArrayList<Move>();
