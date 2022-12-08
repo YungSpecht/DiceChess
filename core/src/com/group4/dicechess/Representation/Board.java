@@ -179,10 +179,10 @@ public class Board {
      * @param //legalMoves ArrayList containing all the squares the piece can be moved to
      * @return integer that represents the value of the captured piece
      */
-    public int movePiece(Move move, int diceRoll, boolean botMove){
+    public int movePiece(Move move, int diceRoll){
         Square start = move.getStart();
         Square destination = move.getDestination();
-        int captureValue = 0;
+        int captureValue =0;
         move.setCaptureValue(0);
         Piece piece = move.getStart().getPiece();
         if(piece.getWhiteStatus()){
@@ -193,30 +193,36 @@ public class Board {
         if(enPassant(start, destination)){
             move.setEnPassant(true);
             captureValue = 1;
-            move.setCaptureValue(captureValue);
+            move.setCaptureValue(1);
             if(piece.getWhiteStatus()){
                 blackPieces.remove(board[start.getRow()][destination.getCol()].getPiece());
                 blackCaptured.add(board[start.getRow()][destination.getCol()].getPiece());
+                move.setCapturedPiece(board[start.getRow()][destination.getCol()].getPiece());
             }
             else{
                 whitePieces.remove(board[start.getRow()][destination.getCol()].getPiece());
                 whiteCaptured.add(board[start.getRow()][destination.getCol()].getPiece());
+                move.setCapturedPiece(board[start.getRow()][destination.getCol()].getPiece());
             }
-            move.setCapturedPiece(board[start.getRow()][destination.getCol()].getPiece());
             board[start.getRow()][destination.getCol()].setPiece(null);
         }
         else if(castling(start, destination)){
             move.setCastling(true);
-            int rookCol = 0, newRookCol = 0;
-            switch(destination.getCol()){
-                case 2 : rookCol = 0; newRookCol = 3; break;
-                case 6 : rookCol = 7; newRookCol = 5; break;
+            int white = start.getPiece().getWhiteStatus() ? 1 : 0;
+            if(destination.getCol() < start.getCol()){
+                Piece rook = this.board[0 + (white * 7)][0].getPiece();
+                this.board[0 + (white * 7)][3].setPiece(rook);
+                this.board[0 + (white * 7)][0].setPiece(null);
+                rook.increaseMoveCounter();
+                rook.setCol(3);
             }
-            Piece rook = this.board[piece.getRow()][rookCol].getPiece();
-            this.board[piece.getRow()][newRookCol].setPiece(rook);
-            this.board[piece.getRow()][rookCol].setPiece(null);
-            rook.increaseMoveCounter();
-            rook.setCol(newRookCol);
+            else{
+                Piece rook = this.board[0 + (white * 7)][7].getPiece();
+                this.board[0 + (white * 7)][5].setPiece(rook);
+                this.board[0 + (white * 7)][7].setPiece(null);
+                rook.increaseMoveCounter();
+                rook.setCol(5);
+            }
         }
         else if(pawnPromotion(start, destination)){
             move.setPromotion(true);
@@ -248,25 +254,19 @@ public class Board {
                 piece = newPiece;
             }
             else{
-                Piece newPiece;
-                if(!botMove){
-                    int choice = 0;
-                    do{
-                        /*
-                        System.out.println("Please enter the Piece you want to promote to: ");
-                        System.out.println("2 - Knight");
-                        System.out.println("3 - Bishop");
-                        System.out.println("4 - Rook");
-                        System.out.println("5 - Queen");
-                        choice = in.nextInt();
-                        */
-                        choice = promotionKey;
-                    }while(choice < 2 || choice > 5);
-                    newPiece = pieceFactory(choice, start.getPiece().getWhiteStatus(), destination);
-                }
-                else{
-                    newPiece = pieceFactory(5, start.getPiece().getWhiteStatus(), destination);
-                }
+                int choice = 0;
+                do{
+                    /*
+                    System.out.println("Please enter the Piece you want to promote to: ");
+                    System.out.println("2 - Knight");
+                    System.out.println("3 - Bishop");
+                    System.out.println("4 - Rook");
+                    System.out.println("5 - Queen");
+                    choice = in.nextInt();
+                    */
+                    choice = promotionKey;
+                }while(choice < 2 || choice > 5);
+                Piece newPiece = pieceFactory(choice, start.getPiece().getWhiteStatus(), destination);
                 move.setPromotedPiece(newPiece);
                 if(piece.getWhiteStatus()){
                     whitePieces.add(newPiece);
@@ -307,20 +307,20 @@ public class Board {
 
     public void reverseMove(Move m, Piece previousMovedPiece){
         if(m.getCastling()){
-            int currentRookCol = 0, newRookCol = 0;
-            switch(m.getPiece().getCol()){
-                case 2 : currentRookCol = 3; newRookCol = 0; break;
-                case 6 : currentRookCol = 5; newRookCol = 7; break;
+            if(m.getPiece().getCol() == 2){
+                board[m.getPiece().getRow()][0].setPiece(board[0][3].getPiece());
+                board[m.getPiece().getRow()][3].setPiece(null);
+                board[m.getPiece().getRow()][0].getPiece().setCol(0);
             }
-            board[m.getPiece().getRow()][newRookCol].setPiece(board[m.getPiece().getRow()][currentRookCol].getPiece());
-            board[m.getPiece().getRow()][currentRookCol].setPiece(null);
-            board[m.getPiece().getRow()][newRookCol].getPiece().setCol(newRookCol);
-
+            else{
+                board[m.getPiece().getRow()][7].setPiece(board[0][5].getPiece());
+                board[m.getPiece().getRow()][7].setPiece(null);
+                board[m.getPiece().getRow()][7].getPiece().setCol(7);
+            }
             m.getStart().setPiece(m.getPiece());
             m.getPiece().setRow(m.getStart().getRow());
             m.getPiece().setCol(m.getStart().getCol());
-            m.getPiece().setMoveCounter(0);
-            board[m.getPiece().getRow()][newRookCol].getPiece().setMoveCounter(0);
+            m.getPiece().setMoveCounter(m.getPiece().getMoveCounter()-1);
         }
         else if(m.getPromotion()){
             m.getStart().setPiece(m.getPiece());
@@ -341,28 +341,13 @@ public class Board {
             else{
                 m.getDestination().setPiece(null);
             }
-            if(m.getPromotedPiece().getWhiteStatus()){
-                whitePieces.remove(m.getPromotedPiece());
-            }
-            else{
-                blackPieces.remove(m.getPromotedPiece());
-            }
         }
         else if(m.getEnPassant()){
             board[m.getStart().getRow()][m.getDestination().getCol()].setPiece(m.getCapturedPiece());
-            if(m.getCapturedPiece().getWhiteStatus()){
-                whitePieces.add(m.getCapturedPiece());
-                whiteCaptured.remove(m.getCapturedPiece());
-            }
-            else{
-                blackPieces.add(m.getCapturedPiece());
-                blackCaptured.remove(m.getCapturedPiece());
-            }
             m.getStart().setPiece(m.getPiece());
             m.getPiece().setRow(m.getStart().getRow());
             m.getPiece().setCol(m.getStart().getCol());
             m.getPiece().setMoveCounter(m.getPiece().getMoveCounter()-1);
-            m.getDestination().setPiece(null);
         }
         else{
             m.getStart().setPiece(m.getPiece());

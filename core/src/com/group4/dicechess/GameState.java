@@ -20,7 +20,7 @@ public class GameState {
 
     public GameState(){
         board = new Board();
-        turnCounter = 0;
+        turnCounter = -1;
         whiteScore = 0;
         blackScore = 0;
         rolls = new ArrayList<Integer>();
@@ -89,18 +89,16 @@ public class GameState {
         return moveList.get(legalPieces.indexOf(board.getSquare(row, col).getPiece()));
     }
 
-    public void movePiece(int startRow, int startCol, int row, int col, boolean botMove){
-        //TODO make sure this move is not null
+    public void movePiece(int startRow, int startCol, int row, int col){
         Move move = getMove(startRow, startCol, row, col);
         boolean white = turnCounter % 2 == 0 ? true : false;
         if(white){
-            whiteScore = board.movePiece(move, this.diceRoll, botMove);
+            whiteScore = board.movePiece(move, this.diceRoll);
         }
         else{
-            blackScore = board.movePiece(move, this.diceRoll, botMove);
+            blackScore = board.movePiece(move, this.diceRoll);
         }
         moveHistory.add(move);
-        turnCounter++;
         prepareNextTurn();
     }
 
@@ -147,6 +145,7 @@ public class GameState {
     }
 
     private void prepareNextTurn(){
+        turnCounter++;
         rolls.clear();
         legalPieces.clear();
         moveList.clear();
@@ -183,14 +182,17 @@ public class GameState {
     private Move getMove(int startRow, int startCol, int endRow, int endCol){
         for(ArrayList<Move> l : moveList){
             for(Move m : l){
-                if(m.getStart().getRow() ==  startRow && m.getStart().getCol() == startCol && m.getDestination().getRow() == endRow && m.getDestination().getCol() == endCol){
+                if(m.getStart() == board.getSquare(startRow, startCol) && m.getDestination() == board.getSquare(endRow, endCol)){
                     return m;
                 }
             }
         }
         return null;
     }
- 
+
+    public void addMoves(ArrayList<Move> list){
+        this.moveList.add(list);
+    }
 
     @Override
     public Object clone() throws CloneNotSupportedException {

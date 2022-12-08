@@ -33,9 +33,6 @@ public class RandomBot implements Bot {
                 if(m.getPiece().getDiceChessId() == state.getDiceRoll()){
                     possibleMoves.add(m);
                 }
-                if((m.getPiece().getDiceChessId() == state.getDiceRoll() )&& m.getCapturedPiece().getId().equals("K")){
-                    return m;
-                }
             }
         }
         Random rand = new Random();

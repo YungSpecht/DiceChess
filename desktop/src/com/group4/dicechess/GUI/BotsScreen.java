@@ -83,8 +83,9 @@ public class BotsScreen implements Screen {
                 }
                 // Expectimax
                 if(screenX >= 353 && screenX <= 553 && screenY >= 375 && screenY <= 420){
-                    game.setScreen(new GameScreen(game, 3));
-                    Gdx.input.setInputProcessor(null);
+                    //game.setScreen(new GameChoiceScreen(game));
+                    //Gdx.input.setInputProcessor(null);
+                    System.out.println("Working on Expectimax");
                 }
                 // Neural network
                 if(screenX >= 327 && screenX <= 572 && screenY >= 453 && screenY <= 500){

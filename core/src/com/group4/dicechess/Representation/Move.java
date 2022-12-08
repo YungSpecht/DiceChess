@@ -17,9 +17,6 @@ public class Move {
         this.destination = destination;
         this.piece = piece;
         captureValue = 0;
-        enPassant = false;
-        castling = false;
-        promotion = false;
     }
 
     public Square getStart(){
