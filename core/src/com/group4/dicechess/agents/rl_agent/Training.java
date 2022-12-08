@@ -34,29 +34,36 @@ public class Training {
 
     private final double LIVING_COST = -0.1;
     private final int MOVE_LIMIT = 100;
-    private final int KING_CAPTURE_VALUE = 5;
+    private final int KING_CAPTURE_VALUE = 10;
     private final Random random = new Random();
     public static int totalMoves;
+    private final int numGames = 50;
 
-    public Training(int numGames) throws Exception {
+    public Training() throws Exception {
         gameState = new GameState();
 
         whiteAgent = new RL_Agent(true);
         blackAgent = new RL_Agent(false);
 
-        TrainingLoop(numGames);
+        whiteAgent.loadAgentWeights();
+        blackAgent.loadAgentWeights();
+
+        TrainingLoop();
     }
 
 
-    private void TrainingLoop(int numEpisodes) throws Exception {
+    private void TrainingLoop() throws Exception {
 
         int episode = 0;
         totalMoves = 0;
 
-        while (episode++ < numEpisodes) {
+        while (episode++ < numGames) {
             gameLoop();
             gameState.reset();
         }
+
+        whiteAgent.saveAgentWeights();
+        blackAgent.saveAgentWeights();
     }
 
     // TODO: Backpropagation:
@@ -166,7 +173,7 @@ public class Training {
     private Experience calculateReward(Experience whiteExp, Experience blackExp, boolean white){
 
         Piece whiteCapture = whiteExp.action().capture(),
-                blackCapture = blackExp.action().capture();
+              blackCapture = blackExp.action().capture();
 
         if (whiteCapture == null && blackCapture == null) return whiteExp.setReward(LIVING_COST);
 
@@ -212,6 +219,7 @@ public class Training {
             currentAction = getAction(input, white);
 
             if (currentAction.actionValue() < bestActionValue) continue;
+
             bestActionValue = currentAction.actionValue();
             bestQValue = new QValues(currentAction.pieceValue(), currentAction.moveValue());
         }
@@ -305,7 +313,7 @@ public class Training {
 
 
     public static void main(String[] args) throws Exception {
-        new Training(50);
+        new Training();
     }
 
     private final QValues winQValues = new QValues(KING_CAPTURE_VALUE, KING_CAPTURE_VALUE);

@@ -1,6 +1,5 @@
 package com.group4.dicechess.agents.rl_agent;
 
-import com.group4.dicechess.GameState;
 import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.Representation.Piece;
 import com.group4.dicechess.Representation.Square;
@@ -109,6 +108,8 @@ public class RL_Agent {
         if (moveValue < 0 && 0 < pieceValue)
             return pieceValue * moveValue * 1.5;
 
+        saveAgentWeights();
+
         throw new Exception("Invalid piece or move value");
     }
 
@@ -129,4 +130,21 @@ public class RL_Agent {
         moveNetwork[experience.pieceId() - 1].backwardPropagate(flatten(validatedMoves), flatten(movePrediction));
     }
 
+    public void saveAgentWeights(){
+
+        pieceNetwork.saveNetwork(white, 0);
+
+        for (int i = 0; i < moveNetwork.length; i++) {
+            moveNetwork[i].saveNetwork(white, i+1);
+        }
+    }
+
+    public void loadAgentWeights() throws Exception {
+
+        pieceNetwork.loadNetwork(white, 0);
+
+        for (int i = 0; i < moveNetwork.length; i++) {
+            moveNetwork[i].loadNetwork(white, i+1);
+        }
+    }
 }

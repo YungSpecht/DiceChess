@@ -3,22 +3,21 @@ package com.group4.dicechess.agents.rl_agent.network;
 import java.io.*;
 import java.util.ArrayList;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class NetworkWriter {
 
-    private static final String PATH = "src/main/resources/network_weights/";
+    private static final String PATH = "network_weights/";
     private static final String split = ",";
-    private static int saveNum = 0;
 
-    public static void writeNetwork(ArrayList<String[][]> convLayer, ArrayList<String[]> denseLayer, String network, int episodeNum){
+    public static void writeNetwork(ArrayList<String[][]> convLayer, ArrayList<String[]> denseLayer, String agent, int networkID){
 
-        File csvFile = new File(PATH + saveNum + "." + network + NetworkParameters.version.valueStr + ".csv");
+        File csvFile = new File(PATH + agent + "/" + agent + '_' + networkID + ".csv");
 
         try {
             FileWriter outputFile = new FileWriter(csvFile);
             PrintWriter writer = new PrintWriter(outputFile);
 
-            writer.println("episode," + episodeNum);
 
             int conv = 0;
             for (String[][] layer : convLayer) {
@@ -41,11 +40,11 @@ public class NetworkWriter {
 
     }
 
-    public static void readNetwork(int networkNumber, int saveNum, Network network) throws Exception {
+    public static void readNetwork(String agent, int networkID, Network network) throws Exception {
         int convInd = 0, denseInd = 0;
         String line;
         try {
-            FileReader file = new FileReader(PATH + saveNum + "." +  networkNumber + NetworkParameters.version.valueStr + ".csv");
+            FileReader file = new FileReader(PATH + agent + "/" + agent + '_' + networkID + ".csv");
             BufferedReader reader = new BufferedReader(file);
 
             while ((line = reader.readLine()) != null){
@@ -64,7 +63,7 @@ public class NetworkWriter {
             e.printStackTrace();
         }
 
-        System.out.println("Successful Load");
+        System.out.println("Successful Load: " + agent + '_' + networkID);
     }
 
 
@@ -101,7 +100,7 @@ public class NetworkWriter {
                 while (channelInd < numChannels) {
                     line = reader.readLine();
                     splitLine = line.split(split);
-                    layerWeights[filterInd][channelInd++] = null;//Arrays.stream(splitLine).mapToDouble(Double::parseDouble).toArray();
+                    layerWeights[filterInd][channelInd++] = Arrays.stream(splitLine).mapToDouble(Double::parseDouble).toArray();
                 }
                 filterInd++;
                 channelInd = 0;
@@ -111,7 +110,7 @@ public class NetworkWriter {
             if (line.equals(biasID(biasInd))){
                 line = reader.readLine();
                 splitLine = line.split(split);
-                layerBias[biasInd++] = null;//Arrays.stream(splitLine).mapToDouble(Double::parseDouble).toArray();
+                layerBias[biasInd++] = Arrays.stream(splitLine).mapToDouble(Double::parseDouble).toArray();
             }
         }
 
@@ -136,13 +135,13 @@ public class NetworkWriter {
 
             if (line.equals(neuronID(neuronInd))) {
                 splitLine = reader.readLine().split(split);
-                layerWeights[neuronInd++] =null;// Arrays.stream(splitLine).mapToDouble(Double::parseDouble).toArray();
+                layerWeights[neuronInd++] = Arrays.stream(splitLine).mapToDouble(Double::parseDouble).toArray();
                 continue;
             }
 
             if (line.equals("bias,")) {
                 splitLine = reader.readLine().split(split);
-                layerBias = null;//Arrays.stream(splitLine).mapToDouble(Double::parseDouble).toArray();
+                layerBias = Arrays.stream(splitLine).mapToDouble(Double::parseDouble).toArray();
                 break;
             }
         }
@@ -172,7 +171,4 @@ public class NetworkWriter {
         return "filter" + number + split;
     }
 
-    public static void newSave(){
-        saveNum++;
-    }
 }

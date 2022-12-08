@@ -136,9 +136,9 @@ public class Network {
     }
 
 
-    public void saveNetwork(int networkNum, int episodeNum){
+    public void saveNetwork(boolean white, int networkID){
 
-        String name = Integer.toString(networkNum);
+        String agent = white ? "white_agent" : "black_agent";
 
         ArrayList<String[][]> cLayers = new ArrayList<>();
         cLayers.add(convLayers[0].saveLayer());
@@ -149,11 +149,12 @@ public class Network {
         dLayers.add(denseLayers[0].saveDenseLayer());
         dLayers.add(denseLayers[1].saveDenseLayer());
 
-        writeNetwork(cLayers, dLayers, name, episodeNum);
+        writeNetwork(cLayers, dLayers, agent, networkID);
     }
 
-    public void loadNetwork(int networkNum, int saveNum) throws Exception {
-        readNetwork(networkNum, saveNum, this);
+    public void loadNetwork(Boolean white, int networkID) throws Exception {
+        String agent = white ? "white_agent" : "black_agent";
+        readNetwork(agent, networkID, this);
     }
 
     private Network(ConvLayer[] convLayers, DenseLayer[] denseLayers, ActivationLayer activationLayer, int conv3Length) {
