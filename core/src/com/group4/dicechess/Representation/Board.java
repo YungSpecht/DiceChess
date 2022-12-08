@@ -201,7 +201,8 @@ public class Board {
         }
         else if(move.getEnPassant()){
             board[start.getRow()][destination.getCol()].setPiece(null);
-        }else if(move.getPromotion()){
+        }
+        else if(move.getPromotion()){
             System.out.println("------PROMOTION------");
             if(diceRoll != 1){
                 move.setPromotedPiece(pieceFactory(diceRoll, move.getPiece().getWhiteStatus(), destination));
@@ -224,7 +225,6 @@ public class Board {
                 blackPieces.add(move.getPromotedPiece());
             }
         }
-
 
 
         if(move.getCapturedPiece() != null){
@@ -290,7 +290,6 @@ public class Board {
                 blackPieces.remove(move.getPromotedPiece());
             }
         }
-
     }
 
     private Piece pieceFactory(int id, boolean white, Square sq){
