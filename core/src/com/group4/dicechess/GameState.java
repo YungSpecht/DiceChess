@@ -2,6 +2,8 @@ package com.group4.dicechess;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import com.badlogic.gdx.Game;
 import com.group4.dicechess.Representation.Board;
 import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.Representation.Piece;
@@ -128,6 +130,59 @@ public class GameState {
             this.diceRoll = rolls.get(rand.nextInt(rolls.size()));
         }
         return this.diceRoll;
+    }
+
+    public static void main(String[] args) {
+        GameState test = new GameState();
+        test.testPromo();
+    }
+
+    public void testCastling(){
+        GameState test = new GameState();
+        test.movePiece(6, 6, 4,6, true);
+        test.movePiece(1, 1, 3,1, true);
+        test.movePiece(7, 6, 5,7, true);
+        test.movePiece(1, 4, 3,4, true);
+        test.movePiece(7, 5, 6,6, true);
+        test.movePiece(1, 2, 3,2, true);
+        test.getBoard().printBoard();
+        test.movePiece(7, 4, 7,6, true);     // castling
+        test.getBoard().printBoard();
+        test.reverseLastMove();                                                 // reverse
+        test.getBoard().printBoard();
+    }
+
+    public void testEnPassant(){
+        GameState test = new GameState();
+        test.movePiece(6, 0, 4,0, true);
+        test.movePiece(1, 1, 2,1, true);
+        test.movePiece(4, 0, 3,0, true);
+        test.movePiece(2, 1, 3,1, true);
+        test.movePiece(6, 5, 4,5, true);
+        test.getBoard().printBoard();
+        test.movePiece(3, 1, 4,1, true);
+        test.getBoard().printBoard();
+        test.movePiece(6, 2, 4,2, true);
+        test.getBoard().printBoard();
+    }
+
+    public void testPromo(){
+        GameState test = new GameState();
+        test.movePiece(6, 0, 4,0, true);
+        test.movePiece(1, 1, 3,1, true);
+        test.movePiece(6, 1, 4,1, true);
+        test.movePiece(1, 4, 3,4, true);
+        test.movePiece(4, 0, 3,1, true);
+        test.movePiece(3, 4, 4,4, true);
+        test.movePiece(3, 1, 2,1, true);
+        test.movePiece(1, 5, 3,5, true);
+        test.movePiece(2, 1, 1,1, true);
+        test.movePiece(3, 5, 4,5, true);
+        test.getBoard().printBoard();
+        test.setDiceRoll(1);
+        test.movePiece(1, 1, 0,0, true);     // promotion
+        //test.movePiece(4, 5, 5,5, true);
+        test.getBoard().printBoard();
     }
 
     private void prepareNextTurn(){

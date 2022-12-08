@@ -19,6 +19,7 @@ public class NodeMCTS implements Cloneable {
     public int endrow;
     public int startcol;
     public int endcol;
+    public int diceRoll;
 
 
     public NodeMCTS(NodeMCTS parent, Move move, GameState state){
