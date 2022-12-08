@@ -120,21 +120,6 @@ public class GameState {
         prepareNextTurn();
     }
 
-    public void reverseLastMove(Move m){
-        Move lastMove = m;
-        Piece previousMovedPiece = m.getPiece();
-        board.reverseMove(lastMove, previousMovedPiece);
-        turnCounter--;
-        double capturedVal = m.getCaptureValue();
-        if(m.getPiece().getWhiteStatus()){
-            whiteScore -= capturedVal;
-        }
-        else{
-            blackScore -= capturedVal;
-        }
-        prepareNextTurn();
-    }
-
     public void reverseLastMoves(ArrayList<Move> movesHis){
         while(!movesHis.isEmpty()){
             Move lastMove = movesHis.get(movesHis.size()-1);
