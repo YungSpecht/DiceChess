@@ -153,11 +153,13 @@ public class GameState {
         ArrayList<Piece> black = board.getBlackCaptured();
         for(int i = 0; i < white.size(); i++){
             if(white.get(i).getId().equals("K")){
+                System.out.println("------GAME OVER------");
                 return true;
             }
         }
         for(int i = 0; i < black.size(); i++){
             if(black.get(i).getId().equals("K")){
+                System.out.println("------GAME OVER------");
                 return true;
             }
         }

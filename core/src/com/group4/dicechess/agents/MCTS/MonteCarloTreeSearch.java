@@ -90,6 +90,8 @@ public class MonteCarloTreeSearch implements Bot {
                     System.out.println(currentNode.state.getDiceRoll());
                     int a = currentNode.getState().getPossibleMoves().size();
                     simulatedMove = currentNode.getState().getPossibleMoves().get(rand.nextInt(a));
+                    currentNode.state.getBoard().printBoard();
+                    // check if move is game over. break and make result 10000000.
                     System.out.println(simulatedMove.getStart().getRow() + ", "+ simulatedMove.getStart().getCol()+ " -> "+ simulatedMove.getDestination().getRow()+ ", "+ simulatedMove.getDestination().getCol());
                     currentNode.getState().movePiece(simulatedMove.getStart().getRow(), simulatedMove.getStart().getCol(), simulatedMove.getDestination().getRow(), simulatedMove.getDestination().getCol(), true);
                     simulatedMoves.add(simulatedMove);
@@ -151,7 +153,7 @@ public class MonteCarloTreeSearch implements Bot {
     public GameState state;
     public double tunable_c = Math.sqrt(2);
     public int diceRollResult;
-    public int maxIterations = 20;
+    public int maxIterations = 100;
     public int depth = 10;
     public int currentDepth;
     public int currentIteration;
