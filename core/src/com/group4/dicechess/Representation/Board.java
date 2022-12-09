@@ -1,6 +1,7 @@
 package com.group4.dicechess.Representation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import com.group4.dicechess.Pieces.Bishop;
 import com.group4.dicechess.Pieces.King;
@@ -9,14 +10,13 @@ import com.group4.dicechess.Pieces.Pawn;
 import com.group4.dicechess.Pieces.Queen;
 import com.group4.dicechess.Pieces.Rook;
 
-import static com.group4.dicechess.GameState.kingCaptured;
 
 public class Board {
     private final Square[][] board;
-    private final ArrayList<Piece> whitePieces;
-    private final ArrayList<Piece> blackPieces;
-    private final ArrayList<Piece> whiteCaptured;
-    private final ArrayList<Piece> blackCaptured;
+    private ArrayList<Piece> whitePieces;
+    private ArrayList<Piece> blackPieces;
+    private ArrayList<Piece> whiteCaptured;
+    private ArrayList<Piece> blackCaptured;
     private Piece lastMovedPieceBlack;
     private Piece lastMovedPieceWhite;
     public int promotionKey;
@@ -51,8 +51,8 @@ public class Board {
     }
 
     
-    public void setBlackCaptured(ArrayList<Piece> blackCaputured){
-        this.blackCaptured = blackCaputured;
+    public void setBlackCaptured(ArrayList<Piece> blackCaptured){
+        this.blackCaptured = blackCaptured;
     }
 
     public ArrayList<Piece> getWhitePieces(){

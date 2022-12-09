@@ -82,11 +82,10 @@ public class Utils {
         return out;
     }
 
-    public static void printTurn(GameState gameState){
+    public static void printTurn(int pieceID, GameState gameState){
         String team = gameState.isWhitesTurn() ? "White" : "Black";
-        int pieceId = gameState.getDiceRoll();
         print("Turn Number: " + gameState.turnCounter);
-        print(team + " " + nameFromId(pieceId));
+        print(team + " " + nameFromId(pieceID));
     }
 
 

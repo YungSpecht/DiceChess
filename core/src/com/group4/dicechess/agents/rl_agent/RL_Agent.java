@@ -1,8 +1,10 @@
 package com.group4.dicechess.agents.rl_agent;
 
+import com.group4.dicechess.GameState;
 import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.Representation.Piece;
 import com.group4.dicechess.Representation.Square;
+import com.group4.dicechess.agents.Bot;
 import com.group4.dicechess.agents.rl_agent.network.Network;
 import com.group4.dicechess.agents.rl_agent.utils.*;
 
@@ -11,15 +13,29 @@ import java.util.HashMap;
 
 import static com.group4.dicechess.agents.rl_agent.utils.Utils.*;
 
-public class RL_Agent {
+public class RL_Agent implements Bot {
 
     private final Network pieceNetwork;
     private final Network[] moveNetwork;
     private final boolean white;
+    private RL_State rl_state;
 
     public RL_Agent(boolean isWhite){
 
         this.white = isWhite;
+
+        pieceNetwork = new Network();
+        moveNetwork = new Network[6];
+
+        for (int i = 0; i < 6; i++) {
+            moveNetwork[i] = new Network();
+        }
+    }
+
+    public RL_Agent(boolean isWhite, GameState gameState){
+
+        this.white = isWhite;
+        this.rl_state = new RL_State(gameState);
 
         pieceNetwork = new Network();
         moveNetwork = new Network[6];
@@ -62,7 +78,7 @@ public class RL_Agent {
                 bestMoveValue = Double.NEGATIVE_INFINITY,
                 bestPieceValue = Double.NEGATIVE_INFINITY,
                 maxActionValue = Double.NEGATIVE_INFINITY;
-        Move bestMove = null;
+        RLMove bestMove = null;
         Piece capture = null;
         ArrayList<Move> legalMoves;
 
@@ -72,7 +88,7 @@ public class RL_Agent {
             legalMoves = pieceMoveMap.get(piece);
 
             for (Move move : legalMoves) {
-                moveValue = validatedMoves[move.destination().getRow()][move.destination().getCol()];
+                moveValue = validatedMoves[move.getDestination().getRow()][move.getDestination().getCol()];
                 actionValue = calculateActionValue(pieceValue, moveValue);
 
                 if (actionValue < maxActionValue) continue;
@@ -80,8 +96,8 @@ public class RL_Agent {
                 bestPieceValue = pieceValue;
                 bestMoveValue = moveValue;
                 maxActionValue = actionValue;
-                bestMove = move;
-                capture = move.destination().getPiece();
+                bestMove = move.toRLMove();
+                capture = move.getDestination().getPiece();
             }
         }
 
@@ -146,5 +162,21 @@ public class RL_Agent {
         for (int i = 0; i < moveNetwork.length; i++) {
             moveNetwork[i].loadNetwork(white, i+1);
         }
+    }
+
+    @Override
+    public Move getMove() {
+        try {
+            Input input = rl_state.getInput();
+            Experience exp = predictMove(input);
+            return new Move(exp.action().move().start(), exp.action().move().destination(), exp.action().move().piece());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int getRoll() {
+        return rl_state.getDiceRoll();
     }
 }

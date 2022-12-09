@@ -1,41 +1,29 @@
 package com.group4.dicechess.agents.rl_agent;
 
 import com.group4.dicechess.GameState;
-import com.group4.dicechess.Representation.Board;
-import com.group4.dicechess.Representation.Move;
+import com.group4.dicechess.Pieces.King;
 import com.group4.dicechess.Representation.Piece;
 import com.group4.dicechess.agents.rl_agent.utils.Action;
 import com.group4.dicechess.agents.rl_agent.utils.Experience;
 import com.group4.dicechess.agents.rl_agent.utils.Input;
 import com.group4.dicechess.agents.rl_agent.utils.QValues;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Random;
 
 import static com.group4.dicechess.agents.rl_agent.network.NetworkParameters.gamma;
-import static com.group4.dicechess.agents.rl_agent.network.NetworkParameters.inputChannels;
-import static com.group4.dicechess.agents.rl_agent.utils.Utils.*;
-
-/*| 1 | Pawn   |
-  | 2 | Knight |
-  | 3 | Bishop |
-  | 4 | Rook   |
-  | 5 | Queen  |
-  | 6 | King   |*/
-
+import static com.group4.dicechess.agents.rl_agent.utils.Utils.print;
+import static com.group4.dicechess.agents.rl_agent.utils.Utils.printTurn;
 
 public class Training {
 
     private final GameState gameState;
+    private final RL_State rl_state;
 
     private final RL_Agent whiteAgent, blackAgent;
 
     private final double LIVING_COST = -0.1;
     private final int MOVE_LIMIT = 100;
     private final int KING_CAPTURE_VALUE = 10;
-    private final Random random = new Random();
     public static int totalMoves;
     private final int numGames = 50;
 
@@ -45,8 +33,10 @@ public class Training {
         whiteAgent = new RL_Agent(true);
         blackAgent = new RL_Agent(false);
 
-        whiteAgent.loadAgentWeights();
-        blackAgent.loadAgentWeights();
+        rl_state = new RL_State(gameState);
+
+        //whiteAgent.loadAgentWeights();
+        //blackAgent.loadAgentWeights();
 
         TrainingLoop();
     }
@@ -86,64 +76,40 @@ public class Training {
         while (gameState.turnCounter < MOVE_LIMIT){
 
             trainAgent(true, whiteExp, blackExp);
-
             whiteExp = decide(true);
-            gameState.movePiece(whiteExp.action().move());
-            print("End Turn: White");
 
-            if (gameState.isGameOver()){
-                print("Game Over");
-                gameState.getBoard().printBoard();
+            if (gameOver(whiteExp)){
                 endTrainAgents(true, whiteExp, blackExp);
                 return;
             }
 
+            gameState.movePiece(whiteExp.action().move());
+            print("End Turn: White");
+
             //trainAgent(false, whiteExp, blackExp);
-
             blackExp = decide(false);
-            gameState.movePiece(blackExp.action().move());
-            print("End Turn: Black");
 
-            if (gameState.isGameOver()){
-                print("Game Over");
-                gameState.getBoard().printBoard();
-                //endTrainAgents(false, whiteExp, blackExp);
+            if (gameOver(blackExp)){
+                endTrainAgents(false, whiteExp, blackExp);
                 return;
             }
+
+            gameState.movePiece(blackExp.action().move());
+            print("End Turn: Black");
         }
     }
 
     private Experience decide(boolean white) throws Exception {
-        printTurn(gameState);
 
-        HashMap<Piece, ArrayList<Move>> pieceMoveMap = new HashMap<>();
-        ArrayList<Piece> pieces = gameState.getBoard().getAllPieces();
-        Board board = gameState.getBoard();
+        Input input = rl_state.getInput(white);
 
-        for (Piece piece : pieces)
-            pieceMoveMap.put(piece, piece.getPossibleMoves(board));
-
-        int diceRoll = rollDice(white, pieceMoveMap, pieces);
-        Input input = getInput(white, diceRoll, pieceMoveMap, pieces);
+        printTurn(input.pieceId(), gameState);
 
         if (white) return whiteAgent.predictMove(input);
         return blackAgent.predictMove(input);
     }
     
-    private int rollDice(boolean white,HashMap<Piece, ArrayList<Move>> pieceMoveMap, ArrayList<Piece> pieces){
 
-        boolean selected = false;
-        Piece piece = null;
-
-        while (!selected) {
-            piece = pieces.get(random.nextInt(pieces.size()));
-            if (piece.getWhiteStatus() != white) continue;
-            if (pieceMoveMap.get(piece).isEmpty()) continue;
-            selected = true;
-        }
-
-        return piece.getDiceChessId();
-    }
 
     private void trainAgent(boolean white, Experience whiteExp, Experience blackExp) throws Exception {
         QValues qValues;
@@ -200,19 +166,13 @@ public class Training {
 
     private QValues nextStateQValues(boolean white) throws Exception {
 
-        HashMap<Piece, ArrayList<Move>> pieceMoveMap = new HashMap<>();
-        ArrayList<Piece> pieces = gameState.getBoard().getAllPieces();
-        Board board = gameState.getBoard();
         Input input;
         Action currentAction;
         double bestActionValue = Double.NEGATIVE_INFINITY;
         QValues bestQValue = null;
 
-        for (Piece piece : pieces)
-            pieceMoveMap.put(piece, piece.getPossibleMoves(board));
-
         for (int pieceID=1; pieceID < 7; pieceID++) {
-            input = getInput(white, pieceID, pieceMoveMap, pieces);
+            input = rl_state.getInput(white, pieceID);
 
             if (input.legalPieces().isEmpty()) continue;
 
@@ -232,71 +192,12 @@ public class Training {
         return blackAgent.predictMove(input).action();
     }
 
-    private Input getInput(boolean white, int pieceID, HashMap<Piece, ArrayList<Move>> pieceMoveMap, ArrayList<Piece> pieces) throws Exception {
 
-        double[][][] state = new double[inputChannels.valueInt][8][8];
-        int channel;
 
-        for (Piece piece : pieces) {
-            channel = piece.getDiceChessId() - 1;
-            channel = piece.getWhiteStatus() ? channel : channel + 6;
-            state[channel][piece.getRow()][piece.getCol()] = 1;
-        }
 
-        ArrayList<Piece> legalPieces = getLegalPieces(white, pieceID, pieceMoveMap),
-                         enemyPieces = getEnemyPieces(white);
 
-        state[12] = getLegalPiecePositions(legalPieces, pieceMoveMap);
-        state[13] = getLegalMovePositions(legalPieces, pieceMoveMap);
-        state[14] = getLegalMovePositions(enemyPieces, pieceMoveMap);
 
-        if (isZeroMatrix(state[14]))
-            throw new Exception("No legal Pieces");
 
-        return new Input(state, pieceID, legalPieces, pieceMoveMap);
-    }
-
-    private ArrayList<Piece> getLegalPieces(boolean white, int pieceID, HashMap<Piece, ArrayList<Move>> pieceMoveMap) throws Exception {
-        ArrayList<Piece> teamPieces = white ? gameState.getBoard().getWhitePieces() : gameState.getBoard().getBlackPieces(),
-                         legalPieces = new ArrayList<>();
-
-        for (Piece piece : teamPieces) {
-            if (piece.getDiceChessId() == pieceID && !pieceMoveMap.get(piece).isEmpty())
-                legalPieces.add(piece);
-        }
-
-/*        if (legalPieces.isEmpty())
-            throw new Exception("No Legal Pieces");*/
-
-        return legalPieces;
-    }
-
-    private ArrayList<Piece> getEnemyPieces(boolean white){
-        return white ? gameState.getBoard().getBlackPieces() : gameState.getBoard().getWhitePieces();
-    }
-
-    private double[][] getLegalMovePositions(ArrayList<Piece> pieces, HashMap<Piece, ArrayList<Move>> pieceMoveMap) {
-        ArrayList<Move> moves;
-        double[][] out = new double[8][8];
-
-        for (Piece piece : pieces) {
-            moves = pieceMoveMap.get(piece);
-            for (Move move : moves)
-                out[move.destination().getRow()][move.destination().getCol()] = 1;
-        }
-
-        return out;
-    }
-
-    private double[][] getLegalPiecePositions(ArrayList<Piece> pieces, HashMap<Piece, ArrayList<Move>> pieceMoveMap) {
-
-        double[][] out = new double[8][8];
-
-        for (Piece piece : pieces)
-            out[piece.getRow()][piece.getCol()] = 1;
-
-        return out;
-    }
 
     private void printState(double[][][] state){
         try {
@@ -309,6 +210,10 @@ public class Training {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private boolean gameOver(Experience experience) {
+        return experience.action().capture() instanceof King;
     }
 
 

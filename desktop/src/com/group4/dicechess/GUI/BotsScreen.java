@@ -88,9 +88,9 @@ public class BotsScreen implements Screen {
                 }
                 // Neural network
                 if(screenX >= 327 && screenX <= 572 && screenY >= 453 && screenY <= 500){
-                    //game.setScreen(new GameChoiceScreen(game));
-                    //Gdx.input.setInputProcessor(null);
-                    System.out.println("Working on Neural network");
+                    game.setScreen(new GameScreen(game, 5));
+                    Gdx.input.setInputProcessor(null);
+                    //System.out.println("Working on Neural network");
                 }
                 return true;
             }

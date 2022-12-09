@@ -15,6 +15,7 @@ import com.group4.dicechess.agents.MCTS.MonteCarloTreeSearch;
 import com.group4.dicechess.agents.basic_agents.GreedyBot;
 import com.group4.dicechess.agents.basic_agents.RandomBot;
 import com.group4.dicechess.agents.basic_agents.ExpectimaxBot;
+import com.group4.dicechess.agents.rl_agent.RL_Agent;
 
 public class GameScreen implements Screen {
 
@@ -46,6 +47,7 @@ public class GameScreen implements Screen {
     int playStyle;
     Bot bot;
     Move tempMove;
+    RL_Agent rl_agent;
 
 
     public GameScreen(DiceChessGame currentGame, int a){
@@ -55,6 +57,8 @@ public class GameScreen implements Screen {
         gameLoop = new GameState();
         enableTxt();
         textureUtils.setUpBoard(gameLoop.getBoard());
+        if (a == 5)
+            rl_agent = new RL_Agent(false, gameLoop);
     }
 
     public void enableTxt(){
@@ -317,6 +321,9 @@ public class GameScreen implements Screen {
                 case 4:
                     bot = new MonteCarloTreeSearch(gameLoop);
                     break;
+                case 5:
+                    bot = rl_agent;
+                    break;
             }
             botPlaying = false;
             if(playerSwitch && !turnActive){
@@ -486,7 +493,7 @@ public class GameScreen implements Screen {
     private ArrayList<Square> translateToSquareList(ArrayList<Move> moves){
         ArrayList<Square> result = new ArrayList<Square>();
         for(Move m : moves){
-            result.add(m.destination());
+            result.add(m.getDestination());
         }
         return result;
     }
