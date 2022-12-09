@@ -20,7 +20,8 @@ The rules are very similar to those of traditional chess with three main excepti
 Note: If you roll a 6 you cannot move the pawn forward as that would mean the pawn could promote to a second king.  
 
 ## Installation
-Please be sure to have Java 19 installed in order to run this project. 
+
+Please be sure to have Java 19, and Gradle version 7.6 installed in order to run this project.
 This program is a gradle project created using the LibGDX framework and written in java. Therefore, to run it you have to have gradle installed.  
 To run the code:  
 ``` bash
