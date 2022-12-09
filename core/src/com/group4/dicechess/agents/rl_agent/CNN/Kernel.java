@@ -1,5 +1,4 @@
 package com.group4.dicechess.agents.rl_agent.CNN;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import static com.group4.dicechess.agents.rl_agent.CNN.Filter.scaleSubtract;

@@ -1,5 +1,7 @@
 package com.group4.dicechess.Representation;
 
+import com.group4.dicechess.agents.rl_agent.utils.RLMove;
+
 public class Move {
     private Square start;
     private Square destination;
@@ -85,5 +87,9 @@ public class Move {
 
     public Move copy(){
         return new Move(this.getStart().copy(), this.getDestination().copy(), this.getPiece().copy());
+    }
+
+    public RLMove toRLMove(){
+        return new RLMove(start, destination, piece);
     }
 }

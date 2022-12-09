@@ -1,6 +1,7 @@
 package com.group4.dicechess.Representation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import com.group4.dicechess.Pieces.Bishop;
 import com.group4.dicechess.Pieces.King;
@@ -9,8 +10,9 @@ import com.group4.dicechess.Pieces.Pawn;
 import com.group4.dicechess.Pieces.Queen;
 import com.group4.dicechess.Pieces.Rook;
 
+
 public class Board {
-    private Square[][] board;
+    private final Square[][] board;
     private ArrayList<Piece> whitePieces;
     private ArrayList<Piece> blackPieces;
     private ArrayList<Piece> whiteCaptured;
@@ -49,12 +51,12 @@ public class Board {
     }
 
     
-    public void setBlackCaptured(ArrayList<Piece> blackCaputured){
-        this.blackCaptured = blackCaputured;
+    public void setBlackCaptured(ArrayList<Piece> blackCaptured){
+        this.blackCaptured = blackCaptured;
     }
 
     public ArrayList<Piece> getWhitePieces(){
-        return whitePieces;
+        return (ArrayList<Piece>) whitePieces.clone();
     }
     
     public void setWhitePieces(ArrayList<Piece> whitePieces){
@@ -62,7 +64,13 @@ public class Board {
     }
 
     public ArrayList<Piece> getBlackPieces(){
-        return blackPieces;
+        return (ArrayList<Piece>) blackPieces.clone();
+    }
+
+    public ArrayList<Piece> getAllPieces(){
+        ArrayList<Piece> out = (ArrayList<Piece>) whitePieces.clone();
+        out.addAll((Collection<? extends Piece>) blackPieces.clone());
+        return out;
     }
     
     public void setBlackPieces(ArrayList<Piece> blackPieces){
@@ -105,6 +113,17 @@ public class Board {
             System.out.println();
         }
         System.out.println("------------------------");
+    }
+
+    public int[][] getBoardMatrix() {
+        int[][] out = new int[8][8];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j].getPiece() != null)
+                    out[i][j] = board[i][j].getPiece().getDiceChessId();
+            }
+        }
+        return out;
     }
 
     public Square[][] getMBoard(){

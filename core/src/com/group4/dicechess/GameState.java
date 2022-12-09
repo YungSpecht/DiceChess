@@ -2,10 +2,15 @@ package com.group4.dicechess;
 
 import java.util.ArrayList;
 import java.util.Random;
+
 import com.group4.dicechess.Representation.Board;
 import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.Representation.Piece;
 import com.group4.dicechess.Representation.Tables;
+import com.group4.dicechess.agents.rl_agent.Training;
+import com.group4.dicechess.agents.rl_agent.utils.RLMove;
+
+import static com.group4.dicechess.agents.rl_agent.utils.Utils.isZeroMatrix;
 
 public class GameState {
 
@@ -18,6 +23,7 @@ public class GameState {
     private ArrayList<Move> moveHistory;
     private ArrayList<ArrayList<Move>> moveList;
     private ArrayList<Piece> legalPieces;
+    private boolean isWhitesTurn;
 
     public GameState(){
         board = new Board();
@@ -28,7 +34,18 @@ public class GameState {
         moveHistory = new ArrayList<Move>();
         moveList = new ArrayList<ArrayList<Move>>();
         legalPieces = new ArrayList<Piece>();
+        isWhitesTurn = true;
         prepareNextTurn();
+    }
+
+    public void reset(){
+        board = new Board();
+        turnCounter = 0;
+        whiteScore = 0;
+        blackScore = 0;
+        moveList = new ArrayList<>();
+        legalPieces = new ArrayList<>();
+        isWhitesTurn = true;
     }
 
     public boolean isLegalPiece(int row, int col){
@@ -93,6 +110,23 @@ public class GameState {
         moveHistory.add(move);
         turnCounter++;
         prepareNextTurn();
+    }
+
+    public void movePiece(RLMove move){
+
+        Training.totalMoves++;
+
+        Move boardMove = new Move(move.start(), move.destination(), move.piece());
+
+        if(isWhitesTurn){
+            whiteScore = board.movePiece(boardMove, move.piece().getDiceChessId(), true);
+            isWhitesTurn = false;
+        }
+        else {
+            blackScore = board.movePiece(boardMove, move.piece().getDiceChessId(), true);
+            isWhitesTurn = true;
+        }
+        turnCounter++;
     }
 
     public void reverseLastMove(){
@@ -317,5 +351,9 @@ public class GameState {
 
     public void setLegalPieces(ArrayList<Piece> legalPieces){
         this.legalPieces = legalPieces;
+    }
+
+    public boolean isWhitesTurn(){
+        return isWhitesTurn;
     }
 }

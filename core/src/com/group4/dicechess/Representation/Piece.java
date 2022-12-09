@@ -37,6 +37,10 @@ public abstract class Piece {
         return identifier;
     }
 
+    public char getCharId(){
+        return identifier.charAt(0);
+    }
+
     public boolean getWhiteStatus(){
         return whiteStatus;
     }
@@ -123,7 +127,6 @@ public abstract class Piece {
      * Finds all the legal moves a piece can do given its current position.
      * 
      * @param board represents the board in its current state
-     * @param currentSquare represents the Square the piece is currently positioned on
      * @return ArrayList containing all the Squares the piece can legally move to
      */
     public abstract ArrayList<Move> getPossibleMoves(Board board);
