@@ -386,7 +386,7 @@ public class GameScreen implements Screen {
                             if (screenX >= 768 && screenX <= 798) {
                                 gameLoop.board.promotionKey = 5; // Queen
                             }
-                            gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0], true);
+                            gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0], false);
                             textureUtils.updateBoard(gameLoop.getBoard());
                             tempPoss[0] = -1;
                             tempPoss[1] = -1;
@@ -454,7 +454,7 @@ public class GameScreen implements Screen {
                                     promoting = true;
                                 }
                                 if(!promoting){
-                                    gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0], true);
+                                    gameLoop.movePiece(tempPoss[1], tempPoss[0], tempPoss2[1], tempPoss2[0], false);
                                     textureUtils.updateBoard(gameLoop.getBoard());
                                     tempPoss[0] = -1;
                                     tempPoss[1] = -1;

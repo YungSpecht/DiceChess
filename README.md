@@ -20,6 +20,7 @@ The rules are very similar to those of traditional chess with three main excepti
 Note: If you roll a 6 you cannot move the pawn forward as that would mean the pawn could promote to a second king.  
 
 ## Installation
+Please be sure to have Java 19 installed in order to run this project. 
 This program is a gradle project created using the LibGDX framework and written in java. Therefore, to run it you have to have gradle installed.  
 To run the code:  
 ``` bash
@@ -31,8 +32,7 @@ $ gradle run # run the project via gradle
 - Once you have started the program you will find yourself in the main menu of the game.  
 - Press start to start a new game. Instructions about the gameplay can be found to the right of the board at all times.
 - To roll the dice just press on it with your cursor.
-- If you have a pawn that can be promoted on the next move and you roll a 1, you can move the pawn forward and in the terminal you will be prompted to enter what piece you want to promote to.
-- To switch to a mode closer to regular chess (without check) you can navigate to the GameScreen.java class inside `desktop\src\com\group4\dicechess\GUI\GameScreen.java` and change the method `diceChess()` at the beginning of the `render()` method to `chess()` to remove the rolling of the dice.  
+- If you have a pawn that can be promoted on the next move and you roll a 1, you can move the pawn forward and in the UI you will be prompted to enter what piece you want to promote to.
 
 ## Authors  
 
