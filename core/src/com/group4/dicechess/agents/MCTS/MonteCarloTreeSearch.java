@@ -33,7 +33,7 @@ public class MonteCarloTreeSearch implements Bot {
             ArrayList<Move> simulatedMovesSelection = new ArrayList<>();
             ArrayList<Integer> simulatedMovesSelectionDiceRolls = new ArrayList<>();
 
-            while (!currentNode.children.isEmpty()) {
+            while (!currentNode.children.isEmpty()) {                               // Selection
                 //System.out.println("Selection - depth + 1");
                 tempStorage = currentNode.children;
                 for (NodeMCTS child : tempStorage) {
