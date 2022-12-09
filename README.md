@@ -32,6 +32,7 @@ $ gradle run # run the project via gradle
 ## Usage
 - Once you have started the program you will find yourself in the main menu of the game.  
 - Press start to start a new game. Instructions about the gameplay can be found to the right of the board at all times.
+- You can select whether you want to play human vs human or against one of the Bots that comes with the program.
 - To roll the dice just press on it with your cursor.
 - If you have a pawn that can be promoted on the next move and you roll a 1, you can move the pawn forward and in the UI you will be prompted to enter what piece you want to promote to.
 
