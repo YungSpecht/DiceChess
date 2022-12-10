@@ -37,7 +37,6 @@ public class BotVsBot {
     private int moveLimit = 80;
 
     public BotVsBot(int WhiteBot, int BlackBot, int numberOfGames){
-
         this.WhiteBot = WhiteBot;
         this.BlackBot = BlackBot;
         this.numberOfGames = numberOfGames;
@@ -45,13 +44,14 @@ public class BotVsBot {
     }
 
     public static void main(String[] args) {
-        BotVsBot simulation = new BotVsBot(1, 5, 20);
+        BotVsBot simulation = new BotVsBot(2, 3, 20);
         simulation.startSimulation();
     }
 
     public void startSimulation(){
         turnCounter = 0;
         movesMade = 0;
+        //rl_agent = new RL_Agent(false, game);
         for (int i = 0; i < numberOfGames; i++) {
             game = new GameState();
             if(i == (numberOfGames/2)-1){
@@ -117,7 +117,7 @@ public class BotVsBot {
     }
 
     public void getWinRate(){
-        double Whitewinrate =WhiteBotWin/(WhiteBotWin+BlackBotWin+drawScore)*100;
+        double Whitewinrate =(WhiteBotWin/(WhiteBotWin+BlackBotWin+drawScore))*100;
         double BlackWinrate =(BlackBotWin/(WhiteBotWin+BlackBotWin+drawScore))*100;
         double DrawRate =(drawScore/(WhiteBotWin+BlackBotWin+drawScore))*100;
 
