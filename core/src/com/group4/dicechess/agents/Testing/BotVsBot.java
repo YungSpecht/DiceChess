@@ -17,7 +17,7 @@ public class BotVsBot {
 
     private Bot botW;
     private Bot botB;
-    private Bot tempBot;
+    private int tempBot;
     private RL_Agent rl_agent;
     private GameState game;
     private int BlackBot;
@@ -44,7 +44,7 @@ public class BotVsBot {
     }
 
     public static void main(String[] args) {
-        BotVsBot simulation = new BotVsBot(2, 3, 20);
+        BotVsBot simulation = new BotVsBot(1, 4, 20);
         simulation.startSimulation();
     }
 
@@ -53,14 +53,16 @@ public class BotVsBot {
         movesMade = 0;
         //rl_agent = new RL_Agent(false, game);
         for (int i = 0; i < numberOfGames; i++) {
+            System.out.println("Game number: " + i);
             game = new GameState();
-            if(i == (numberOfGames/2)-1){
-                tempBot = botW;
-                botW = botB;
-                botB = tempBot;
+            if(i == (numberOfGames/2)){
+                //rl_agent = new RL_Agent(true, game);
+                tempBot = this.WhiteBot;
+                this.WhiteBot = this.BlackBot;
+                this.BlackBot = tempBot;
             }
             movesMade = 0;
-            while(!game.gameOver() && movesMade < moveLimit){
+            while(!game.gameOver() && movesMade < moveLimit){ // && movesMade < moveLimit
                 createBots();
                 // White's turn.
                 if(turnCounter % 2 == 0){
@@ -75,7 +77,7 @@ public class BotVsBot {
             }
             String winner = turnCounter%2==0 ? "Black" : "White";
             if(game.gameOver()){
-                if(i < (numberOfGames/2)-1){
+                if(i < (numberOfGames/2)){
                     if(winner.equals("White")){
                         WhiteBotWin++;
                     }else {
@@ -93,7 +95,7 @@ public class BotVsBot {
                 WhiteScore = game.evaluate();
                 if(Math.abs(WhiteScore-BlackScore)>drawDecider){
                     winner = ((WhiteScore>BlackScore)) ? "Black" : "White";
-                    if(i < (numberOfGames/2)-1){
+                    if(i < (numberOfGames/2)){
                         if(winner.equals("White")){
                             WhiteBotWin++;
                         }else {
@@ -111,8 +113,6 @@ public class BotVsBot {
                 }
             }
         }
-        System.out.println(WhiteBotWin);
-        System.out.println(BlackBotWin);
         getWinRate();
     }
 
@@ -127,7 +127,7 @@ public class BotVsBot {
     }
 
     public void createBots(){
-        switch(WhiteBot){
+        switch(this.WhiteBot){
             case 1:
                 botW = new RandomBot(game);
                 bot1 = "Random bot";
@@ -149,7 +149,7 @@ public class BotVsBot {
                 bot1 = "RL agent";
                 break;
         }
-        switch(BlackBot){
+        switch(this.BlackBot){
             case 1:
                 botB = new RandomBot(game);
                 bot2 = "Random bot";
