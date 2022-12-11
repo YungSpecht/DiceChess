@@ -20,7 +20,6 @@ public class MonteCarloTreeSearch implements Bot {
     public Move createMCTSTree(){
         this.state.diceRoll();
         NodeMCTS root = new NodeMCTS(null, null, this.state);
-
         while(maxIterations >= currentIteration) {
             //System.out.println("Start of iteration: " + currentIteration);
             currentNode = root;

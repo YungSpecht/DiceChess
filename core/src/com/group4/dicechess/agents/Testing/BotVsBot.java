@@ -44,7 +44,7 @@ public class BotVsBot {
     }
 
     public static void main(String[] args) {
-        BotVsBot simulation = new BotVsBot(1, 4, 20);
+        BotVsBot simulation = new BotVsBot(1, 3, 10);
         simulation.startSimulation();
     }
 
@@ -94,6 +94,7 @@ public class BotVsBot {
                 BlackScore = game.evaluateMCTS();
                 WhiteScore = game.evaluate();
                 if(Math.abs(WhiteScore-BlackScore)>drawDecider){
+                    System.out.println("decider");
                     winner = ((WhiteScore>BlackScore)) ? "Black" : "White";
                     if(i < (numberOfGames/2)){
                         if(winner.equals("White")){
@@ -112,6 +113,8 @@ public class BotVsBot {
                     drawScore++;
                 }
             }
+            game.board.printBoard();
+
         }
         getWinRate();
     }
@@ -121,8 +124,8 @@ public class BotVsBot {
         double BlackWinrate =(BlackBotWin/(WhiteBotWin+BlackBotWin+drawScore))*100;
         double DrawRate =(drawScore/(WhiteBotWin+BlackBotWin+drawScore))*100;
 
-        System.out.println("Winrate for " + bot1 + " is: " + Whitewinrate + "%");
-        System.out.println("Winrate for " + bot2 + " is: " + BlackWinrate + "%");
+        System.out.println("Winrate for " + bot2 + " is: " + Whitewinrate + "%");
+        System.out.println("Winrate for " + bot1 + " is: " + BlackWinrate + "%");
         System.out.println("Draw rate: " + DrawRate + "%");
     }
 
