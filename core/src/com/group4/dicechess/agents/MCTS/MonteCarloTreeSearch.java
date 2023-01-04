@@ -60,7 +60,7 @@ public class MonteCarloTreeSearch implements Bot {
             tempStorage = currentNode.children;
             for (NodeMCTS child : tempStorage) {
                 temp = uct_formula(child.getMean_value(), child.getVisited(), child.parent.getVisited());
-                if (temp > currentBestChild || !flag) {
+                if ((temp > currentBestChild || !flag) && child.expandable) {
                     currentBestChild = temp;
                     currentNode = child;
                     flag = true;
@@ -83,14 +83,31 @@ public class MonteCarloTreeSearch implements Bot {
                         currentNode.state.setDiceRoll(simulatedMovesSelectionDiceRolls.get(i));
                         currentNode.state.movePiece(simulatedMovesSelection.get(i).getStart().getRow(), simulatedMovesSelection.get(i).getStart().getCol(), simulatedMovesSelection.get(i).getDestination().getRow(), simulatedMovesSelection.get(i).getDestination().getCol(), true);
                     }
-                    currentNode.state.diceRoll();
+                    if(currentNode.state.getRollsList().size() != 0){
+                        currentNode.state.diceRoll();
+                    }else {
+                        currentNode.expandable = false;
+                    }
                 }
-                ArrayList<Move> possibleMoves = currentNode.getState().getPossibleMoves();
-                ArrayList<Move> pM = new ArrayList<>(possibleMoves);
-                for (Move m : pM) {
-                    childNode = new NodeMCTS(currentNode, m, currentNode.state);
-                    childNode.diceRoll = currentNode.state.getDiceRoll();
-                    currentNode.children.add(childNode);
+                if(currentNode != root){
+                    for(int roll: currentNode.state.getRollsList()){
+                        currentNode.state.setDiceRoll(roll);
+                        ArrayList<Move> possibleMoves = currentNode.getState().getPossibleMoves();
+                        ArrayList<Move> pM = new ArrayList<>(possibleMoves);
+                        for (Move m : pM) {
+                            childNode = new NodeMCTS(currentNode, m, currentNode.state);
+                            childNode.diceRoll = currentNode.state.getDiceRoll();
+                            currentNode.children.add(childNode);
+                        }
+                    }
+                } else{
+                    ArrayList<Move> possibleMoves = currentNode.getState().getPossibleMoves();
+                    ArrayList<Move> pM = new ArrayList<>(possibleMoves);
+                    for (Move m : pM) {
+                        childNode = new NodeMCTS(currentNode, m, currentNode.state);
+                        childNode.diceRoll = currentNode.state.getDiceRoll();
+                        currentNode.children.add(childNode);
+                    }
                 }
                 if (currentNode != root) {
                     for (int i = 0; i < simulatedMovesSelection.size(); i++) {
