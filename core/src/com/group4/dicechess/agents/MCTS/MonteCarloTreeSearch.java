@@ -3,9 +3,10 @@ package com.group4.dicechess.agents.MCTS;
 import com.group4.dicechess.GameState;
 import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.agents.Bot;
+import com.group4.dicechess.agents.basic_agents.GreedyBot;
+import com.group4.dicechess.agents.basic_agents.RandomBot;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class MonteCarloTreeSearch implements Bot {
 
@@ -14,97 +15,31 @@ public class MonteCarloTreeSearch implements Bot {
         this.diceRollResult = 0;
     }
 
-    public static void main(String[] args) {
-    }
-
     public Move createMCTSTree(){
         this.state.diceRoll();
         NodeMCTS root = new NodeMCTS(null, null, this.state);
         while(maxIterations >= currentIteration) {
-            //System.out.println("Start of iteration: " + currentIteration);
             currentNode = root;
             if(root.children.size() == 1){
                 return root.children.get(0).getMove();
             }
+            ArrayList<Move> possibleMoves = currentNode.getState().getPossibleMoves();
+            if (possibleMoves.get(0).getPiece().getWhiteStatus()) {
+                eval = true;
+            } else{
+                eval = false;
+            }
             currentDepth = 0;
             flag = false;
-            ArrayList<Move> simulatedMoves = new ArrayList<>();
-            ArrayList<Move> simulatedMovesSelection = new ArrayList<>();
-            ArrayList<Integer> simulatedMovesSelectionDiceRolls = new ArrayList<>();
-
-            while (!currentNode.children.isEmpty()) {                               // Selection
-                //System.out.println("Selection - depth + 1");
-                tempStorage = currentNode.children;
-                for (NodeMCTS child : tempStorage) {
-                    temp = uct_formula(child.getMean_value(), child.getVisited(), child.parent.getVisited());
-                    if (temp > currentBestChild || !flag) {
-                        currentBestChild = temp;
-                        currentNode = child;
-                        flag = true;
-                    }
-                }
-
-                simulatedMovesSelection.add(currentNode.getMove());
-                simulatedMovesSelectionDiceRolls.add(currentNode.diceRoll);
-                flag = false;
+            simulatedMoves = new ArrayList<>();
+            simulatedMovesSelection = new ArrayList<>();
+            simulatedMovesSelectionDiceRolls = new ArrayList<>();
+            selection();
+            if(!expansion(root)){
+                simulation();
+                backpropagation();
+                currentIteration++;
             }
-
-            if(currentNode.getVisited() != 0 || currentNode == root){               // Expansion
-                //System.out.println("Expansion");
-                if(currentNode != root){
-                    for (int i = 0; i < simulatedMovesSelection.size(); i++) {
-                        currentNode.state.setDiceRoll(simulatedMovesSelectionDiceRolls.get(i));
-                        currentNode.state.movePiece(simulatedMovesSelection.get(i).getStart().getRow(),simulatedMovesSelection.get(i).getStart().getCol(),simulatedMovesSelection.get(i).getDestination().getRow() ,simulatedMovesSelection.get(i).getDestination().getCol(), true);
-                    }
-                    currentNode.state.diceRoll();
-                }
-                ArrayList<Move> possibleMoves = currentNode.getState().getPossibleMoves();
-                ArrayList<Move> pM = new ArrayList<>(possibleMoves);
-                for(Move m : pM){
-                    childNode = new NodeMCTS(currentNode, m, currentNode.state);
-                    childNode.diceRoll = currentNode.state.getDiceRoll();
-                    currentNode.children.add(childNode);
-                }
-
-                if(currentNode != root){
-                    for (int i = 0; i < simulatedMovesSelection.size(); i++) {
-                        currentNode.getState().reverseLastMove();
-                    }
-                }
-            } else {
-                Random rand = new Random();
-                //System.out.println("Simulation");
-                for (int i = 0; i < simulatedMovesSelection.size(); i++) {
-                    currentNode.state.setDiceRoll(simulatedMovesSelectionDiceRolls.get(i));
-                    currentNode.state.movePiece(simulatedMovesSelection.get(i).getStart().getRow(),simulatedMovesSelection.get(i).getStart().getCol(),simulatedMovesSelection.get(i).getDestination().getRow() ,simulatedMovesSelection.get(i).getDestination().getCol(), true);
-                }
-                currentNode.getState().setDiceRoll(0);
-                while (currentDepth <= depth){                           // Simulation
-                    currentNode.getState().diceRoll();
-                    simulatedMove = currentNode.getState().getPossibleMoves().get(rand.nextInt(currentNode.getState().getPossibleMoves().size()));
-                    currentNode.getState().movePiece(simulatedMove.getStart().getRow(), simulatedMove.getStart().getCol(), simulatedMove.getDestination().getRow(), simulatedMove.getDestination().getCol(), true);
-                    simulatedMoves.add(simulatedMove);
-                    if(currentNode.state.getRollsList().size() == 0){
-                        currentDepth = 1000000000;
-                    }
-                    currentDepth++;
-                }
-                result = currentNode.getState().evaluateMCTS();
-
-                for (int i = 0; i < simulatedMoves.size(); i++) {
-                    currentNode.getState().reverseLastMove();
-                }
-                for (int i = 0; i < simulatedMovesSelection.size(); i++) {
-                    currentNode.getState().reverseLastMove();
-                }
-                //System.out.println("backpropagation");
-                while(currentNode.hasParent()){                         // Backpropagation
-                    currentNode.update(result);
-                    currentNode = currentNode.parent;
-                }
-                currentNode.update(result);
-            }
-            currentIteration++;
         }
         currentNode = root;
         int mostVisits = 0;
@@ -119,6 +54,90 @@ public class MonteCarloTreeSearch implements Bot {
         return currentNode.getMove();
     }
 
+    public void selection(){
+        while (!currentNode.children.isEmpty()) {
+            tempStorage = currentNode.children;
+            for (NodeMCTS child : tempStorage) {
+                temp = uct_formula(child.getMean_value(), child.getVisited(), child.parent.getVisited());
+                if (temp > currentBestChild || !flag) {
+                    currentBestChild = temp;
+                    currentNode = child;
+                    flag = true;
+                }
+            }
+            simulatedMovesSelection.add(currentNode.getMove());
+            simulatedMovesSelectionDiceRolls.add(currentNode.diceRoll);
+            flag = false;
+        }
+    }
+
+    public boolean expansion(NodeMCTS root){
+        if(currentNode.getVisited() != 0 || currentNode == root) {
+            if (currentNode.state.getRollsList().size() == 0) {
+                System.out.println("OUT 1");
+                currentIteration = 1000000;
+            } else {
+                if (currentNode != root) {
+                    for (int i = 0; i < simulatedMovesSelection.size(); i++) {
+                        currentNode.state.setDiceRoll(simulatedMovesSelectionDiceRolls.get(i));
+                        currentNode.state.movePiece(simulatedMovesSelection.get(i).getStart().getRow(), simulatedMovesSelection.get(i).getStart().getCol(), simulatedMovesSelection.get(i).getDestination().getRow(), simulatedMovesSelection.get(i).getDestination().getCol(), true);
+                    }
+                    currentNode.state.diceRoll();
+                }
+                ArrayList<Move> possibleMoves = currentNode.getState().getPossibleMoves();
+                ArrayList<Move> pM = new ArrayList<>(possibleMoves);
+                for (Move m : pM) {
+                    childNode = new NodeMCTS(currentNode, m, currentNode.state);
+                    childNode.diceRoll = currentNode.state.getDiceRoll();
+                    currentNode.children.add(childNode);
+                }
+                if (currentNode != root) {
+                    for (int i = 0; i < simulatedMovesSelection.size(); i++) {
+                        currentNode.getState().reverseLastMove();
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public void simulation(){
+        for (int i = 0; i < simulatedMovesSelection.size(); i++) {
+            currentNode.state.setDiceRoll(simulatedMovesSelectionDiceRolls.get(i));
+            currentNode.state.movePiece(simulatedMovesSelection.get(i).getStart().getRow(),simulatedMovesSelection.get(i).getStart().getCol(),simulatedMovesSelection.get(i).getDestination().getRow() ,simulatedMovesSelection.get(i).getDestination().getCol(), true);
+        }
+        currentNode.getState().setDiceRoll(0);
+        while (currentDepth <= depth && currentNode.state.getRollsList().size() != 0){
+            //Changing simulation strategy
+            //GreedyBot next = new GreedyBot(currentNode.getState());
+            RandomBot next = new RandomBot(currentNode.getState());
+            simulatedMove = next.getMove();
+            currentNode.getState().movePiece(simulatedMove.getStart().getRow(), simulatedMove.getStart().getCol(), simulatedMove.getDestination().getRow(), simulatedMove.getDestination().getCol(), true);
+            simulatedMoves.add(simulatedMove);
+            currentDepth++;
+        }
+        if(eval){
+            result = currentNode.getState().evaluate();
+        }else{
+            result = currentNode.getState().evaluateMCTS();
+        }
+        for (int i = 0; i < simulatedMoves.size(); i++) {
+            currentNode.getState().reverseLastMove();
+        }
+        for (int i = 0; i < simulatedMovesSelection.size(); i++) {
+            currentNode.getState().reverseLastMove();
+        }
+    }
+
+    public void backpropagation(){
+        while(currentNode.hasParent()){
+            currentNode.update(result);
+            currentNode = currentNode.parent;
+        }
+        currentNode.update(result);
+    }
+
     // UCB - Upper confidence bounds formula - Exploration / Exploitation
     public double uct_formula(double mean_node_val, double small_n, double big_n){
         if(small_n == 0){
@@ -128,28 +147,27 @@ public class MonteCarloTreeSearch implements Bot {
     }
 
     @Override
-    public Move getMove() {
-        return createMCTSTree();
-    }
-
+    public Move getMove() {return createMCTSTree();}
     @Override
-    public int getRoll() {
-        return this.diceRollResult;
-    }
+    public int getRoll() {return this.diceRollResult;}
 
+    ArrayList<Move> simulatedMoves;
+    ArrayList<Move> simulatedMovesSelection;
+    ArrayList<Integer> simulatedMovesSelectionDiceRolls;
     public GameState state;
     public Move simulatedMove;
     public NodeMCTS currentNode;
     public NodeMCTS childNode;
     public List<NodeMCTS> tempStorage;
-    public double tunable_c = 1;
+    public double tunable_c = Math.sqrt(2);
     public double currentBestChild;
     public double temp;
     public double result;
     public boolean flag;
+    public boolean eval = false;
     public int diceRollResult;
-    public int maxIterations = 350;
-    public int depth = 20;
+    public int maxIterations = 200;
+    public int depth = 3;
     public int currentDepth;
     public int currentIteration;
 }
