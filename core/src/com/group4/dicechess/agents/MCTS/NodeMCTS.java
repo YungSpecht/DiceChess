@@ -20,6 +20,7 @@ public class NodeMCTS implements Cloneable {
     public int startcol;
     public int endcol;
     public int diceRoll;
+    public boolean expandable;
 
 
     public NodeMCTS(NodeMCTS parent, Move move, GameState state){
@@ -29,6 +30,7 @@ public class NodeMCTS implements Cloneable {
         this.mean_value = 0.0;
         this.visited = 0;
         this.state = state;
+        this.expandable = true;
     }
 
     public void update(double result){
