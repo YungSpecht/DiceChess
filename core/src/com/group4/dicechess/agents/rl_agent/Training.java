@@ -9,6 +9,7 @@ import com.group4.dicechess.agents.rl_agent.utils.Input;
 import com.group4.dicechess.agents.rl_agent.utils.QValues;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 import static com.group4.dicechess.agents.rl_agent.network.NetworkParameters.gamma;
 import static com.group4.dicechess.agents.rl_agent.utils.Utils.print;
@@ -86,7 +87,7 @@ public class Training {
             gameState.movePiece(whiteExp.action().move());
             print("End Turn: White");
 
-            //trainAgent(false, whiteExp, blackExp);
+            trainAgent(false, whiteExp, blackExp);
             blackExp = decide(false);
 
             if (gameOver(blackExp)){
@@ -94,6 +95,8 @@ public class Training {
                 return;
             }
 
+            // TODO: the piece to be moved sometimes doesn't exist!?
+            //
             gameState.movePiece(blackExp.action().move());
             print("End Turn: Black");
         }
@@ -108,8 +111,6 @@ public class Training {
         if (white) return whiteAgent.predictMove(input);
         return blackAgent.predictMove(input);
     }
-    
-
 
     private void trainAgent(boolean white, Experience whiteExp, Experience blackExp) throws Exception {
         QValues qValues;
@@ -191,13 +192,6 @@ public class Training {
         if (white) return whiteAgent.predictMove(input).action();
         return blackAgent.predictMove(input).action();
     }
-
-
-
-
-
-
-
 
     private void printState(double[][][] state){
         try {
