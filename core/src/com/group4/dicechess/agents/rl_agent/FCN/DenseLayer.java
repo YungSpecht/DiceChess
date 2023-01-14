@@ -1,5 +1,7 @@
 package com.group4.dicechess.agents.rl_agent.FCN;
 
+import com.group4.dicechess.agents.NN_Evaluation.network.FC_Layer;
+
 import static com.group4.dicechess.agents.rl_agent.utils.Utils.sum;
 
 public class DenseLayer {
@@ -11,6 +13,15 @@ public class DenseLayer {
                          scale;
 
     public DenseLayer(int numNeurons, int numOutputs, double learningRate){
+        this.numOutputs = numOutputs;
+        this.numNeurons = numNeurons;
+        this.learningRate = learningRate;
+        this.bias = new double[numOutputs];
+        this.scale = 1 / (double) numOutputs;
+        initNeurons(learningRate);
+    }
+
+    public DenseLayer(int numNeurons, int numInputs, int numOutputs, double learningRate){
         this.numOutputs = numOutputs;
         this.numNeurons = numNeurons;
         this.learningRate = learningRate;
@@ -35,7 +46,7 @@ public class DenseLayer {
         }
     }
     
-    public double[] forward (double[] inputs) {
+    public double[] forward(double[] inputs) {
         this.inputs = inputs;
         double[] out = new double[numOutputs];
 
@@ -50,7 +61,7 @@ public class DenseLayer {
         return out;
     }
 
-    public double[] backward (double[] dEdY) {
+    public double[] backward(double[] dEdY) {
 
         double[][] dEdW = transpose(dEdW(dEdY, inputs));
         double[] dEdX = dEdX(dEdY, getLayerWeights());

@@ -1,5 +1,7 @@
 package com.group4.dicechess.agents.rl_agent.FCN;
 
+import com.group4.dicechess.agents.NN_Evaluation.network.FC_Layer;
+
 public class ActivationLayer {
 
     private int numInputs;
