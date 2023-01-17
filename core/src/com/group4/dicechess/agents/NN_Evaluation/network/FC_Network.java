@@ -4,6 +4,7 @@ import com.group4.dicechess.agents.NN_Evaluation.network.FC_Layer;
 import com.group4.dicechess.agents.rl_agent.FCN.ActivationLayer;
 import com.group4.dicechess.agents.rl_agent.FCN.DenseLayer;
 
+
 public class FC_Network {
 
     private final FC_Layer[] fcLayers;
@@ -24,6 +25,18 @@ public class FC_Network {
 
         return input[0];
     }
+
+    public void backward(double[] error){
+        for (FC_Layer layer : fcLayers)
+            error = layer.backward(error);
+    }
+
+    public void update_network(){
+        for (FC_Layer layer : fcLayers)
+            layer.update_layer();
+    }
+
+
 
     public FC_Layer[] getFcLayers() {
         return fcLayers;

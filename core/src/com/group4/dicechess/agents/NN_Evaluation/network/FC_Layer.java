@@ -5,6 +5,7 @@ public class FC_Layer {
 
     public final int numNeurons, numInputs;
     private final boolean activated;
+    private double[] input, output;
 
     public FC_Layer(int numNeurons, int numInputs, boolean activated) {
         this.numNeurons = numNeurons;
@@ -21,12 +22,40 @@ public class FC_Layer {
     }
 
     public double[] forward(double[] input){
-        double[] out = new double[numNeurons];
+        this.input = input;
+        output = new double[numNeurons];
 
         for (int i = 0; i < numNeurons; i++)
-            out[i] = neurons[i].forward(input);
+            output[i] = neurons[i].forward(input);
 
-        return out;
+        return output;
+    }
+
+    public double[] backward(double[] error){
+
+        double[] input_gradient = new double[numInputs];
+        double[] neuron_gradient;
+
+        for (int i = 0; i < numNeurons; i++) {
+            neuron_gradient = neurons[i].backward(input, error[i]);
+            for (int j = 0; j < numInputs; j++) {
+                input_gradient[j] += neuron_gradient[j];
+            }
+        }
+
+        return activated ? input_gradient : activated_gradient(input_gradient);
+    }
+
+    public void update_layer(){
+        for (FC_Neuron neuron : neurons)
+            neuron.update_neuron();
+    }
+
+    private double[] activated_gradient(double[] input_gradient){
+        for (int i = 0; i < numInputs; i++)
+            input_gradient[i] = output[i] < 0 ? 0 : input_gradient[i];
+
+        return input_gradient;
     }
 
     private void init_neurons(){

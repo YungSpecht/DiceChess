@@ -12,7 +12,7 @@ public class FC_Loader {
     private static final String split = ",";
     private static final String PATH = "network_weights/";
 
-    public static void load_network(FC_Network network) throws Exception {
+    public static void load_network(FC_Network network) {
 
         FC_Layer[] layers = network.getFcLayers();
 

@@ -18,7 +18,7 @@ public class ExpectimaxBot implements Bot{
     public Move getMove() {
         diceRollResult =  state.diceRoll();
         ExpectimaxTree tree = new ExpectimaxTree(state);
-        tree.buildTree(7);
+        tree.buildTree(3);
         return tree.getBestMove();
     }
 

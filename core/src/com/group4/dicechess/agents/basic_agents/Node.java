@@ -14,16 +14,15 @@ public class Node{
     private Node bestNextNode;
     private boolean chanceNode;
     private int turnCount;
-    private NN_Evaluation eval;
 
-    public Node(GameState state) throws Exception {
+
+    public Node(GameState state) {
         children = new ArrayList<Node>();
         value = 0;
         chanceNode = state.getDiceRoll() == 0;
         turnCount = state.getTurnCounter();
         parent = null;
         bestNextNode = null;
-        eval = new NN_Evaluation();
     }
     
 
@@ -57,7 +56,7 @@ public class Node{
 
     public void computeValue(GameState state){
         if(children.size() == 0){
-            value = eval.evaluate(state.getBoard());
+            value = NN_Evaluation.evaluate(state.getBoard());
             // value = state.evaluate();
         }
         else{

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.group4.dicechess.GameState;
 import com.group4.dicechess.Representation.Move;
+import com.group4.dicechess.agents.NN_Evaluation.NN_Evaluation;
 
 public class ExpectimaxTree {
     private Node root;
@@ -16,11 +17,10 @@ public class ExpectimaxTree {
     }
 
     public ExpectimaxTree(GameState currentState){
-        try {
-            root = new Node(currentState);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
+        new NN_Evaluation();
+        root = new Node(currentState);
+
         state = currentState;
         possibleOutcomes = state.getPossibleMoves();
 
@@ -39,11 +39,8 @@ public class ExpectimaxTree {
                 for(int roll : r){
                     game.setDiceRoll(roll);
                     Node childNode = null;
-                    try {
-                        childNode = new Node(game);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
+                    childNode = new Node(game);
+
                     childNode.setParent(pointer);
                     pointer.addChild(childNode);
                     buildLevel(childNode, game, --depth);

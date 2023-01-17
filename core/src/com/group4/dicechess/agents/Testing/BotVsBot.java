@@ -4,6 +4,7 @@ import com.group4.dicechess.GameState;
 import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.agents.Bot;
 import com.group4.dicechess.agents.MCTS.MonteCarloTreeSearch;
+import com.group4.dicechess.agents.NN_Evaluation.NN_Evaluation;
 import com.group4.dicechess.agents.basic_agents.ExpectimaxBot;
 import com.group4.dicechess.agents.basic_agents.GreedyBot;
 import com.group4.dicechess.agents.basic_agents.RandomBot;
@@ -30,8 +31,8 @@ public class BotVsBot {
     private Move currentMove;
     private int turnCounter;
     private int movesMade;
-    private int BlackScore;
-    private int WhiteScore;
+    private double BlackScore;
+    private double WhiteScore;
     private double drawScore;
     private int drawDecider = 300;
     private int moveLimit = 80;
@@ -91,11 +92,11 @@ public class BotVsBot {
                     }
                 }
             }else {
-                BlackScore = game.evaluateMCTS();
-                WhiteScore = game.evaluate();
-                if(Math.abs(WhiteScore-BlackScore)>drawDecider){
+                BlackScore = NN_Evaluation.evaluate(game.getBoard());
+                WhiteScore = NN_Evaluation.evaluate(game.getBoard());
+                if(Math.abs(WhiteScore-BlackScore)>drawDecider && true){
                     System.out.println("decider");
-                    winner = ((WhiteScore>BlackScore)) ? "Black" : "White";
+                    winner = (-WhiteScore>BlackScore) ? "Black" : "White";
                     if(i < (numberOfGames/2)){
                         if(winner.equals("White")){
                             WhiteBotWin++;
