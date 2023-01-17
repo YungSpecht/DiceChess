@@ -5,26 +5,29 @@ import java.util.List;
 import java.util.Random;
 
 import com.group4.dicechess.GameState;
+import com.group4.dicechess.agents.NN_Evaluation.NN_Evaluation;
 
 public class Node{
     private Node parent;
     private List<Node> children;
-    private int value;
+    private double value;
     private Node bestNextNode;
     private boolean chanceNode;
     private int turnCount;
+    private NN_Evaluation eval;
 
-    public Node(GameState state){
+    public Node(GameState state) throws Exception {
         children = new ArrayList<Node>();
         value = 0;
         chanceNode = state.getDiceRoll() == 0;
         turnCount = state.getTurnCounter();
         parent = null;
         bestNextNode = null;
+        eval = new NN_Evaluation();
     }
     
 
-    public int getValue(){
+    public double getValue(){
         return value;
     }
 
@@ -54,7 +57,8 @@ public class Node{
 
     public void computeValue(GameState state){
         if(children.size() == 0){
-            value = state.evaluate();
+            value = eval.evaluate(state.getBoard());
+            // value = state.evaluate();
         }
         else{
             if(chanceNode){

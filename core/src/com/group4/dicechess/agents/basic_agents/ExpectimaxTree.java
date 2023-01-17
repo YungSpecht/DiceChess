@@ -10,20 +10,17 @@ public class ExpectimaxTree {
     private GameState state;
     private ArrayList<Move> possibleOutcomes;
 
-    public static void main(String[] args) {
-        GameState test = new GameState();
-        test.diceRoll();
-        ExpectimaxTree tree = new ExpectimaxTree(test);
-        tree.buildTree(12);
-        System.out.println(tree.getBestMove().getPiece().getId());
-    }
 
     public Node getRoot(){
         return root;
     }
 
     public ExpectimaxTree(GameState currentState){
-        root = new Node(currentState);
+        try {
+            root = new Node(currentState);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         state = currentState;
         possibleOutcomes = state.getPossibleMoves();
 
@@ -41,7 +38,12 @@ public class ExpectimaxTree {
                 r.addAll(rolls);
                 for(int roll : r){
                     game.setDiceRoll(roll);
-                    Node childNode = new Node(game);
+                    Node childNode = null;
+                    try {
+                        childNode = new Node(game);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                     childNode.setParent(pointer);
                     pointer.addChild(childNode);
                     buildLevel(childNode, game, --depth);
@@ -59,7 +61,12 @@ public class ExpectimaxTree {
                 pM.addAll(possibleMoves);
                 for(Move m : pM){
                     game.movePiece(m.getStart().getRow(), m.getStart().getCol(), m.getDestination().getRow(), m.getDestination().getCol(), true);
-                    Node childNode = new Node(game);
+                    Node childNode = null;
+                    try {
+                        childNode = new Node(game);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                     childNode.setParent(pointer);
                     pointer.addChild(childNode);
                     buildLevel(childNode, game, --depth);

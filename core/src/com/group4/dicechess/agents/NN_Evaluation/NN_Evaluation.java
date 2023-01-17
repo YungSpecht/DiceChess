@@ -14,7 +14,7 @@ public class NN_Evaluation {
 
     private final FC_Network network;
 
-    public NN_Evaluation(GameState gameState) throws Exception {
+    public NN_Evaluation() throws Exception {
         network = new FC_Network();
         load_network(network);
 
@@ -56,6 +56,6 @@ public class NN_Evaluation {
 
 
     public static void main(String[] args) throws Exception {
-        new NN_Evaluation(new GameState());
+        new NN_Evaluation();
     }
 }
