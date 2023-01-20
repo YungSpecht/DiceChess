@@ -4,6 +4,7 @@ import com.group4.dicechess.GameState;
 import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.Representation.Piece;
 import com.group4.dicechess.agents.Bot;
+import com.group4.dicechess.agents.NN_Evaluation.NN_Evaluation;
 import com.group4.dicechess.agents.basic_agents.GreedyBot;
 import com.group4.dicechess.agents.basic_agents.RandomBot;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class MonteCarloTreeSearch implements Bot {
     public MonteCarloTreeSearch(GameState state){
         this.state = state;
         this.diceRollResult = 0;
+        new NN_Evaluation();
     }
 
     public Move createMCTSTree(){
@@ -160,9 +162,9 @@ public class MonteCarloTreeSearch implements Bot {
         }
         if(!gameOver){
             if(eval){
-                result = currentNode.getState().evaluate();
+                result = NN_Evaluation.evaluate(currentNode.getState().getBoard());
             }else{
-                result = currentNode.getState().evaluateMCTS();
+                result = NN_Evaluation.evaluate(currentNode.getState().getBoard());
             }
         }
         for (int i = 0; i < simulatedMoves.size(); i++) {
