@@ -1,11 +1,9 @@
-package com.group4.dicechess.agents.basic_agents;
+package com.group4.dicechess.agents.Expectimax;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import com.group4.dicechess.GameState;
-import com.group4.dicechess.agents.NN_Evaluation.NN_Evaluation;
 
 public class Node{
     private Node parent;

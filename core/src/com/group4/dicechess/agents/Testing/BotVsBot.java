@@ -5,7 +5,7 @@ import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.agents.Bot;
 import com.group4.dicechess.agents.MCTS.MonteCarloTreeSearch;
 import com.group4.dicechess.agents.NN_Evaluation.NN_Evaluation;
-import com.group4.dicechess.agents.basic_agents.ExpectimaxBot;
+import com.group4.dicechess.agents.Expectimax.ExpectimaxBot;
 import com.group4.dicechess.agents.basic_agents.GreedyBot;
 import com.group4.dicechess.agents.basic_agents.RandomBot;
 import com.group4.dicechess.agents.rl_agent.RL_Agent;

@@ -1,4 +1,4 @@
-package com.group4.dicechess.agents.basic_agents;
+package com.group4.dicechess.agents.Expectimax;
 
 import java.util.ArrayList;
 
