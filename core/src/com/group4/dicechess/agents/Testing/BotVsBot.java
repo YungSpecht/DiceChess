@@ -41,11 +41,12 @@ public class BotVsBot {
         this.WhiteBot = WhiteBot;
         this.BlackBot = BlackBot;
         this.numberOfGames = numberOfGames;
+        new NN_Evaluation();
         this.createBots();
     }
 
     public static void main(String[] args) {
-        BotVsBot simulation = new BotVsBot(1, 3, 10);
+        BotVsBot simulation = new BotVsBot(2, 3, 1000);
         simulation.startSimulation();
     }
 
