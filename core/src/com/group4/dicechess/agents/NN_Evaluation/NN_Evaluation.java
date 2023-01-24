@@ -24,11 +24,11 @@ public class NN_Evaluation {
     }
 
     // Call this method to evaluate a given state.
-    public static double evaluate(Board board){
-        return network.forward(get_state_vector(board));
+    public static double evaluate(Board board, boolean whitesTurn){
+        return network.forward(get_state_vector(board, whitesTurn));
     }
 
-    private static double[] get_state_vector(Board board){
+    private static double[] get_state_vector(Board board, boolean whitesTurn){
 
         double[] state = new double[768];
         ArrayList<Piece> pieces = board.getAllPieces();
@@ -41,7 +41,8 @@ public class NN_Evaluation {
             col = piece.getCol();
 
             // Puts white rook in (0,0)
-            row = Math.abs(row - 7);
+            if (whitesTurn)
+                row = Math.abs(row - 7);
 
             index = get_start_index(pieceID, piece.getWhiteStatus());
             index += row * 8 + col;

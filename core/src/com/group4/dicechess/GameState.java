@@ -3,10 +3,7 @@ package com.group4.dicechess;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.group4.dicechess.Representation.Board;
-import com.group4.dicechess.Representation.Move;
-import com.group4.dicechess.Representation.Piece;
-import com.group4.dicechess.Representation.Tables;
+import com.group4.dicechess.Representation.*;
 import com.group4.dicechess.agents.rl_agent.Training;
 import com.group4.dicechess.agents.rl_agent.utils.RLMove;
 
@@ -355,5 +352,26 @@ public class GameState {
 
     public boolean isWhitesTurn(){
         return isWhitesTurn;
+    }
+
+
+    public boolean drawWinner(){
+        Square[][] mBoard = board.getMBoard();
+        int whiteScore = 0, blackScore = 0;
+        Piece piece;
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                piece = mBoard[i][j].getPiece();
+                if (piece == null) continue;
+
+                if (piece.getWhiteStatus())
+                    whiteScore += piece.getValue();
+                else
+                    blackScore += piece.getValue();
+            }
+        }
+
+        return whiteScore >= blackScore;
     }
 }

@@ -13,16 +13,17 @@ public class ExpectimaxTree {
     private final GameState state;
     private final ArrayList<Move> possibleOutcomes;
     private static int counter;
+    private final boolean nnEval;
 
     public Node getRoot(){
         return root;
     }
 
-    public ExpectimaxTree(GameState currentState){
+    public ExpectimaxTree(GameState currentState, boolean nnEval){
         root = new Node(currentState);
         state = currentState;
         possibleOutcomes = state.getPossibleMoves();
-        //new NN_Evaluation();
+        this.nnEval = nnEval;
     }
 
     public static void main(String[] args) {
@@ -42,8 +43,9 @@ public class ExpectimaxTree {
 
     private void starMinMax(Node pointer, GameState game,  int depth, double alpha, double beta){
         if(depth <= 0 || isTerminal(pointer, game)){
-            pointer.setValue(game.evaluate());
-            //pointer.setValue(NN_Evaluation.evaluate(game.getBoard()));
+            if (nnEval)
+                pointer.setValue(NN_Evaluation.evaluate(game.getBoard(), game.turnCounter % 2 == 0));
+            else pointer.setValue(game.evaluate());
             counter++;
         }
         else if(pointer.isChanceNode()){

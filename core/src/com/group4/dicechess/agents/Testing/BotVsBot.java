@@ -46,7 +46,7 @@ public class BotVsBot {
     }
 
     public static void main(String[] args) {
-        BotVsBot simulation = new BotVsBot(2, 3, 1000);
+        BotVsBot simulation = new BotVsBot(3, 1, 10);
         simulation.startSimulation();
     }
 
@@ -92,29 +92,21 @@ public class BotVsBot {
                         WhiteBotWin++;
                     }
                 }
-            }else {
-                BlackScore = NN_Evaluation.evaluate(game.getBoard());
-                WhiteScore = NN_Evaluation.evaluate(game.getBoard());
-                if(Math.abs(WhiteScore-BlackScore)>drawDecider && true){
-                    System.out.println("decider");
-                    winner = (-WhiteScore>BlackScore) ? "Black" : "White";
-                    if(i < (numberOfGames/2)){
-                        if(winner.equals("White")){
-                            WhiteBotWin++;
-                        }else {
-                            BlackBotWin++;
-                        }
-                    }else{
-                        if(winner.equals("White")){
-                            BlackBotWin++;
-                        }else {
-                            WhiteBotWin++;
-                        }
+            }else if(i < (numberOfGames/2)){
+                System.out.println("decider");
+                    if(game.drawWinner()){
+                        WhiteBotWin++;
+                    }else {
+                        BlackBotWin++;
                     }
+            }else{
+                if(game.drawWinner()){
+                    BlackBotWin++;
                 }else {
-                    drawScore++;
+                    WhiteBotWin++;
                 }
             }
+
             game.board.printBoard();
 
         }
@@ -150,8 +142,8 @@ public class BotVsBot {
                 bot1 = "MCTS bot";
                 break;
             case 5:
-                botW = rl_agent;
-                bot1 = "RL agent";
+                botW = new ExpectimaxBot(game, false);
+                bot1 = "Standard Expectimax";
                 break;
         }
         switch(this.BlackBot){
@@ -172,8 +164,8 @@ public class BotVsBot {
                 bot2 = "MCTS bot";
                 break;
             case 5:
-                botB = rl_agent;
-                bot2 = "RL agent";
+                botB = new ExpectimaxBot(game, false);
+                bot2 = "Standard Expectimax";
                 break;
         }
     }
