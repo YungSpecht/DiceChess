@@ -76,7 +76,6 @@ public class BotsScreen implements Screen {
         Gdx.input.setInputProcessor(new InputAdapter(){
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                System.out.println(" x: " +screenX+ " y: " + screenY);
                 if(screenX >= 15 && screenX <= 45 && screenY >= 10 && screenY <= 40){
                     game.setScreen(new GameChoiceScreen(game));
                     Gdx.input.setInputProcessor(null);
