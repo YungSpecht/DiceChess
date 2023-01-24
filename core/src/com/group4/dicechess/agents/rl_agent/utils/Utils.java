@@ -67,6 +67,15 @@ public class Utils {
         return out;
     }
 
+    public static double sum(double[] input){
+        double out = 0;
+        for (double v : input)
+            out += v;
+
+        return out;
+    }
+
+
     public static double[][] dotProduct(double[][] matA, double[][] matB){
         assert matA.length == matB.length : "Unequal length matrices";
         assert matA[0].length == matB[0].length : "Unequal length matrices";

@@ -1,17 +1,32 @@
 package com.group4.dicechess.agents.rl_agent.FCN;
 
+import com.group4.dicechess.agents.NN_Evaluation.network.FC_Layer;
+
+import static com.group4.dicechess.agents.rl_agent.utils.Utils.sum;
+
 public class DenseLayer {
 
     private Neuron[] neurons;
     private final int numOutputs, numNeurons;
     private double[] bias, inputs;
-    private final double learningRate;
+    private final double learningRate,
+                         scale;
 
     public DenseLayer(int numNeurons, int numOutputs, double learningRate){
         this.numOutputs = numOutputs;
         this.numNeurons = numNeurons;
         this.learningRate = learningRate;
         this.bias = new double[numOutputs];
+        this.scale = 1 / (double) numOutputs;
+        initNeurons(learningRate);
+    }
+
+    public DenseLayer(int numNeurons, int numInputs, int numOutputs, double learningRate){
+        this.numOutputs = numOutputs;
+        this.numNeurons = numNeurons;
+        this.learningRate = learningRate;
+        this.bias = new double[numOutputs];
+        this.scale = 1 / (double) numOutputs;
         initNeurons(learningRate);
     }
 
@@ -21,6 +36,7 @@ public class DenseLayer {
         this.learningRate = learningRate;
         this.neurons = neurons;
         this.bias = bias;
+        this.scale = 1 / (double) numOutputs;
     }
 
     private void initNeurons(double learningRate){
@@ -30,7 +46,7 @@ public class DenseLayer {
         }
     }
     
-    public double[] forward (double[] inputs) {
+    public double[] forward(double[] inputs) {
         this.inputs = inputs;
         double[] out = new double[numOutputs];
 
@@ -45,19 +61,21 @@ public class DenseLayer {
         return out;
     }
 
-    public double[] backward (double[] dEdY) {
+    public double[] backward(double[] dEdY) {
 
         double[][] dEdW = transpose(dEdW(dEdY, inputs));
+        double[] dEdX = dEdX(dEdY, getLayerWeights());
+        double dEdB = scale * sum(dEdY);
 
         for (int i = 0; i < numNeurons; i++) {
             neurons[i].backward(dEdW[i]);
         }
 
         for (int i = 0; i < numOutputs; i++) {
-            bias[i] -= learningRate * dEdY[i];
+            bias[i] = bias[i] - learningRate * dEdB;
         }
 
-        return dEdX(dEdY, getLayerWeights());
+        return dEdX;
     }
 
     private double[] dEdX(double[] dEdY, double[][] layerWeights){
@@ -73,17 +91,16 @@ public class DenseLayer {
     }
 
     private double[][] dEdW(double[] dEdY, double[] inputs){
+        assert inputs != null : "No inputs for backpropagation";
+
         double[][] gradient = new double[numOutputs][numNeurons];
 
-        if (inputs == null)
-            System.out.println();
 
         for (int i = 0; i < numOutputs; i++) {
             for (int j = 0; j < numNeurons; j++) {
-                gradient[i][j] = dEdY[i] * inputs[j];
+                gradient[i][j] = scale * dEdY[i] * inputs[j];
             }
         }
-
 
         return gradient;
     }
@@ -99,8 +116,6 @@ public class DenseLayer {
 
         return output;
     }
-
-
 
     public double[][] getLayerWeights(){
         double[][] out = new double[numNeurons][numOutputs];

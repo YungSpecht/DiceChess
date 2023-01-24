@@ -12,8 +12,6 @@ buildscript {
 
 
     }
-
-
 }
 
 allprojects {
@@ -45,6 +43,7 @@ allprojects {
             languageVersion = JavaLanguageVersion.of(19)
         }
     }
+
 
 }
 

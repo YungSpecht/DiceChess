@@ -4,7 +4,8 @@ import com.group4.dicechess.GameState;
 import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.agents.Bot;
 import com.group4.dicechess.agents.MCTS.MonteCarloTreeSearch;
-import com.group4.dicechess.agents.basic_agents.ExpectimaxBot;
+import com.group4.dicechess.agents.NN_Evaluation.NN_Evaluation;
+import com.group4.dicechess.agents.Expectimax.ExpectimaxBot;
 import com.group4.dicechess.agents.basic_agents.GreedyBot;
 import com.group4.dicechess.agents.basic_agents.RandomBot;
 import com.group4.dicechess.agents.rl_agent.RL_Agent;
@@ -30,8 +31,8 @@ public class BotVsBot {
     private Move currentMove;
     private int turnCounter;
     private int movesMade;
-    private int BlackScore;
-    private int WhiteScore;
+    private double BlackScore;
+    private double WhiteScore;
     private double drawScore;
     private int drawDecider = 300;
     private int moveLimit = 80;
@@ -40,11 +41,12 @@ public class BotVsBot {
         this.WhiteBot = WhiteBot;
         this.BlackBot = BlackBot;
         this.numberOfGames = numberOfGames;
+        new NN_Evaluation();
         this.createBots();
     }
 
     public static void main(String[] args) {
-        BotVsBot simulation = new BotVsBot(1, 3, 10);
+        BotVsBot simulation = new BotVsBot(3, 1, 10);
         simulation.startSimulation();
     }
 
@@ -90,29 +92,21 @@ public class BotVsBot {
                         WhiteBotWin++;
                     }
                 }
-            }else {
-                BlackScore = game.evaluateMCTS();
-                WhiteScore = game.evaluate();
-                if(Math.abs(WhiteScore-BlackScore)>drawDecider){
-                    System.out.println("decider");
-                    winner = ((WhiteScore>BlackScore)) ? "Black" : "White";
-                    if(i < (numberOfGames/2)){
-                        if(winner.equals("White")){
-                            WhiteBotWin++;
-                        }else {
-                            BlackBotWin++;
-                        }
-                    }else{
-                        if(winner.equals("White")){
-                            BlackBotWin++;
-                        }else {
-                            WhiteBotWin++;
-                        }
+            }else if(i < (numberOfGames/2)){
+                System.out.println("decider");
+                    if(game.drawWinner()){
+                        WhiteBotWin++;
+                    }else {
+                        BlackBotWin++;
                     }
+            }else{
+                if(game.drawWinner()){
+                    BlackBotWin++;
                 }else {
-                    drawScore++;
+                    WhiteBotWin++;
                 }
             }
+
             game.board.printBoard();
 
         }
@@ -148,8 +142,8 @@ public class BotVsBot {
                 bot1 = "MCTS bot";
                 break;
             case 5:
-                botW = rl_agent;
-                bot1 = "RL agent";
+                botW = new ExpectimaxBot(game, false);
+                bot1 = "Standard Expectimax";
                 break;
         }
         switch(this.BlackBot){
@@ -170,8 +164,8 @@ public class BotVsBot {
                 bot2 = "MCTS bot";
                 break;
             case 5:
-                botB = rl_agent;
-                bot2 = "RL agent";
+                botB = new ExpectimaxBot(game, false);
+                bot2 = "Standard Expectimax";
                 break;
         }
     }

@@ -165,9 +165,9 @@ public class MonteCarloTreeSearch implements Bot {
         }
         if(!gameOver){
             if(eval){
-                result = currentNode.getState().evaluate();
+                //result = NN_Evaluation.evaluate(currentNode.getState().getBoard());
             }else{
-                result = currentNode.getState().evaluateMCTS();
+                //result = NN_Evaluation.evaluate(currentNode.getState().getBoard());
             }
         }
         for (int i = 0; i < simulatedMoves.size(); i++) {
