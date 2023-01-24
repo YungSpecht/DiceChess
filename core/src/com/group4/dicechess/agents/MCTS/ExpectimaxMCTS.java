@@ -1,8 +1,9 @@
-package com.group4.dicechess.agents.basic_agents;
+package com.group4.dicechess.agents.MCTS;
 
 import com.group4.dicechess.GameState;
 import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.agents.Bot;
+import com.group4.dicechess.agents.basic_agents.ExpectimaxTree;
 
 public class ExpectimaxMCTS implements Bot{
 

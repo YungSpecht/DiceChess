@@ -4,7 +4,6 @@ import com.group4.dicechess.GameState;
 import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.Representation.Piece;
 import com.group4.dicechess.agents.Bot;
-import com.group4.dicechess.agents.basic_agents.ExpectimaxMCTS;
 import com.group4.dicechess.agents.basic_agents.RandomBot;
 import java.util.ArrayList;
 import java.util.List;
