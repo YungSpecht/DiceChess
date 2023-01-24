@@ -144,7 +144,7 @@ public class BotVsBot {
                 bot1 = "Expectimax bot";
                 break;
             case 4:
-                botW = new MonteCarloTreeSearch(game);
+                botW = new MonteCarloTreeSearch(game, false);
                 bot1 = "MCTS bot";
                 break;
             case 5:
@@ -166,7 +166,7 @@ public class BotVsBot {
                 bot2 = "Expectimax bot";
                 break;
             case 4:
-                botB = new MonteCarloTreeSearch(game);
+                botB = new MonteCarloTreeSearch(game, false);
                 bot2 = "MCTS bot";
                 break;
             case 5:

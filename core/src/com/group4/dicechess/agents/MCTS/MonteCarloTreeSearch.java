@@ -4,16 +4,17 @@ import com.group4.dicechess.GameState;
 import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.Representation.Piece;
 import com.group4.dicechess.agents.Bot;
-import com.group4.dicechess.agents.basic_agents.GreedyBot;
+import com.group4.dicechess.agents.basic_agents.ExpectimaxMCTS;
 import com.group4.dicechess.agents.basic_agents.RandomBot;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MonteCarloTreeSearch implements Bot {
 
-    public MonteCarloTreeSearch(GameState state){
+    public MonteCarloTreeSearch(GameState state, boolean hybrid){
         this.state = state;
         this.diceRollResult = 0;
+        this.hybrid = hybrid;
     }
 
     public Move createMCTSTree(){
@@ -89,6 +90,7 @@ public class MonteCarloTreeSearch implements Bot {
                         currentNode.expandable = false;
                     }
                 }
+
                 if(currentNode != root){
                     for(int roll: currentNode.state.getRollsList()){
                         currentNode.state.setDiceRoll(roll);
@@ -129,9 +131,13 @@ public class MonteCarloTreeSearch implements Bot {
         boolean gameOver = false;
         while (currentDepth <= depth && currentNode.state.getRollsList().size() != 0 && !gameOver){
             //Changing simulation strategy
-            //GreedyBot next = new GreedyBot(currentNode.getState());
-            RandomBot next = new RandomBot(currentNode.getState());
-            simulatedMove = next.getMove();
+            if(hybrid){
+                ExpectimaxMCTS next = new ExpectimaxMCTS(currentNode.getState());
+                simulatedMove = next.getMove();
+            }else {
+                RandomBot next = new RandomBot(currentNode.getState());
+                simulatedMove = next.getMove();
+            }
             currentNode.getState().movePiece(simulatedMove.getStart().getRow(), simulatedMove.getStart().getCol(), simulatedMove.getDestination().getRow(), simulatedMove.getDestination().getCol(), true);
             simulatedMoves.add(simulatedMove);
             currentDepth++;
@@ -140,9 +146,9 @@ public class MonteCarloTreeSearch implements Bot {
             for(int i = 0; i < white.size(); i++){
                 if(white.get(i).getId().equals("K")){
                     if(eval){
-                        result = -1000000;
+                        result = -100000000;
                     } else{
-                        result = 100000;
+                        result = 100000000;
                     }
                     gameOver = true;
                 }
@@ -150,9 +156,9 @@ public class MonteCarloTreeSearch implements Bot {
             for(int i = 0; i < black.size(); i++){
                 if(black.get(i).getId().equals("K")){
                     if(eval){
-                        result = 100000;
+                        result = 100000000;
                     } else{
-                        result = -1000000;
+                        result = -100000000;
                     }
                     gameOver = true;
                 }
@@ -193,23 +199,23 @@ public class MonteCarloTreeSearch implements Bot {
     public Move getMove() {return createMCTSTree();}
     @Override
     public int getRoll() {return this.diceRollResult;}
-
     ArrayList<Move> simulatedMoves;
     ArrayList<Move> simulatedMovesSelection;
     ArrayList<Integer> simulatedMovesSelectionDiceRolls;
+    public boolean hybrid;
     public GameState state;
     public Move simulatedMove;
     public NodeMCTS currentNode;
     public NodeMCTS childNode;
     public List<NodeMCTS> tempStorage;
-    public double tunable_c = Math.sqrt(2);
+    public double tunable_c = 2;
     public double currentBestChild;
     public double temp;
     public double result;
     public boolean flag;
     public boolean eval = false;
     public int diceRollResult;
-    public int maxIterations = 200;
+    public int maxIterations = 300;
     public int depth = 2;
     public int currentDepth;
     public int currentIteration;

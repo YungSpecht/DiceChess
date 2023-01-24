@@ -24,9 +24,23 @@ public class BotsScreen implements Screen {
     Texture nnb;
     Sprite snnb;
 
+    Texture MCTSHybrid;
+    Sprite sMCTSHybrid;
+    Texture Hybrid;
+    Sprite sHybrid;
+
     public BotsScreen(DiceChessGame currentGame){
         this.game = currentGame;
         this.textureUtils = new TextureUtils();
+
+        MCTSHybrid = new Texture("FinalAssets/MH.png");
+        sMCTSHybrid = new Sprite(MCTSHybrid);
+        sMCTSHybrid.setSize(245, 45);
+        sMCTSHybrid.setPosition(405, 260);
+        Hybrid = new Texture("FinalAssets/EH.png");
+        sHybrid = new Sprite(Hybrid);
+        sHybrid.setSize(295, 45);
+        sHybrid.setPosition(403, 180);
         greedyb = new Texture("FinalAssets/fre.png");
         randomb = new Texture("FinalAssets/ran.png");
         mctsb = new Texture("FinalAssets/mc.png");
@@ -40,13 +54,13 @@ public class BotsScreen implements Screen {
         srandomb.setSize(180, 43);
         sgreedyb.setSize(170, 45);
         sexpectimaxb.setSize(200, 45);
-        sexpectimaxb.setPosition(353, 180);
+        sexpectimaxb.setPosition(190, 180);
         snnb.setSize(245, 47);
         snnb.setPosition(330, 100);
         srandomb.setPosition(360, 420);
         sgreedyb.setPosition(365, 340);
         smctsb.setSize(150, 45);
-        smctsb.setPosition(375, 260);
+        smctsb.setPosition(245, 260);
        }
 
     @Override
@@ -62,6 +76,7 @@ public class BotsScreen implements Screen {
         Gdx.input.setInputProcessor(new InputAdapter(){
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                System.out.println(" x: " +screenX+ " y: " + screenY);
                 if(screenX >= 15 && screenX <= 45 && screenY >= 10 && screenY <= 40){
                     game.setScreen(new GameChoiceScreen(game));
                     Gdx.input.setInputProcessor(null);
@@ -76,21 +91,28 @@ public class BotsScreen implements Screen {
                     game.setScreen(new GameScreen(game, 2));
                     Gdx.input.setInputProcessor(null);
                 }
+
                 // MCTS
-                if(screenX >= 375 && screenX <= 523 && screenY >= 295 && screenY <= 339){
+                if(screenX >= 245 && screenX <= 394 && screenY >= 296 && screenY <= 341){
                     game.setScreen(new GameScreen(game, 4));
                     Gdx.input.setInputProcessor(null);
                 }
+
                 // Expectimax
-                if(screenX >= 353 && screenX <= 553 && screenY >= 375 && screenY <= 420){
+                if(screenX >= 191 && screenX <= 390 && screenY >= 376 && screenY <= 420){
                     game.setScreen(new GameScreen(game, 3));
                     Gdx.input.setInputProcessor(null);
                 }
-                // Neural network
-                if(screenX >= 327 && screenX <= 572 && screenY >= 453 && screenY <= 500){
-                    game.setScreen(new GameScreen(game, 5));
+
+                // MCTS Hybrid
+                if(screenX >= 406 && screenX <= 650 && screenY >= 296 && screenY <= 341){
+                    game.setScreen(new GameScreen(game, 6));
                     Gdx.input.setInputProcessor(null);
-                    //System.out.println("Working on Neural network");
+                }
+                // Expectimax Hybrid
+                if(screenX >= 403 && screenX <= 699 && screenY >= 376 && screenY <= 420){
+                    //game.setScreen(new GameScreen(game, 3));
+                    //Gdx.input.setInputProcessor(null);
                 }
                 return true;
             }
@@ -110,26 +132,33 @@ public class BotsScreen implements Screen {
                     sgreedyb.setSize(170, 45);
                     sgreedyb.setPosition(365, 340);
                 }
-                if(screenX >= 375 && screenX <= 523 && screenY >= 295 && screenY <= 339){
+                if(screenX >= 245 && screenX <= 394 && screenY >= 296 && screenY <= 341){
                     smctsb.setSize(154, 49);
-                    smctsb.setPosition(373, 258);
+                    smctsb.setPosition(243, 258);
                 } else{
                     smctsb.setSize(150, 45);
-                    smctsb.setPosition(375, 260);
+                    smctsb.setPosition(245, 260);
                 }
-                if(screenX >= 353 && screenX <= 553 && screenY >= 375 && screenY <= 420){
+                if(screenX >= 191 && screenX <= 390 && screenY >= 376 && screenY <= 420){
                     sexpectimaxb.setSize(204, 49);
-                    sexpectimaxb.setPosition(351, 178);
+                    sexpectimaxb.setPosition(188, 178);
                 } else{
                     sexpectimaxb.setSize(200, 45);
-                    sexpectimaxb.setPosition(353, 180);
+                    sexpectimaxb.setPosition(190, 180);
                 }
-                if(screenX >= 327 && screenX <= 572 && screenY >= 453 && screenY <= 500){
-                    snnb.setSize(249, 51);
-                    snnb.setPosition(328, 98);
+                if(screenX >= 406 && screenX <= 650 && screenY >= 296 && screenY <= 341){
+                    sMCTSHybrid.setSize(249, 49);
+                    sMCTSHybrid.setPosition(403, 258);
                 } else{
-                    snnb.setSize(245, 47);
-                    snnb.setPosition(330, 100);
+                    sMCTSHybrid.setSize(245, 45);
+                    sMCTSHybrid.setPosition(405, 260);
+                }
+                if(screenX >= 403 && screenX <= 699 && screenY >= 376 && screenY <= 420){
+                    sHybrid.setSize(299, 49);
+                    sHybrid.setPosition(401, 178);
+                } else{
+                    sHybrid.setSize(295, 45);
+                    sHybrid.setPosition(403, 180);
                 }
                 return true;
             }
@@ -140,7 +169,9 @@ public class BotsScreen implements Screen {
         game.batch.draw(srandomb, srandomb.getX(), srandomb.getY(), srandomb.getWidth(), srandomb.getHeight());
         game.batch.draw(smctsb, smctsb.getX(), smctsb.getY(), smctsb.getWidth(), smctsb.getHeight());
         game.batch.draw(sexpectimaxb, sexpectimaxb.getX(), sexpectimaxb.getY(), sexpectimaxb.getWidth(), sexpectimaxb.getHeight());
-        game.batch.draw(snnb, snnb.getX(), snnb.getY(), snnb.getWidth(), snnb.getHeight());
+        //game.batch.draw(snnb, snnb.getX(), snnb.getY(), snnb.getWidth(), snnb.getHeight());
+        game.batch.draw(sHybrid, sHybrid.getX(), sHybrid.getY(), sHybrid.getWidth(), sHybrid.getHeight());
+        game.batch.draw(sMCTSHybrid, sMCTSHybrid.getX(), sMCTSHybrid.getY(), sMCTSHybrid.getWidth(), sMCTSHybrid.getHeight());
         game.batch.draw(spriteArrow, spriteArrow.getX(), spriteArrow.getY(), spriteArrow.getWidth(), spriteArrow.getHeight());
         game.batch.end();
     }

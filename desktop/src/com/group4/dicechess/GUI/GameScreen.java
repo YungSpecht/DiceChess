@@ -319,10 +319,13 @@ public class GameScreen implements Screen {
                     bot = new ExpectimaxBot(gameLoop);
                     break;
                 case 4:
-                    bot = new MonteCarloTreeSearch(gameLoop);
+                    bot = new MonteCarloTreeSearch(gameLoop, false);
                     break;
                 case 5:
                     bot = rl_agent;
+                    break;
+                case 6:
+                    bot = new MonteCarloTreeSearch(gameLoop, true);
                     break;
             }
             botPlaying = false;
