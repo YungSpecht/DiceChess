@@ -165,9 +165,9 @@ public class MonteCarloTreeSearch implements Bot {
         }
         if(!gameOver){
             if(eval){
-                //result = NN_Evaluation.evaluate(currentNode.getState().getBoard());
+                result = currentNode.getState().evaluate();
             }else{
-                //result = NN_Evaluation.evaluate(currentNode.getState().getBoard());
+                result = currentNode.getState().evaluateMCTS();
             }
         }
         for (int i = 0; i < simulatedMoves.size(); i++) {
@@ -214,8 +214,8 @@ public class MonteCarloTreeSearch implements Bot {
     public boolean flag;
     public boolean eval = false;
     public int diceRollResult;
-    public int maxIterations = 300;
-    public int depth = 2;
+    public int maxIterations = 50;
+    public int depth = 3;
     public int currentDepth;
     public int currentIteration;
 }
