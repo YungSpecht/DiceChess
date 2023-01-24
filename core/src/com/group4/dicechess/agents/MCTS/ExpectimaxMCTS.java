@@ -3,7 +3,7 @@ package com.group4.dicechess.agents.MCTS;
 import com.group4.dicechess.GameState;
 import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.agents.Bot;
-import com.group4.dicechess.agents.basic_agents.ExpectimaxTree;
+import com.group4.dicechess.agents.Expectimax.ExpectimaxTree;
 
 public class ExpectimaxMCTS implements Bot{
 
@@ -18,7 +18,7 @@ public class ExpectimaxMCTS implements Bot{
     @Override
     public Move getMove() {
         diceRollResult =  state.diceRoll();
-        ExpectimaxTree tree = new ExpectimaxTree(state);
+        ExpectimaxTree tree = new ExpectimaxTree(state, false);
         tree.buildTree(2);
         return tree.getBestMove();
     }
