@@ -145,5 +145,4 @@ public class ExpectimaxTree {
         int idx = root.getChildren().indexOf(root.getbestNextNode());
         return possibleOutcomes.get(idx);
     }
-
 }

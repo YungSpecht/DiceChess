@@ -316,7 +316,7 @@ public class GameScreen implements Screen {
                     bot = new GreedyBot(gameLoop);
                     break;
                 case 3: 
-                    bot = new ExpectimaxBot(gameLoop);
+                    bot = new ExpectimaxBot(gameLoop, false);
                     break;
                 case 4:
                     bot = new MonteCarloTreeSearch(gameLoop, false);
@@ -326,6 +326,9 @@ public class GameScreen implements Screen {
                     break;
                 case 6:
                     bot = new MonteCarloTreeSearch(gameLoop, true);
+                    break;
+                case 7:
+                    bot = new ExpectimaxBot(gameLoop, true);
                     break;
             }
             botPlaying = false;

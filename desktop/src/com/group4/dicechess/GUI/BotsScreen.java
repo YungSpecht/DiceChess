@@ -110,8 +110,8 @@ public class BotsScreen implements Screen {
                 }
                 // Expectimax Hybrid
                 if(screenX >= 403 && screenX <= 699 && screenY >= 376 && screenY <= 420){
-                    //game.setScreen(new GameScreen(game, 3));
-                    //Gdx.input.setInputProcessor(null);
+                    game.setScreen(new GameScreen(game, 7));
+                    Gdx.input.setInputProcessor(null);
                 }
                 return true;
             }

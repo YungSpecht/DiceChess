@@ -4,6 +4,7 @@ import com.group4.dicechess.GameState;
 import com.group4.dicechess.Representation.Move;
 import com.group4.dicechess.agents.Bot;
 import com.group4.dicechess.agents.Expectimax.ExpectimaxTree;
+import com.group4.dicechess.agents.NN_Evaluation.NN_Evaluation;
 
 public class ExpectimaxBot implements Bot{
 
@@ -14,12 +15,16 @@ public class ExpectimaxBot implements Bot{
     public ExpectimaxBot(GameState state){
         this.state = state;
         this.diceRollResult = 0;
+
     }
 
     public ExpectimaxBot(GameState state, boolean nnEval){
         this.state = state;
         this.diceRollResult = 0;
         this.nnEval = nnEval;
+        if(nnEval){
+            new NN_Evaluation();
+        }
     }
     @Override
     public Move getMove() {
