@@ -214,7 +214,7 @@ public class MonteCarloTreeSearch implements Bot {
     public boolean flag;
     public boolean eval = false;
     public int diceRollResult;
-    public int maxIterations = 50;
+    public int maxIterations = 100;
     public int depth = 3;
     public int currentDepth;
     public int currentIteration;

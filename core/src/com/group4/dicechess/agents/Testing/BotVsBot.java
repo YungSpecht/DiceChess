@@ -46,7 +46,7 @@ public class BotVsBot {
     }
 
     public static void main(String[] args) {
-        BotVsBot simulation = new BotVsBot(3, 1, 10);
+        BotVsBot simulation = new BotVsBot(4, 1, 100);
         simulation.startSimulation();
     }
 
